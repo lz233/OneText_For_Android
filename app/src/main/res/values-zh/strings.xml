@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">一言</string>
+    <string name="about_page_text">关于页面</string>
+    <string name="about_text">关于</string>
+    <string name="created_time">创作于</string>
+    <string name="current_font_text">当前字体：</string>
+    <string name="custom_feed_text">自定义源</string>
+    <string name="default_text">默认</string>
+    <string name="download_failed_text">下载失败</string>
+    <string name="downloading_text">下载中</string>
+    <string name="feed_refresh_text">源刷新时间：</string>
+    <string name="feed_url_text">清除以恢复默认源</string>
+    <string name="font_custom_text">选择一个自定义字体</string>
+    <string name="font_system_text">恢复默认字体</string>
+    <string name="fonts_text">字体</string>
+    <string name="minute">分</string>
+    <string name="onetext_by_size_text">作者文字大小：</string>
+    <string name="onetext_from_size_text">来源文字大小：</string>
+    <string name="onetext_text_size_text">一言大小：</string>
+    <string name="onetext_time_size_text">时间文字大小：</string>
+    <string name="record_time">记录于</string>
+    <string name="request_permissions_button">同意</string>
+    <string name="request_permissions_text">需要一些权限</string>
+    <string name="save_button">保存</string>
+    <string name="save_fail">失败</string>
+    <string name="save_succeed">成功，保存为</string>
+    <string name="save_text">保存图片</string>
+    <string name="setting_succeed_text">成功，下次启动生效</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="widget_dark">暗色壁纸</string>
+    <string name="widget_disenable_text">小部件没有启用</string>
+    <string name="widget_enable_text">小部件已启用</string>
+    <string name="widget_text">小部件</string>
+    <string name="about_page_introduction">一言是一个简洁的小应用，能在启动器上通过小部件显示一些自定义的句子。你还可以在应用中生成句子截图，并保存或分享。
+\n\n
+一言遵循LGPL许可证，在这个基础上你可以修改它。
+\n\n
+在开发过程中，我们特别感谢：
+\n
+[lz差不多是条咸鱼了](https://github.com/lz233) [小萌新x](https://github.com/xbl233)
+\n\n
+本项目的开发离不开以下项目：
+\n
+[Markwon](https://github.com/noties/Markwon) [MicrosoftAppCenter](https://appcenter.ms) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions)
+\n\n
+本应用的主页：[点我](https://github.com/lz233/OneText_For_Android)
+\n\n
+核心库的主页：[点我](https://github.com/lz233/OneText-Library)
+\n\n
+本项目的Telegram群组：[点我](https://t.me/OneTextProject)
+    \n\n
+    关于如何提交句子到核心库：[点我](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E4%BA%A4%E5%8F%A5%E5%AD%90%EF%BC%9F)
+    \n\n
+        关于如何在Github上创建自己的订阅源：[点我](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9C%A8Github%E4%B8%8A%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E8%AE%A2%E9%98%85%E6%BA%90%EF%BC%9F)
+    </string>
+</resources>
