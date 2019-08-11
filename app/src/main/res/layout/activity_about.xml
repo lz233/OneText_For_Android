@@ -44,8 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:textSize="@dimen/text_size"
-                android:textColor="@color/colorText2"
-                android:text="@string/about_page_introduction" />
+                android:textColor="@color/colorText2" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
