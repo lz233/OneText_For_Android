@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".SettingActivity"
+    tools:showIn="@layout/activity_setting"
+    android:background="@android:color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/layout_margin"
+            android:layout_marginRight="@dimen/layout_margin">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fonts_text"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/colorText2"/>
+            <TextView
+                android:id="@+id/current_font_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/current_font_text"
+                android:textSize="@dimen/small_text_size"
+                android:textColor="@color/colorText3"
+                android:layout_marginTop="@dimen/content_margin"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/content_margin">
+
+                <LinearLayout
+                    android:id="@+id/font_yiqi_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/font_yiqi" />
+
+                    <TextView
+                        android:id="@+id/font_yiqi_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="@dimen/small_text_size"
+                        android:textColor="@color/colorText3"
+                        android:text="@string/font_yiqi" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/font_canger_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/font_canger" />
+
+                    <TextView
+                        android:id="@+id/font_canger_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="@dimen/small_text_size"
+                        android:textColor="@color/colorText3"
+                        android:text="@string/font_canger" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/font_system_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/small_text_size"
+                android:textColor="@color/colorText3"
+                android:layout_marginTop="@dimen/content_margin"
+                android:text="@string/font_system_text" />
+            <TextView
+                android:id="@+id/font_custom_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/small_text_size"
+                android:textColor="@color/colorText3"
+                android:layout_marginTop="@dimen/content_margin"
+                android:text="@string/font_custom_text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_feed_text"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/colorText2"
+                android:layout_marginTop="@dimen/layout_margin"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/feed_edittext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorText3"
+                    android:layout_weight="1"
+                    android:hint="@string/feed_url_text"
+                    android:textColorHint="@color/colorText3"
+                    android:textSize="@dimen/small_text_size"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/content_margin" />
+                <ImageView
+                    android:id="@+id/feed_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_spellcheck"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/content_margin">
+
+                <com.warkiz.widget.IndicatorSeekBar
+                    android:id="@+id/feed_refresh_seekbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:thumbTint="@color/colorText3"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    app:isb_min="30"
+                    app:isb_max="2880"
+                    app:isb_show_indicator="rectangle"
+                    app:isb_indicator_color="@color/colorText3"
+                    app:isb_thumb_color="@color/colorText3"
+                    app:isb_track_progress_color="@color/colorAccent"
+                    android:layout_marginEnd="@dimen/content_margin"/>
+
+                <ImageView
+                    android:id="@+id/feed_refresh_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_replay"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_text"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/colorText2"
+                android:layout_marginTop="@dimen/layout_margin"/>
+            <TextView
+                android:id="@+id/widget_enable_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textSize="@dimen/small_text_size"
+                android:textColor="@color/colorText3"
+                android:layout_marginTop="@dimen/content_margin"/>
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/widget_dark_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:thumbTint="@color/colorText3"
+                android:text="@string/widget_dark" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_text"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/colorText2"
+                android:layout_marginTop="@dimen/layout_margin"/>
+            <TextView
+                android:id="@+id/about_page_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_page_text"
+                android:textSize="@dimen/small_text_size"
+                android:textColor="@color/colorText3"
+                android:layout_marginTop="@dimen/content_margin"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

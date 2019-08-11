@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">OneText</string>
+    <string name="record_time">Recorded on</string>
+    <string name="created_time">Created on</string>
+    <string name="request_permissions_text">Request Permissions</string>
+    <string name="request_permissions_button">agree</string>
+    <string name="save_text">Save Picture</string>
+    <string name="save_button">save</string>
+    <string name="save_succeed">Succeed, save as</string>
+    <string name="save_fail">Fail</string>
+    <string name="title_activity_setting">Setting</string>
+    <string name="fonts_text">Fonts</string>
+    <string name="font_yiqi" translatable="false">义启新宋体</string>
+    <string name="font_canger" translatable="false">苍耳今楷</string>
+    <string name="font_custom_text">Choose a custom font</string>
+    <string name="rerun_text">Rerun to apply</string>
+    <string name="downloading_text">Downloading</string>
+    <string name="download_failed_text">Download failed</string>
+    <string name="current_font_text">Current font:</string>
+    <string name="font_system_text">Restore system font</string>
+    <string name="custom_feed_text">Custom Feed</string>
+    <string name="feed_url_text">Clear to restore the default.</string>
+    <string name="feed_refresh_text">Feed Refresh Time:</string>
+    <string name="setting_succeed_text">Succeed, effective at next startup</string>
+    <string name="widget_open">OPEN</string>
+    <string name="widget_text">Widget</string>
+    <string name="widget_dark">Dark Background</string>
+    <string name="default_text">Default</string>
+    <string name="onetext_text_size_text">OneText Size:</string>
+    <string name="onetext_by_size_text">Author Text Size:</string>
+    <string name="onetext_time_size_text">Time Text Size:</string>
+    <string name="onetext_from_size_text">Source Text Size:</string>
+    <string name="widget_enable_text">Widget is enabled.</string>
+    <string name="widget_disenable_text">Widget is disenabled.</string>
+    <string name="minute">MIN</string>
+    <string name="about_text">About</string>
+    <string name="about_page_text">About Page</string>
+    <string name="about_page_introduction">OneText is a neat little application that can display some custom sentences through widgets on the launcher. You can also generate screenshots of your sentences in your app and save or share them.\nOneText follows the LGPL license, and on this basis you can modify it.\n\nIn the development process, we are especially grateful:\nlz233 </string>
+</resources>
