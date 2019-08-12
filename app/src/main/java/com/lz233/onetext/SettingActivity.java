@@ -222,13 +222,15 @@ public class SettingActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
                     editor.putBoolean("widget_dark",true);
-                    editor.apply();
+                    editor.commit();
                     Intent intent = new Intent("com.lz233.onetext.widget");
+                    intent.setPackage(getPackageName());
                     SettingActivity.this.sendBroadcast(intent);
                 }else {
                     editor.putBoolean("widget_dark",false);
-                    editor.apply();
+                    editor.commit();
                     Intent intent = new Intent("com.lz233.onetext.widget");
+                    intent.setPackage(getPackageName());
                     SettingActivity.this.sendBroadcast(intent);
                 }
             }

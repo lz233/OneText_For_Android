@@ -329,6 +329,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     });
                     //更新小部件
                     Intent intent = new Intent("com.lz233.onetext.widget");
+                    intent.setPackage(getPackageName());
                     MainActivity.this.sendBroadcast(intent);
                     if(shouldUpdate) {
                         runUpdate();

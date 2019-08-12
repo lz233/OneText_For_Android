@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text=" "
         android:textColor="@color/colorText1"
-        android:textSize="@dimen/text_size" />
+        android:textSize="@dimen/small_text_size" />
 
     <TextView
         android:id="@+id/onetext_widget_by_textview"

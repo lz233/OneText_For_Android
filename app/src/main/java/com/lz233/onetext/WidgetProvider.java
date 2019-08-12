@@ -33,8 +33,8 @@ public class WidgetProvider extends AppWidgetProvider {
         //run(context,views);
         SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
         if(sharedPreferences.getBoolean("widget_dark",false)){
-            views.setTextColor(R.id.onetext_widget_text_textview, Color.WHITE);
-            views.setTextColor(R.id.onetext_widget_by_textview,Color.WHITE);
+            views.setTextColor(R.id.onetext_widget_text_textview, context.getResources().getColor(R.color.colorWhite));
+            views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorWhite));
         }else {
             views.setTextColor(R.id.onetext_widget_text_textview,context.getResources().getColor(R.color.colorText1));
             views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorText2));
@@ -88,6 +88,7 @@ public class WidgetProvider extends AppWidgetProvider {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     if(sharedPreferences.getBoolean("widget_can_download",true)){
                         FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),context.getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
+                        Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show();
                     } else{
                         editor.putBoolean("widget_request_download",true);
                     }
