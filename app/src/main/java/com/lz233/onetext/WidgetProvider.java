@@ -86,12 +86,7 @@ public class WidgetProvider extends AppWidgetProvider {
                 SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
                 if((currentTimeMillis-sharedPreferences.getLong("onetext_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",30)*60000)){
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    if(sharedPreferences.getBoolean("widget_can_download",true)){
-                        FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),context.getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
-                        Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show();
-                    } else{
-                        editor.putBoolean("widget_request_download",true);
-                    }
+                    editor.putBoolean("widget_request_download",true);
                     jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
                     onetext_code = random.nextInt(jsonArray.length());
                     editor.putInt("onetext_code",onetext_code);

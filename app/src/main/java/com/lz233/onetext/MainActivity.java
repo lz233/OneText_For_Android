@@ -358,6 +358,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     }
                 });
                 FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
+                editor.remove("widget_request_download");
+                editor.apply();
                 progressBar.post(new Runnable() {
                     @Override
                     public void run() {

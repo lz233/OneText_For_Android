@@ -183,13 +183,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:thumbTint="@color/colorText3"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/small_text_size"
                 android:text="@string/widget_dark" />
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/widget_can_ownload_switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:thumbTint="@color/colorText3"
-                android:text="@string/widget_can_download" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

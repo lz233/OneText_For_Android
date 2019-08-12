@@ -61,7 +61,6 @@ public class SettingActivity extends BaseActivity {
     private ImageView feed_refresh_imageview;
     private TextView widget_enable_textview;
     private SwitchCompat widget_dark_switch;
-    private SwitchCompat widget_can_ownload_switch;
     private TextView about_page_textview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +87,6 @@ public class SettingActivity extends BaseActivity {
         feed_refresh_imageview = findViewById(R.id.feed_refresh_imageview);
         widget_enable_textview = findViewById(R.id.widget_enable_textview);
         widget_dark_switch = findViewById(R.id.widget_dark_switch);
-        widget_can_ownload_switch = findViewById(R.id.widget_can_ownload_switch);
         about_page_textview = findViewById(R.id.about_page_textview);
         //初始化
         updateFontStatus();
@@ -96,7 +94,6 @@ public class SettingActivity extends BaseActivity {
         feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text)+" ${PROGRESS} "+getString(R.string.minute));
         feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",30));
         widget_dark_switch.setChecked(sharedPreferences.getBoolean("widget_dark",false));
-        widget_can_ownload_switch.setChecked(sharedPreferences.getBoolean("widget_can_download",true));
         // 监听器
         font_yiqi_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,13 +173,12 @@ public class SettingActivity extends BaseActivity {
                 if(!sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json").equals(feed_edittext.getText().toString())){
                     if(feed_edittext.getText().toString().equals("")) {
                         editor.remove("feed_URL");
-                        editor.remove("onetext_latest_refresh_time");
-                        editor.apply();
                     }else {
                         editor.putString("feed_URL",feed_edittext.getText().toString());
-                        editor.remove("onetext_latest_refresh_time");
-                        editor.apply();
                     }
+                    editor.remove("onetext_latest_refresh_time");
+                    editor.remove("onetext_code");
+                    editor.apply();
                     isSettingUpdated = true;
                     FileUtils.deleteFile(getFilesDir().getPath()+"/OneText/OneText-Library.json");
                     Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
@@ -232,18 +228,6 @@ public class SettingActivity extends BaseActivity {
                     Intent intent = new Intent("com.lz233.onetext.widget");
                     intent.setPackage(getPackageName());
                     SettingActivity.this.sendBroadcast(intent);
-                }
-            }
-        });
-        widget_can_ownload_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    editor.putBoolean("widget_can_download",true);
-                    editor.apply();
-                }else {
-                    editor.putBoolean("widget_can_download",false);
-                    editor.apply();
                 }
             }
         });

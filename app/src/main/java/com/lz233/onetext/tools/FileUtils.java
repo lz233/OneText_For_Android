@@ -28,7 +28,7 @@ public class FileUtils {
                 try {
                     if(!isFile(FilePath)){
                         File file = new File(FilePath);
-                        file.mkdir();
+                        file.mkdirs();
                     }
                     URL url = new URL(URLpath);
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
