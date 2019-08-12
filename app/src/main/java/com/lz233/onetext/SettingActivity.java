@@ -38,7 +38,7 @@ import android.widget.TextView;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class SettingActivity extends BaseActivity {
-    private Boolean isFeedUpdated = false;
+    private Boolean isSettingUpdated = false;
     private View view;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -61,6 +61,7 @@ public class SettingActivity extends BaseActivity {
     private ImageView feed_refresh_imageview;
     private TextView widget_enable_textview;
     private SwitchCompat widget_dark_switch;
+    private SwitchCompat widget_can_ownload_switch;
     private TextView about_page_textview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class SettingActivity extends BaseActivity {
         feed_refresh_imageview = findViewById(R.id.feed_refresh_imageview);
         widget_enable_textview = findViewById(R.id.widget_enable_textview);
         widget_dark_switch = findViewById(R.id.widget_dark_switch);
+        widget_can_ownload_switch = findViewById(R.id.widget_can_ownload_switch);
         about_page_textview = findViewById(R.id.about_page_textview);
         //初始化
         updateFontStatus();
@@ -94,6 +96,7 @@ public class SettingActivity extends BaseActivity {
         feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text)+" ${PROGRESS} "+getString(R.string.minute));
         feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",30));
         widget_dark_switch.setChecked(sharedPreferences.getBoolean("widget_dark",false));
+        widget_can_ownload_switch.setChecked(sharedPreferences.getBoolean("widget_can_download",true));
         // 监听器
         font_yiqi_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,13 +113,13 @@ public class SettingActivity extends BaseActivity {
                         context.registerReceiver(receiver_yiqi, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                         font_yiqi_textview.setText(R.string.downloading_text);
                     }else {
-                        Snackbar.make(view, getApplicationContext().getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         editor.putString("font_path",font_path_yiqi);
                         editor.apply();
                         updateFontStatus();
                     }
                 }else {
-                    Snackbar.make(view, getApplicationContext().getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
             }
         });
@@ -135,13 +138,13 @@ public class SettingActivity extends BaseActivity {
                         context.registerReceiver(receiver_canger, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                         font_canger_textview.setText(R.string.downloading_text);
                     }else {
-                        Snackbar.make(view, getApplicationContext().getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         editor.putString("font_path",font_path_canger);
                         editor.apply();
                         updateFontStatus();
                     }
                 }else {
-                    Snackbar.make(view, getApplicationContext().getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
             }
         });
@@ -150,6 +153,7 @@ public class SettingActivity extends BaseActivity {
             public void onClick(View view) {
                 editor.remove("font_path");
                 editor.apply();
+                Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 updateFontStatus();
             }
         });
@@ -162,25 +166,29 @@ public class SettingActivity extends BaseActivity {
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     startActivityForResult(intent,1);
                 }else {
-                    Snackbar.make(view, getApplicationContext().getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
             }
         });
         feed_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(feed_edittext.getText().toString().equals("")) {
-                    editor.remove("feed_URL");
-                    editor.remove("onetext_refresh_time");
-                    editor.apply();
+                if(!sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json").equals(feed_edittext.getText().toString())){
+                    if(feed_edittext.getText().toString().equals("")) {
+                        editor.remove("feed_URL");
+                        editor.remove("onetext_latest_refresh_time");
+                        editor.apply();
+                    }else {
+                        editor.putString("feed_URL",feed_edittext.getText().toString());
+                        editor.remove("onetext_latest_refresh_time");
+                        editor.apply();
+                    }
+                    isSettingUpdated = true;
+                    FileUtils.deleteFile(getFilesDir().getPath()+"/OneText/OneText-Library.json");
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }else {
-                    editor.putString("feed_URL",feed_edittext.getText().toString());
-                    editor.remove("onetext_refresh_time");
-                    editor.apply();
+                    Snackbar.make(view, getString(R.string.feed_url_no_changed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
-                isFeedUpdated = true;
-                FileUtils.deleteFile(getApplicationContext().getFilesDir().getPath()+"/OneText/OneText-Library.json");
-                Snackbar.make(view, getApplicationContext().getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
         feed_refresh_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
@@ -206,6 +214,7 @@ public class SettingActivity extends BaseActivity {
                 feed_refresh_seekbar.setProgress(30);
                 editor.remove("feed_refresh_time");
                 editor.apply();
+                Snackbar.make(view, getString(R.string.succeed), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
         widget_dark_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -221,6 +230,18 @@ public class SettingActivity extends BaseActivity {
                     editor.apply();
                     Intent intent = new Intent("com.lz233.onetext.widget");
                     SettingActivity.this.sendBroadcast(intent);
+                }
+            }
+        });
+        widget_can_ownload_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    editor.putBoolean("widget_can_download",true);
+                    editor.apply();
+                }else {
+                    editor.putBoolean("widget_can_download",false);
+                    editor.apply();
                 }
             }
         });
@@ -249,13 +270,13 @@ public class SettingActivity extends BaseActivity {
                     current_font_textview.setVisibility(View.GONE);
                 }else {
                     current_font_textview.setVisibility(View.VISIBLE);
-                    current_font_textview.setText(getApplicationContext().getString(R.string.current_font_text)+" "+sharedPreferences.getString("font_path",""));
+                    current_font_textview.setText(getString(R.string.current_font_text)+" "+sharedPreferences.getString("font_path",""));
                 }
             }
         });
     }
     public boolean onKeyDown(int keyCode, KeyEvent event){
-        if((keyCode == KeyEvent.KEYCODE_BACK)&isFeedUpdated) { //监控/拦截/屏蔽返回键
+        if((keyCode == KeyEvent.KEYCODE_BACK)&isSettingUpdated) { //监控/拦截/屏蔽返回键
             System.exit(0);
             return false;
         }
@@ -269,7 +290,7 @@ public class SettingActivity extends BaseActivity {
                 Uri uri = data.getData();
                 try {
                     String file_path = getPath(this, uri);
-                    Snackbar.make(view, getApplicationContext().getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     editor.putString("font_path",file_path);
                     editor.apply();
                     //finishActivity(requestCode);
@@ -311,7 +332,7 @@ public class SettingActivity extends BaseActivity {
                                 font_yiqi_textview.setText(R.string.font_yiqi);
                             }
                         });
-                        Snackbar.make(view, getApplicationContext().getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         editor.putString("font_path",font_path_yiqi);
                         editor.apply();
                         updateFontStatus();
@@ -354,7 +375,7 @@ public class SettingActivity extends BaseActivity {
                                 font_canger_textview.setText(R.string.font_canger);
                             }
                         });
-                        Snackbar.make(view, getApplicationContext().getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         editor.putString("font_path",font_path_yiqi);
                         editor.apply();
                         updateFontStatus();

@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             @Override
             public void onClick(View view) {
                 if(EasyPermissions.hasPermissions(MainActivity.this, permissions)){
-                    String pic_file_name = getApplicationContext().getString(R.string.app_name)+" "+ UUID.randomUUID().toString()+".jpg";
+                    String pic_file_name = getString(R.string.app_name)+" "+ UUID.randomUUID().toString()+".jpg";
                     String pic_file_path = Environment.getExternalStorageDirectory()+"/Pictures/OneText/";
                     if(!FileUtils.isDirectory(pic_file_path)) {
                         File file = new File(pic_file_path);
@@ -130,12 +130,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     }
                     Boolean isSuccess = SaveBitmap.saveBitmapToSdCard(MainActivity.this,SaveBitmap.getCacheBitmapFromView(pic_layout), pic_file_path+pic_file_name);
                     if(isSuccess == true) {
-                        Snackbar.make(view, getApplicationContext().getString(R.string.save_succeed)+" "+pic_file_name, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.save_succeed)+" "+pic_file_name, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     }else {
-                        Snackbar.make(view, getApplicationContext().getString(R.string.save_fail), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     }
                 }else {
-                    Snackbar.make(view, getApplicationContext().getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
             }
         });
@@ -260,7 +260,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onStart() {
         super.onStart();
         // The activity is about to become visible.
-
+        //run();
         //Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
     }
     public void run() {
@@ -273,25 +273,28 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     JSONArray jsonArray;
                     Boolean shouldUpdate = false;
                     if((currentTimeMillis-sharedPreferences.getLong("onetext_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",30)*60000)){
-                        if(!FileUtils.isFile(getApplicationContext().getFilesDir().getPath()+"/OneText/OneText-Library.json")){
+                        if(!FileUtils.isFile(getFilesDir().getPath()+"/OneText/OneText-Library.json")){
                             progressBar.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     progressBar.setVisibility(View.VISIBLE);
                                 }
                             });
-                            FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),getApplicationContext().getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
+                            FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
                         } else{
                             shouldUpdate = true;
                         }
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(getApplicationContext().getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                        jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
                         onetext_code = random.nextInt(jsonArray.length());
                         editor.putInt("onetext_code",onetext_code);
                         editor.putLong("onetext_latest_refresh_time",currentTimeMillis);
                         editor.commit();
                     }else {
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(getApplicationContext().getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                        jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
                         onetext_code = sharedPreferences.getInt("onetext_code",random.nextInt(jsonArray.length()));
+                    }
+                    if(sharedPreferences.getBoolean("widget_request_download",false)) {
+                        shouldUpdate = true;
                     }
                     JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
                     final String text = jsonObject.optString("text");
@@ -302,9 +305,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     final String timeOfCreation = timeJsonArray.optString(1);
                     final String time;
                     if (!timeOfCreation.equals("")) {
-                        time = getApplicationContext().getString(R.string.record_time)+"："+timeOfRecord+" "+getApplicationContext().getString(R.string.created_time)+"："+timeOfCreation;
+                        time = getString(R.string.record_time)+"："+timeOfRecord+" "+getString(R.string.created_time)+"："+timeOfCreation;
                     }else {
-                        time = getApplicationContext().getString(R.string.record_time)+"："+timeOfRecord;
+                        time = getString(R.string.record_time)+"："+timeOfRecord;
                     }
                     onetext_text_textview.post(new Runnable() {
                         @Override
@@ -353,7 +356,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         progressBar.setVisibility(View.VISIBLE);
                     }
                 });
-                FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),getApplicationContext().getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
+                FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
                 progressBar.post(new Runnable() {
                     @Override
                     public void run() {
@@ -397,7 +400,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             request_permissions_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EasyPermissions.requestPermissions(MainActivity.this,getApplicationContext().getString(R.string.request_permissions_text), 1, permissions);
+                    EasyPermissions.requestPermissions(MainActivity.this,getString(R.string.request_permissions_text), 1, permissions);
                 }
             });
         }

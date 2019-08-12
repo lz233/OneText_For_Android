@@ -57,6 +57,9 @@ public class WidgetProvider extends AppWidgetProvider {
             intent.setClass(context, MainActivity.class);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+            Intent openIntent = new Intent(context,MainActivity.class);
+            PendingIntent openPendingIntent = PendingIntent.getActivity(context,0,openIntent,0);
+            views.setOnClickPendingIntent(R.id.onetext_widget_layout,openPendingIntent);
             run(context,views);
             //views.setOnClickPendingIntent(R.id.onetext_widget_layout,getPendingIntent(context,R.id.onetext_widget_layout));
             // 更新小部件
@@ -77,22 +80,26 @@ public class WidgetProvider extends AppWidgetProvider {
     public void run(final Context context, final RemoteViews views) {
         try {
             if (FileUtils.isFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json")){
-                JSONArray jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                JSONArray jsonArray;
                 Long currentTimeMillis = System.currentTimeMillis();
                 Random random = new Random();
                 SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
                 if((currentTimeMillis-sharedPreferences.getLong("onetext_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",30)*60000)){
                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                    if(sharedPreferences.getBoolean("widget_can_download",true)){
+                        FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),context.getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
+                    } else{
+                        editor.putBoolean("widget_request_download",true);
+                    }
+                    jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
                     onetext_code = random.nextInt(jsonArray.length());
                     editor.putInt("onetext_code",onetext_code);
                     editor.putLong("onetext_latest_refresh_time",currentTimeMillis);
                     editor.commit();
                 }else {
+                    jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
                     onetext_code = sharedPreferences.getInt("onetext_code",random.nextInt(jsonArray.length()));
                 }
-                Intent openIntent = new Intent(context,MainActivity.class);
-                PendingIntent openPendingIntent = PendingIntent.getActivity(context,0,openIntent,0);
-                views.setOnClickPendingIntent(R.id.onetext_widget_layout,openPendingIntent);
                 JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
                 final String text = jsonObject.optString("text").replace("\n"," ");
                 final String by = jsonObject.optString("by");
