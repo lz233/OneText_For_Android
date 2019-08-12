@@ -122,14 +122,14 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             @Override
             public void onClick(View view) {
                 if(EasyPermissions.hasPermissions(MainActivity.this, permissions)){
-                    String pic_file_name = getString(R.string.app_name)+" "+ UUID.randomUUID().toString()+".jpg";
+                    String pic_file_name = "OneText "+ UUID.randomUUID().toString()+".jpg";
                     String pic_file_path = Environment.getExternalStorageDirectory()+"/Pictures/OneText/";
                     if(!FileUtils.isDirectory(pic_file_path)) {
                         File file = new File(pic_file_path);
-                        file.mkdir();
+                        file.mkdirs();
                     }
                     Boolean isSuccess = SaveBitmap.saveBitmapToSdCard(MainActivity.this,SaveBitmap.getCacheBitmapFromView(pic_layout), pic_file_path+pic_file_name);
-                    if(isSuccess == true) {
+                    if(isSuccess) {
                         Snackbar.make(view, getString(R.string.save_succeed)+" "+pic_file_name, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     }else {
                         Snackbar.make(view, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
