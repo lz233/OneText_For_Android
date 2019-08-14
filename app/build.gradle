@@ -7,8 +7,8 @@ android {
         applicationId "com.lz233.onetext"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2019081
-        versionName '1.111'
+        versionCode 20190814
+        versionName '1.1111'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

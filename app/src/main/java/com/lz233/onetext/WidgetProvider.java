@@ -30,15 +30,6 @@ public class WidgetProvider extends AppWidgetProvider {
         AppWidgetManager manger = AppWidgetManager.getInstance(context);
         ComponentName thisName = new ComponentName(context,WidgetProvider.class);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-        //run(context,views);
-        SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
-        if(sharedPreferences.getBoolean("widget_dark",false)){
-            views.setTextColor(R.id.onetext_widget_text_textview, context.getResources().getColor(R.color.colorWhite));
-            views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorWhite));
-        }else {
-            views.setTextColor(R.id.onetext_widget_text_textview,context.getResources().getColor(R.color.colorText1));
-            views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorText2));
-        }
         run(context,views);
         manger.updateAppWidget(thisName,views);
         super.onReceive(context, intent);
@@ -79,11 +70,18 @@ public class WidgetProvider extends AppWidgetProvider {
     }
     public void run(final Context context, final RemoteViews views) {
         try {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
+            if(sharedPreferences.getBoolean("widget_dark",false)){
+                views.setTextColor(R.id.onetext_widget_text_textview, context.getResources().getColor(R.color.colorWhite));
+                views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorWhite));
+            }else {
+                views.setTextColor(R.id.onetext_widget_text_textview,context.getResources().getColor(R.color.colorText1));
+                views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorText2));
+            }
             if (FileUtils.isFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json")){
                 JSONArray jsonArray;
                 Long currentTimeMillis = System.currentTimeMillis();
                 Random random = new Random();
-                SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
                 if((currentTimeMillis-sharedPreferences.getLong("onetext_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",30)*60000)){
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("widget_request_download",true);

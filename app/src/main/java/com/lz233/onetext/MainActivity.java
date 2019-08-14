@@ -102,7 +102,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //Crashes.generateTestCrash();
         sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        run();
         onetext_quote1_textview.setTextSize(sharedPreferences.getInt("onetext_text_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.onetext_size))));
         onetext_text_textview.setTextSize(sharedPreferences.getInt("onetext_text_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.onetext_size))));
         onetext_quote2_textview.setTextSize(sharedPreferences.getInt("onetext_text_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.onetext_size))));
@@ -260,7 +259,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onStart() {
         super.onStart();
         // The activity is about to become visible.
-        //run();
+        run();
         //Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
     }
     public void run() {
