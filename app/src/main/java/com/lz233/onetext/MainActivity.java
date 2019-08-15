@@ -269,7 +269,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 try {
                     Random random = new Random();
                     Long currentTimeMillis = System.currentTimeMillis();
-                    JSONArray jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
                     Boolean shouldUpdate = false;
                     if((currentTimeMillis-sharedPreferences.getLong("feed_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",1)*3600000)){
                         if(!FileUtils.isFile(getFilesDir().getPath()+"/OneText/OneText-Library.json")){
@@ -284,8 +283,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             shouldUpdate = true;
                         }
                         editor.putLong("feed_latest_refresh_time",currentTimeMillis);
-                        editor.apply();
+                        editor.commit();
                     }
+                    JSONArray jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
                     if(sharedPreferences.getInt("onetext_code",-1) == -1) {
                         onetext_code = random.nextInt(jsonArray.length());
                         editor.putInt("onetext_code",onetext_code);

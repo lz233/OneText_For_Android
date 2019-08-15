@@ -94,7 +94,7 @@ public class SettingActivity extends BaseActivity {
         about_page_textview = findViewById(R.id.about_page_textview);
         //初始化
         updateFontStatus();
-        feed_edittext.setText(sharedPreferences.getString("feed_URL",""));
+        feed_edittext.setText(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"));
         feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text)+" ${PROGRESS} "+getString(R.string.hour));
         feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",1));
         widget_refresh_seekbar.setIndicatorTextFormat(getString(R.string.widget_refresh_text)+" ${PROGRESS} "+getString(R.string.minute));
