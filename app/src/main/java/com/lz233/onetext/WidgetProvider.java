@@ -82,13 +82,12 @@ public class WidgetProvider extends AppWidgetProvider {
                 JSONArray jsonArray;
                 Long currentTimeMillis = System.currentTimeMillis();
                 Random random = new Random();
-                if((currentTimeMillis-sharedPreferences.getLong("onetext_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",30)*60000)){
+                if((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000)){
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("widget_request_download",true);
                     jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
                     onetext_code = random.nextInt(jsonArray.length());
                     editor.putInt("onetext_code",onetext_code);
-                    editor.putLong("onetext_latest_refresh_time",currentTimeMillis);
+                    editor.putLong("widget_latest_refresh_time",currentTimeMillis);
                     editor.commit();
                 }else {
                     jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
@@ -97,7 +96,7 @@ public class WidgetProvider extends AppWidgetProvider {
                 JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
                 final String text = jsonObject.optString("text").replace("\n"," ");
                 final String by = jsonObject.optString("by");
-                views.setTextViewText(R.id.onetext_widget_text_textview,text.toString());
+                views.setTextViewText(R.id.onetext_widget_text_textview,text);
                 if(!by.equals("")) {
                     views.setViewVisibility(R.id.onetext_widget_by_textview,View.VISIBLE);
                     views.setTextViewText(R.id.onetext_widget_by_textview,"—— "+by);

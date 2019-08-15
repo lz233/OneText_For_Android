@@ -25,6 +25,7 @@
     <string name="succeed">Succeed</string>
     <string name="widget_text">Widget</string>
     <string name="widget_dark">Dark Background</string>
+    <string name="widget_refresh_text">Widget Refresh Time:</string>
     <string name="widget_can_download">Allow Widget Update Feed</string>
     <string name="default_text">Default</string>
     <string name="onetext_text_size_text">OneText Size:</string>
@@ -34,6 +35,7 @@
     <string name="widget_enable_text">Widget is enabled.</string>
     <string name="widget_disenable_text">Widget is disenabled.</string>
     <string name="minute">MIN</string>
+    <string name="hour">H</string>
     <string name="about_text">About</string>
     <string name="about_page_text">About Page</string>
     <string name="about_page_introduction">OneText is a neat little application that can display some custom sentences through widgets on the launcher. You can also generate screenshots of sentences in the app and save or share them.

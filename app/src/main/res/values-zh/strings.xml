@@ -57,4 +57,6 @@
     <string name="succeed">成功</string>
     <string name="widget_can_download">允许小部件更新源</string>
     <string name="feed_url_no_changed_text">源没有更改</string>
+    <string name="hour">时</string>
+    <string name="widget_refresh_text">小部件刷新时间：</string>
 </resources>

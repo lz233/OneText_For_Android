@@ -61,6 +61,8 @@ public class SettingActivity extends BaseActivity {
     private ImageView feed_refresh_imageview;
     private TextView widget_enable_textview;
     private SwitchCompat widget_dark_switch;
+    private IndicatorSeekBar widget_refresh_seekbar;
+    private ImageView widget_refresh_imageview;
     private TextView about_page_textview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +89,16 @@ public class SettingActivity extends BaseActivity {
         feed_refresh_imageview = findViewById(R.id.feed_refresh_imageview);
         widget_enable_textview = findViewById(R.id.widget_enable_textview);
         widget_dark_switch = findViewById(R.id.widget_dark_switch);
+        widget_refresh_seekbar = findViewById(R.id.widget_refresh_seekbar);
+        widget_refresh_imageview = findViewById(R.id.widget_refresh_imageview);
         about_page_textview = findViewById(R.id.about_page_textview);
         //初始化
         updateFontStatus();
-        feed_edittext.setText(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"));
-        feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text)+" ${PROGRESS} "+getString(R.string.minute));
-        feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",30));
+        feed_edittext.setText(sharedPreferences.getString("feed_URL",""));
+        feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text)+" ${PROGRESS} "+getString(R.string.hour));
+        feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",1));
+        widget_refresh_seekbar.setIndicatorTextFormat(getString(R.string.widget_refresh_text)+" ${PROGRESS} "+getString(R.string.minute));
+        widget_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",30));
         widget_dark_switch.setChecked(sharedPreferences.getBoolean("widget_dark",false));
         // 监听器
         font_yiqi_layout.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +182,7 @@ public class SettingActivity extends BaseActivity {
                     }else {
                         editor.putString("feed_URL",feed_edittext.getText().toString());
                     }
-                    editor.remove("onetext_latest_refresh_time");
+                    editor.remove("feed_latest_refresh_time");
                     editor.remove("onetext_code");
                     editor.apply();
                     isSettingUpdated = true;
@@ -207,7 +213,7 @@ public class SettingActivity extends BaseActivity {
         feed_refresh_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                feed_refresh_seekbar.setProgress(30);
+                feed_refresh_seekbar.setProgress(1);
                 editor.remove("feed_refresh_time");
                 editor.apply();
                 Snackbar.make(view, getString(R.string.succeed), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
@@ -229,6 +235,32 @@ public class SettingActivity extends BaseActivity {
                     intent.setPackage(getPackageName());
                     SettingActivity.this.sendBroadcast(intent);
                 }
+            }
+        });
+        widget_refresh_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
+            @Override
+            public void onSeeking(SeekParams seekParams) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                editor.putLong("widget_refresh_time",seekBar.getProgress());
+                editor.apply();
+            }
+        });
+        widget_refresh_imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                widget_refresh_seekbar.setProgress(30);
+                editor.remove("widget_refresh_time");
+                editor.apply();
+                Snackbar.make(view, getString(R.string.succeed), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
         about_page_textview.setOnClickListener(new View.OnClickListener() {

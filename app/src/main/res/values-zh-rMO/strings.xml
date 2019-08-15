@@ -56,4 +56,6 @@
     <string name="succeed">成功</string>
     <string name="widget_can_download">允許徽件更新源</string>
     <string name="feed_url_no_changed_text">源沒有更改</string>
+    <string name="hour">時</string>
+    <string name="widget_refresh_text">徽件刷新時間：</string>
 </resources>

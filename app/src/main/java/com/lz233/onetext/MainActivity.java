@@ -269,9 +269,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 try {
                     Random random = new Random();
                     Long currentTimeMillis = System.currentTimeMillis();
-                    JSONArray jsonArray;
+                    JSONArray jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
                     Boolean shouldUpdate = false;
-                    if((currentTimeMillis-sharedPreferences.getLong("onetext_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",30)*60000)){
+                    if((currentTimeMillis-sharedPreferences.getLong("feed_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",1)*3600000)){
                         if(!FileUtils.isFile(getFilesDir().getPath()+"/OneText/OneText-Library.json")){
                             progressBar.post(new Runnable() {
                                 @Override
@@ -283,17 +283,15 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         } else{
                             shouldUpdate = true;
                         }
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                        editor.putLong("feed_latest_refresh_time",currentTimeMillis);
+                        editor.apply();
+                    }
+                    if(sharedPreferences.getInt("onetext_code",-1) == -1) {
                         onetext_code = random.nextInt(jsonArray.length());
                         editor.putInt("onetext_code",onetext_code);
-                        editor.putLong("onetext_latest_refresh_time",currentTimeMillis);
-                        editor.commit();
+                        editor.apply();
                     }else {
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
-                        onetext_code = sharedPreferences.getInt("onetext_code",random.nextInt(jsonArray.length()));
-                    }
-                    if(sharedPreferences.getBoolean("widget_request_download",false)) {
-                        shouldUpdate = true;
+                        onetext_code = sharedPreferences.getInt("onetext_code", random.nextInt(jsonArray.length()));
                     }
                     JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
                     final String text = jsonObject.optString("text");

@@ -113,7 +113,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/content_margin"
+                android:layout_marginLeft="@dimen/content_margin">
 
                 <EditText
                     android:id="@+id/feed_edittext"
@@ -139,7 +141,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/content_margin">
+                android:layout_marginTop="@dimen/content_margin"
+                android:layout_marginRight="@dimen/content_margin">
 
                 <com.warkiz.widget.IndicatorSeekBar
                     android:id="@+id/feed_refresh_seekbar"
@@ -148,8 +151,8 @@
                     android:thumbTint="@color/colorText3"
                     android:layout_weight="1"
                     android:layout_gravity="center"
-                    app:isb_min="30"
-                    app:isb_max="2880"
+                    app:isb_min="1"
+                    app:isb_max="168"
                     app:isb_show_indicator="rectangle"
                     app:isb_indicator_color="@color/colorText3"
                     app:isb_thumb_color="@color/colorText3"
@@ -186,6 +189,34 @@
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/small_text_size"
                 android:text="@string/widget_dark" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/content_margin">
+
+                <com.warkiz.widget.IndicatorSeekBar
+                    android:id="@+id/widget_refresh_seekbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:thumbTint="@color/colorText3"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    app:isb_min="30"
+                    app:isb_max="2880"
+                    app:isb_show_indicator="rectangle"
+                    app:isb_indicator_color="@color/colorText3"
+                    app:isb_thumb_color="@color/colorText3"
+                    app:isb_track_progress_color="@color/colorAccent"
+                    android:layout_marginEnd="@dimen/content_margin"/>
+
+                <ImageView
+                    android:id="@+id/widget_refresh_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_replay"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
