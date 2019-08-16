@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             @Override
             public void onClick(View view) {
                 if(EasyPermissions.hasPermissions(MainActivity.this, permissions)){
-                    String pic_file_name = "OneText "+ UUID.randomUUID().toString()+".jpg";
+                    String pic_file_name = "OneText "+System.currentTimeMillis()+".jpg";
                     String pic_file_path = Environment.getExternalStorageDirectory()+"/Pictures/OneText/";
                     if(!FileUtils.isDirectory(pic_file_path)) {
                         File file = new File(pic_file_path);
@@ -268,8 +268,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             public void run() {
                 try {
                     Random random = new Random();
-                    Long currentTimeMillis = System.currentTimeMillis();
-                    Boolean shouldUpdate = false;
+                    long currentTimeMillis = System.currentTimeMillis();
+                    boolean shouldUpdate = false;
                     if((currentTimeMillis-sharedPreferences.getLong("feed_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",1)*3600000)){
                         if(!FileUtils.isFile(getFilesDir().getPath()+"/OneText/OneText-Library.json")){
                             progressBar.post(new Runnable() {
@@ -286,12 +286,18 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         editor.commit();
                     }
                     JSONArray jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
-                    if(sharedPreferences.getInt("onetext_code",-1) == -1) {
+                    if(((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000))&(!sharedPreferences.getBoolean("widget_enabled",false))){
                         onetext_code = random.nextInt(jsonArray.length());
                         editor.putInt("onetext_code",onetext_code);
                         editor.apply();
                     }else {
-                        onetext_code = sharedPreferences.getInt("onetext_code", random.nextInt(jsonArray.length()));
+                        if(sharedPreferences.getInt("onetext_code",-1) == -1) {
+                            onetext_code = random.nextInt(jsonArray.length());
+                            editor.putInt("onetext_code",onetext_code);
+                            editor.apply();
+                        }else {
+                            onetext_code = sharedPreferences.getInt("onetext_code", random.nextInt(jsonArray.length()));
+                        }
                     }
                     JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
                     final String text = jsonObject.optString("text");
