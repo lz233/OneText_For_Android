@@ -33,6 +33,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -55,10 +57,18 @@ public class SettingActivity extends BaseActivity {
     private TextView font_canger_textview;
     private TextView font_system_textview;
     private TextView font_custom_textview;
+    private SwitchCompat interface_md2_switch;
+    private RadioGroup feed_type_radiogroup;
+    private RadioButton feed_type_remote_radiobutton;
+    private RadioButton feed_type_local_radiobutton;
+    private LinearLayout feed_remote_layout;
+    private LinearLayout feed_local_layout;
     private EditText feed_edittext;
     private ImageView feed_imageview;
     private IndicatorSeekBar feed_refresh_seekbar;
     private ImageView feed_refresh_imageview;
+    private TextView feed_local_path_textview;
+    private TextView feed_local_choose_textview;
     private TextView widget_enable_textview;
     private SwitchCompat widget_dark_switch;
     private IndicatorSeekBar widget_refresh_seekbar;
@@ -83,10 +93,18 @@ public class SettingActivity extends BaseActivity {
         font_canger_textview = findViewById(R.id.font_canger_textview);
         font_system_textview = findViewById(R.id.font_system_textview);
         font_custom_textview = findViewById(R.id.font_custom_textview);
+        interface_md2_switch = findViewById(R.id.interface_md2_switch);
+        feed_type_radiogroup = findViewById(R.id.feed_type_radiogroup);
+        feed_type_remote_radiobutton = findViewById(R.id.feed_type_remote_radiobutton);
+        feed_type_local_radiobutton = findViewById(R.id.feed_type_local_radiobutton);
+        feed_remote_layout = findViewById(R.id.feed_remote_layout);
+        feed_local_layout = findViewById(R.id.feed_local_layout);
         feed_edittext = findViewById(R.id.feed_edittext);
         feed_imageview = findViewById(R.id.feed_imageview);
         feed_refresh_seekbar = findViewById(R.id.feed_refresh_seekbar);
         feed_refresh_imageview = findViewById(R.id.feed_refresh_imageview);
+        feed_local_path_textview = findViewById(R.id.feed_local_path_textview);
+        feed_local_choose_textview = findViewById(R.id.feed_local_choose_textview);
         widget_enable_textview = findViewById(R.id.widget_enable_textview);
         widget_dark_switch = findViewById(R.id.widget_dark_switch);
         widget_refresh_seekbar = findViewById(R.id.widget_refresh_seekbar);
@@ -94,7 +112,21 @@ public class SettingActivity extends BaseActivity {
         about_page_textview = findViewById(R.id.about_page_textview);
         //初始化
         updateFontStatus();
+        if(sharedPreferences.getString("interface_style","default").equals("md2")) {
+            interface_md2_switch.setChecked(true);
+        }
+        if(sharedPreferences.getString("feed_type","remote").equals("remote")) {
+            feed_type_remote_radiobutton.setChecked(true);
+            feed_remote_layout.setVisibility(View.VISIBLE);
+            feed_local_layout.setVisibility(View.GONE);
+        }
+        if (sharedPreferences.getString("feed_type","remote").equals("local")) {
+            feed_type_local_radiobutton.setChecked(true);
+            feed_local_layout.setVisibility(View.VISIBLE);
+            feed_remote_layout.setVisibility(View.GONE);
+        }
         feed_edittext.setText(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"));
+        feed_local_path_textview.setText(sharedPreferences.getString("feed_local_path",""));
         feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text)+" ${PROGRESS} "+getString(R.string.hour));
         feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",1));
         widget_refresh_seekbar.setIndicatorTextFormat(getString(R.string.widget_refresh_text)+" ${PROGRESS} "+getString(R.string.minute));
@@ -173,6 +205,44 @@ public class SettingActivity extends BaseActivity {
                 }
             }
         });
+        interface_md2_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    editor.putString("interface_style","md2");
+                    editor.apply();
+                    isSettingUpdated = true;
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                }else {
+                    editor.putString("interface_style","default");
+                    editor.apply();
+                    isSettingUpdated = true;
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                }
+            }
+        });
+        feed_type_radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.feed_type_remote_radiobutton:
+                        editor.putString("feed_type","remote");
+                        feed_remote_layout.setVisibility(View.VISIBLE);
+                        feed_local_layout.setVisibility(View.GONE);
+                        break;
+                    case R.id.feed_type_local_radiobutton:
+                        editor.putString("feed_type","local");
+                        feed_local_layout.setVisibility(View.VISIBLE);
+                        feed_remote_layout.setVisibility(View.GONE);
+                        break;
+                }
+                editor.remove("feed_latest_refresh_time");
+                editor.remove("onetext_code");
+                editor.apply();
+                isSettingUpdated = true;
+                Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            }
+        });
         feed_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,14 +266,10 @@ public class SettingActivity extends BaseActivity {
         feed_refresh_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
             public void onSeeking(SeekParams seekParams) {
-
             }
-
             @Override
             public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
-
             }
-
             @Override
             public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
                 editor.putLong("feed_refresh_time",seekBar.getProgress());
@@ -217,6 +283,19 @@ public class SettingActivity extends BaseActivity {
                 editor.remove("feed_refresh_time");
                 editor.apply();
                 Snackbar.make(view, getString(R.string.succeed), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            }
+        });
+        feed_local_choose_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(EasyPermissions.hasPermissions(SettingActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    startActivityForResult(intent,2);
+                }else {
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                }
             }
         });
         widget_dark_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -240,14 +319,10 @@ public class SettingActivity extends BaseActivity {
         widget_refresh_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
             public void onSeeking(SeekParams seekParams) {
-
             }
-
             @Override
             public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
-
             }
-
             @Override
             public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
                 editor.putLong("widget_refresh_time",seekBar.getProgress());
@@ -313,6 +388,23 @@ public class SettingActivity extends BaseActivity {
                     editor.apply();
                     //finishActivity(requestCode);
                     updateFontStatus();
+                    //Toast.makeText(this, "文件路径："+uri.getPath().toString(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (requestCode == 2) {
+                Uri uri = data.getData();
+                try {
+                    String file_path = getPath(this, uri);
+                    editor.putString("feed_local_path",file_path);
+                    editor.remove("feed_latest_refresh_time");
+                    editor.remove("onetext_code");
+                    editor.apply();
+                    isSettingUpdated = true;
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    feed_local_path_textview.setText(file_path);
+                    //finishActivity(requestCode);
                     //Toast.makeText(this, "文件路径："+uri.getPath().toString(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();

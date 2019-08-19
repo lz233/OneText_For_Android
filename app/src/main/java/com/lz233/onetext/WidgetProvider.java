@@ -78,19 +78,30 @@ public class WidgetProvider extends AppWidgetProvider {
                 views.setTextColor(R.id.onetext_widget_text_textview,context.getResources().getColor(R.color.colorText1));
                 views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorText2));
             }
-            if (FileUtils.isFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json")){
-                JSONArray jsonArray;
+            if ((FileUtils.isFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"))|(FileUtils.isFile(sharedPreferences.getString("feed_local_path",null)))){
+                JSONArray jsonArray = null;
                 Long currentTimeMillis = System.currentTimeMillis();
                 Random random = new Random();
+                String feed_type = sharedPreferences.getString("feed_type","remote");
                 if((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000)){
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                    if(feed_type.equals("remote")){
+                        jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                    }
+                    if(feed_type.equals("local")) {
+                        jsonArray = new JSONArray(FileUtils.readTextFromFile(sharedPreferences.getString("feed_local_path",context.getFilesDir().getPath()+"/OneText/OneText-Library.json")));
+                    }
                     onetext_code = random.nextInt(jsonArray.length());
                     editor.putInt("onetext_code",onetext_code);
                     editor.putLong("widget_latest_refresh_time",currentTimeMillis);
                     editor.commit();
                 }else {
-                    jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                    if(feed_type.equals("remote")){
+                        jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                    }
+                    if(feed_type.equals("local")) {
+                        jsonArray = new JSONArray(FileUtils.readTextFromFile(sharedPreferences.getString("feed_local_path",context.getFilesDir().getPath()+"/OneText/OneText-Library.json")));
+                    }
                     onetext_code = sharedPreferences.getInt("onetext_code",random.nextInt(jsonArray.length()));
                 }
                 JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));

@@ -106,16 +106,57 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/interface_text"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/colorText2"
+                android:layout_marginTop="@dimen/layout_margin"/>
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/interface_md2_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:thumbTint="@color/colorText3"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/small_text_size"
+                android:text="@string/interface_md2" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/custom_feed_text"
                 android:textSize="@dimen/text_size"
                 android:textColor="@color/colorText2"
                 android:layout_marginTop="@dimen/layout_margin"/>
+            <RadioGroup
+                android:id="@+id/feed_type_radiogroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/feed_type_remote_radiobutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorText3"
+                    android:textSize="@dimen/small_text_size"
+                    android:textColor="@color/colorText3"
+                    android:text="@string/feed_type_remote_text"/>
+                <RadioButton
+                    android:id="@+id/feed_type_local_radiobutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorText3"
+                    android:textSize="@dimen/small_text_size"
+                    android:textColor="@color/colorText3"
+                    android:text="@string/feed_type_local_text"/>
+            </RadioGroup>
             <LinearLayout
+                android:id="@+id/feed_remote_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginRight="@dimen/content_margin"
-                android:layout_marginLeft="@dimen/content_margin">
+                android:layout_marginLeft="@dimen/content_margin"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/feed_edittext"
@@ -129,13 +170,40 @@
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:layout_gravity="center"
-                    android:layout_marginRight="@dimen/content_margin" />
+                    android:layout_marginEnd="@dimen/content_margin" />
                 <ImageView
                     android:id="@+id/feed_imageview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_spellcheck"
                     android:layout_gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/feed_local_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/content_margin"
+                android:layout_marginLeft="@dimen/content_margin"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/feed_local_path_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorText3"
+                    android:textSize="@dimen/small_text_size"
+                    android:layout_gravity="center"
+                    android:text=""/>
+                <TextView
+                    android:id="@+id/feed_local_choose_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorText3"
+                    android:textSize="@dimen/small_text_size"
+                    android:text="@string/feed_local_choose_text"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

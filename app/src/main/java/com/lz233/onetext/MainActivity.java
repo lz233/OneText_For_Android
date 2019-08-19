@@ -70,7 +70,15 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //sp
+        sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        if(sharedPreferences.getString("interface_style","default").equals("default")){
+            setContentView(R.layout.activity_main);
+        }else if(sharedPreferences.getString("interface_style","default").equals("md2")){
+            setContentView(R.layout.activity_main_2);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //fb
@@ -100,8 +108,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         AppCenter.start(getApplication(), "2bd0575c-79d2-45d9-97f3-95e6a81e34e0", Analytics.class, Crashes.class);
         //Analytics.trackEvent("My custom event");
         //Crashes.generateTestCrash();
-        sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
-        editor = sharedPreferences.edit();
         onetext_quote1_textview.setTextSize(sharedPreferences.getInt("onetext_text_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.onetext_size))));
         onetext_text_textview.setTextSize(sharedPreferences.getInt("onetext_text_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.onetext_size))));
         onetext_quote2_textview.setTextSize(sharedPreferences.getInt("onetext_text_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.onetext_size))));
@@ -268,24 +274,33 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             public void run() {
                 try {
                     Random random = new Random();
+                    String feed_type = sharedPreferences.getString("feed_type","remote");
                     long currentTimeMillis = System.currentTimeMillis();
                     boolean shouldUpdate = false;
                     if((currentTimeMillis-sharedPreferences.getLong("feed_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",1)*3600000)){
-                        if(!FileUtils.isFile(getFilesDir().getPath()+"/OneText/OneText-Library.json")){
-                            progressBar.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressBar.setVisibility(View.VISIBLE);
-                                }
-                            });
-                            FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
-                        } else{
-                            shouldUpdate = true;
+                        if(feed_type.equals("remote")) {
+                            if(!FileUtils.isFile(getFilesDir().getPath()+"/OneText/OneText-Library.json")){
+                                progressBar.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressBar.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                                FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
+                            } else{
+                                shouldUpdate = true;
+                            }
                         }
                         editor.putLong("feed_latest_refresh_time",currentTimeMillis);
                         editor.commit();
                     }
-                    JSONArray jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                    JSONArray jsonArray = null;
+                    if(feed_type.equals("remote")) {
+                        jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
+                    }
+                    if(feed_type.equals("local")) {
+                        jsonArray = new JSONArray(FileUtils.readTextFromFile(sharedPreferences.getString("feed_local_path",getFilesDir().getPath()+"/OneText/OneText-Library.json")));
+                    }
                     if(((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000))&(!sharedPreferences.getBoolean("widget_enabled",false))){
                         onetext_code = random.nextInt(jsonArray.length());
                         editor.putInt("onetext_code",onetext_code);

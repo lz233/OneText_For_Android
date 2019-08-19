@@ -58,4 +58,9 @@
     <string name="feed_url_no_changed_text">源沒有更改</string>
     <string name="hour">時</string>
     <string name="widget_refresh_text">徽件刷新時間：</string>
+    <string name="interface_md2">Material Design 2 風格</string>
+    <string name="interface_text">界面</string>
+    <string name="feed_local_choose_text">選擇</string>
+    <string name="feed_type_local_text">本地JSON</string>
+    <string name="feed_type_remote_text">遠端JSON</string>
 </resources>
