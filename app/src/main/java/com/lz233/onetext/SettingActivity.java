@@ -237,6 +237,7 @@ public class SettingActivity extends BaseActivity {
                         break;
                 }
                 editor.remove("feed_latest_refresh_time");
+                editor.remove("widget_latest_refresh_time");
                 editor.remove("onetext_code");
                 editor.apply();
                 isSettingUpdated = true;
@@ -253,6 +254,7 @@ public class SettingActivity extends BaseActivity {
                         editor.putString("feed_URL",feed_edittext.getText().toString());
                     }
                     editor.remove("feed_latest_refresh_time");
+                    editor.remove("widget_latest_refresh_time");
                     editor.remove("onetext_code");
                     editor.apply();
                     isSettingUpdated = true;

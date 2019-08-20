@@ -69,8 +69,14 @@ public class FileUtils {
         return new File(FilePath);
     }
     public static boolean isFile(String FilePath){
-        File file = new File(FilePath);
-        return file.isFile();
+        boolean isFile = false;
+        try {
+            File file = new File(FilePath);
+            isFile = file.isFile();
+        }catch (Exception e) {
+
+        }
+        return isFile;
     }
     public static boolean isDirectory(String DirectoryPath){
         File file = new File(DirectoryPath);

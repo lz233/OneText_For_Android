@@ -116,7 +116,7 @@ public class WidgetProvider extends AppWidgetProvider {
                 }
             }
         }catch (Exception e) {
-
+            e.printStackTrace();
         }
 
     }
