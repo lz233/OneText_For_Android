@@ -43,7 +43,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:indeterminate="true" />
-
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <ImageView
+                                android:id="@+id/seal_imageview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/moemiku"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentBottom="true" />
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -107,7 +116,7 @@
                                 android:textColor="@color/colorText3"
                                 android:textSize="@dimen/small_text_size" />
                         </LinearLayout>
-
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -181,6 +190,59 @@
                                 android:elevation="0dp"
                                 android:layout_weight="0"
                                 android:text="@string/save_button" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="@dimen/layout_margin">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/refresh_onetext_text"
+                                android:textSize="@dimen/text_size"
+                                android:textColor="@color/colorText2"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="@dimen/content_margin"/>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/refresh_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bgstyle"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:layout_gravity="center"
+                                android:elevation="0dp"
+                                android:layout_weight="0"
+                                android:text="@string/refresh_onetext_button" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="@dimen/layout_margin">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/seal_text"
+                                android:textSize="@dimen/text_size"
+                                android:textColor="@color/colorText2"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="@dimen/content_margin"/>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/seal_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bgstyle"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:layout_gravity="center"
+                                android:elevation="0dp"
+                                android:layout_weight="0"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"

@@ -42,7 +42,7 @@
 \n\n
 本項目的開發離不開以下項目：
 \n
-[Markwon](https://github.com/noties/Markwon) [MicrosoftAppCenter](https://appcenter.ms) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions)
+[Markwon](https://github.com/noties/Markwon) [MicrosoftAppCenter](https://appcenter.ms) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [proguard-elder-dictionary](https://github.com/heruoxin/proguard-elder-dictionary)
 \n\n
 本應用的主頁：[點我](https://github.com/lz233/OneText_For_Android)
 \n\n
@@ -63,4 +63,9 @@
     <string name="feed_local_choose_text">選擇</string>
     <string name="feed_type_local_text">本地JSON</string>
     <string name="feed_type_remote_text">遠端JSON</string>
+    <string name="refresh_onetext_button">刷新</string>
+    <string name="refresh_onetext_text">來個新句子</string>
+    <string name="seal_button_isoff">顯示</string>
+    <string name="seal_button_ison">隱藏</string>
+    <string name="seal_text">顯示一隻可愛的初音</string>
 </resources>

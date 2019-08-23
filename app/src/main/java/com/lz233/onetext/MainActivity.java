@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -56,8 +57,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private TextView onetext_by_textview;
     private TextView onetext_from_textview;
     private TextView onetext_time_textview;
+    private ImageView seal_imageview;
     private LinearLayout request_permissions_layout;
     private AppCompatButton request_permissions_button;
+    private AppCompatButton save_button;
+    private AppCompatButton refresh_button;
+    private AppCompatButton seal_button;
     private IndicatorSeekBar onetext_text_size_seekbar;
     private AppCompatButton onetext_text_size_button;
     private IndicatorSeekBar onetext_by_size_seekbar;
@@ -66,7 +71,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private AppCompatButton onetext_time_size_button;
     private IndicatorSeekBar onetext_from_size_seekbar;
     private AppCompatButton onetext_from_size_button;
-    private AppCompatButton save_button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +94,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_by_textview = findViewById(R.id.onetext_by_textview);
         onetext_from_textview = findViewById(R.id.onetext_from_textview);
         onetext_time_textview = findViewById(R.id.onetext_time_textview);
+        seal_imageview=findViewById(R.id.seal_imageview);
         request_permissions_layout = findViewById(R.id.request_permissions_layout);
         request_permissions_button = findViewById(R.id.request_permissions_button);
+        save_button = findViewById(R.id.save_button);
+        refresh_button = findViewById(R.id.refresh_button);
+        seal_button = findViewById(R.id.seal_button);
         onetext_text_size_seekbar = findViewById(R.id.onetext_text_size_seekbar);
         onetext_text_size_button = findViewById(R.id.onetext_text_size_button);
         onetext_by_size_seekbar = findViewById(R.id.onetext_by_size_seekbar);
@@ -100,7 +108,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_time_size_button = findViewById(R.id.onetext_time_size_button);
         onetext_from_size_seekbar = findViewById(R.id.onetext_from_size_seekbar);
         onetext_from_size_button = findViewById(R.id.onetext_from_size_button);
-        save_button = findViewById(R.id.save_button);
         //申请权限
         final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         requestPermissions(permissions);
@@ -114,6 +121,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_by_textview.setTextSize(sharedPreferences.getInt("onetext_by_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.text_size))));
         onetext_time_textview.setTextSize(sharedPreferences.getInt("onetext_time_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         onetext_from_textview.setTextSize(sharedPreferences.getInt("onetext_from_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.small_text_size))));
+        if(sharedPreferences.getBoolean("seal_enabled",false)){
+            seal_button.setText(R.string.seal_button_ison);
+            seal_imageview.setVisibility(View.VISIBLE);
+        }else {
+            seal_button.setText(R.string.seal_button_isoff);
+            seal_imageview.setVisibility(View.GONE);
+        }
         onetext_text_size_seekbar.setIndicatorTextFormat(getString(R.string.onetext_text_size_text)+" ${PROGRESS} SP");
         onetext_by_size_seekbar.setIndicatorTextFormat(getString(R.string.onetext_by_size_text)+" ${PROGRESS} SP");
         onetext_time_size_seekbar.setIndicatorTextFormat(getString(R.string.onetext_time_size_text)+" ${PROGRESS} SP");
@@ -141,6 +155,28 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     }
                 }else {
                     Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                }
+            }
+        });
+        refresh_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                run(true);
+            }
+        });
+        seal_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(sharedPreferences.getBoolean("seal_enabled",false)){
+                    seal_imageview.setVisibility(View.GONE);
+                    editor.putBoolean("seal_enabled",false);
+                    editor.apply();
+                    seal_button.setText(R.string.seal_button_isoff);
+                }else {
+                    seal_imageview.setVisibility(View.VISIBLE);
+                    editor.putBoolean("seal_enabled",true);
+                    editor.apply();
+                    seal_button.setText(R.string.seal_button_ison);
                 }
             }
         });
@@ -265,10 +301,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onStart() {
         super.onStart();
         // The activity is about to become visible.
-        run();
+        run(false);
         //Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
     }
-    public void run() {
+    public void run(final Boolean forcedRefresh) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -292,7 +328,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             }
                         }
                         editor.putLong("feed_latest_refresh_time",currentTimeMillis);
-                        editor.commit();
+                        //editor.commit();
                     }
                     JSONArray jsonArray = null;
                     if(feed_type.equals("remote")) {
@@ -301,19 +337,15 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     if(feed_type.equals("local")) {
                         jsonArray = new JSONArray(FileUtils.readTextFromFile(sharedPreferences.getString("feed_local_path",getFilesDir().getPath()+"/OneText/OneText-Library.json")));
                     }
-                    if(((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000))&(!sharedPreferences.getBoolean("widget_enabled",false))){
+                    if(((((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000))&(!sharedPreferences.getBoolean("widget_enabled",false)))|(sharedPreferences.getInt("onetext_code",-1) == -1))|(forcedRefresh)){
                         onetext_code = random.nextInt(jsonArray.length());
                         editor.putInt("onetext_code",onetext_code);
-                        editor.apply();
+                        editor.putLong("widget_latest_refresh_time",currentTimeMillis);
+                        //editor.apply();
                     }else {
-                        if(sharedPreferences.getInt("onetext_code",-1) == -1) {
-                            onetext_code = random.nextInt(jsonArray.length());
-                            editor.putInt("onetext_code",onetext_code);
-                            editor.apply();
-                        }else {
-                            onetext_code = sharedPreferences.getInt("onetext_code", random.nextInt(jsonArray.length()));
-                        }
+                        onetext_code = sharedPreferences.getInt("onetext_code", random.nextInt(jsonArray.length()));
                     }
+                    editor.apply();
                     JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
                     final String text = jsonObject.optString("text");
                     final String by = jsonObject.optString("by");

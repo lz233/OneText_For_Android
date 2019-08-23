@@ -7,13 +7,14 @@ android {
         applicationId "com.lz233.onetext"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 20190820
-        versionName '1.33'
+        versionCode 20190823
+        versionName '1.333'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

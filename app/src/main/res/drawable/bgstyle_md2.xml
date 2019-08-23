@@ -2,7 +2,7 @@
 <shape android:shape="rectangle"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <!--边框的宽 和 边框颜色-->
-    <stroke android:width="1.05dp" android:color="#E3E3E3"/>
+    <stroke android:width="1.05dp" android:color="@color/colorMD2BG"/>
     <!--按钮的四个角为  弧角  -->
     <!--  弧角radius 半径-->
     <corners android:radius="@dimen/cardview_radius"/>

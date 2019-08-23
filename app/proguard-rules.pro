@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+#-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+-obfuscationdictionary dictionary-elder.txt
+-classobfuscationdictionary dictionary-elder.txt
+-packageobfuscationdictionary dictionary-elder.txt
