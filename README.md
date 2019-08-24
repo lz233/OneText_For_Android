@@ -1,4 +1,7 @@
 # OneText_For_Android
+
+[![Build status](https://build.appcenter.ms/v0.1/apps/6d358730-5a0b-4b13-a785-949b4ac6a5fb/branches/master/badge)](https://appcenter.ms)
+
 OneText is a neat little application that can display some custom sentences through widgets on the launcher. You can also generate screenshots of sentences in the app and save or share them.
 
 OneText follows the LGPL license, and on this basis you can modify it.
