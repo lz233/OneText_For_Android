@@ -2,8 +2,11 @@ package com.lz233.onetext;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Instrumentation;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -27,8 +30,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -71,6 +76,7 @@ public class SettingActivity extends BaseActivity {
     private TextView feed_local_choose_textview;
     private TextView widget_enable_textview;
     private SwitchCompat widget_dark_switch;
+    private SwitchCompat widget_notification_switch;
     private IndicatorSeekBar widget_refresh_seekbar;
     private ImageView widget_refresh_imageview;
     private TextView about_page_textview;
@@ -107,6 +113,7 @@ public class SettingActivity extends BaseActivity {
         feed_local_choose_textview = findViewById(R.id.feed_local_choose_textview);
         widget_enable_textview = findViewById(R.id.widget_enable_textview);
         widget_dark_switch = findViewById(R.id.widget_dark_switch);
+        widget_notification_switch = findViewById(R.id.widget_notification_switch);
         widget_refresh_seekbar = findViewById(R.id.widget_refresh_seekbar);
         widget_refresh_imageview = findViewById(R.id.widget_refresh_imageview);
         about_page_textview = findViewById(R.id.about_page_textview);
@@ -132,6 +139,7 @@ public class SettingActivity extends BaseActivity {
         widget_refresh_seekbar.setIndicatorTextFormat(getString(R.string.widget_refresh_text)+" ${PROGRESS} "+getString(R.string.minute));
         widget_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",30));
         widget_dark_switch.setChecked(sharedPreferences.getBoolean("widget_dark",false));
+        widget_notification_switch.setChecked(sharedPreferences.getBoolean("widget_notification_enabled",false));
         // 监听器
         font_yiqi_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -304,17 +312,71 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    editor.putBoolean("widget_dark",true);
-                    editor.commit();
-                    Intent intent = new Intent("com.lz233.onetext.widget");
-                    intent.setPackage(getPackageName());
-                    SettingActivity.this.sendBroadcast(intent);
+                    if(sharedPreferences.getBoolean("widget_enabled",false)) {
+                        editor.putBoolean("widget_dark",true);
+                        editor.commit();
+                        Intent intent = new Intent("com.lz233.onetext.widget");
+                        intent.setPackage(getPackageName());
+                        SettingActivity.this.sendBroadcast(intent);
+                    }else {
+                        widget_dark_switch.setChecked(false);
+                        Snackbar.make(view, getString(R.string.widget_disenable_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    }
                 }else {
-                    editor.putBoolean("widget_dark",false);
+                    if(sharedPreferences.getBoolean("widget_enabled",false)){
+                        editor.putBoolean("widget_dark",false);
+                        editor.commit();
+                        Intent intent = new Intent("com.lz233.onetext.widget");
+                        intent.setPackage(getPackageName());
+                        SettingActivity.this.sendBroadcast(intent);
+                    }else {
+                        widget_dark_switch.setChecked(true);
+                        Snackbar.make(view, getString(R.string.widget_disenable_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    }
+                }
+            }
+        });
+        widget_notification_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel("widget_onetext", getString(R.string.widget_notification_text), NotificationManager.IMPORTANCE_DEFAULT);
+                    channel.setSound(null,null);
+                    channel.enableLights(false);
+                    channel.enableVibration(false);
+                    channel.setVibrationPattern(new long[]{0});
+                    notificationManager.createNotificationChannel(channel);
+                }
+                if(b){
+                    if(sharedPreferences.getBoolean("widget_enabled",false)) {
+                        editor.putBoolean("widget_notification_enabled",true);
+                        editor.commit();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            final NotificationChannel channel = notificationManager.getNotificationChannel("widget_onetext");
+                            if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+                                Snackbar.make(view, getString(R.string.widget_notification_permissions_text), Snackbar.LENGTH_SHORT).setAction(getString(R.string.request_permissions_button), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                                        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                                        intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel.getId());
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                            }else {
+                                Snackbar.make(view, getString(R.string.widget_notification_next_effective_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                            }
+                        }else {
+                            Snackbar.make(view, getString(R.string.widget_notification_next_effective_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        }
+                    }else {
+                        widget_notification_switch.setChecked(false);
+                        Snackbar.make(view, getString(R.string.widget_disenable_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    }
+                }else {
+                    editor.putBoolean("widget_notification_enabled",false);
                     editor.commit();
-                    Intent intent = new Intent("com.lz233.onetext.widget");
-                    intent.setPackage(getPackageName());
-                    SettingActivity.this.sendBroadcast(intent);
                 }
             }
         });
@@ -351,7 +413,7 @@ public class SettingActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         // The activity is about to become visible.
-        if(sharedPreferences.getBoolean("widget_enabled",true)) {
+        if(sharedPreferences.getBoolean("widget_enabled",false)) {
             widget_enable_textview.setText(R.string.widget_enable_text);
         }else {
             widget_enable_textview.setText(R.string.widget_disenable_text);

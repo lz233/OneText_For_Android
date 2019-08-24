@@ -366,11 +366,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             onetext_text_textview.setText(text);
                             if(!by.equals("")) {
                                 onetext_by_textview.setText("—— "+by);
+                                onetext_by_textview.setVisibility(View.VISIBLE);
                             }else {
                                 onetext_by_textview.setVisibility(View.GONE);
                             }
                             if(!from.equals("")) {
                                 onetext_from_textview.setText(from);
+                                onetext_from_textview.setVisibility(View.VISIBLE);
                             }else {
                                 onetext_from_textview.setVisibility(View.GONE);
                             }

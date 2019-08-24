@@ -156,7 +156,8 @@
                 android:orientation="horizontal"
                 android:layout_marginRight="@dimen/content_margin"
                 android:layout_marginLeft="@dimen/content_margin"
-                android:visibility="gone">
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <EditText
                     android:id="@+id/feed_edittext"
@@ -184,8 +185,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginRight="@dimen/content_margin"
-                android:layout_marginLeft="@dimen/content_margin"
-                android:visibility="gone">
+                android:layout_marginLeft="@dimen/content_margin">
                 <TextView
                     android:id="@+id/feed_local_path_textview"
                     android:layout_width="wrap_content"
@@ -257,6 +257,15 @@
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/small_text_size"
                 android:text="@string/widget_dark" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/widget_notification_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                app:thumbTint="@color/colorText3"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/small_text_size"
+                android:text="@string/widget_notification_text" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

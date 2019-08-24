@@ -37,6 +37,9 @@
     <string name="widget_dark">Dark Wallpaper</string>
     <string name="widget_refresh_text">Widget Refresh Time:</string>
     <string name="widget_can_download">Allow Widget Update Feed</string>
+    <string name="widget_notification_text">Push OneText</string>
+    <string name="widget_notification_permissions_text">Please open the notification channel</string>
+    <string name="widget_notification_next_effective_text">Effective at the widget is updated next time</string>
     <string name="default_text">Default</string>
     <string name="onetext_text_size_text">OneText Size:</string>
     <string name="onetext_by_size_text">Author Text Size:</string>

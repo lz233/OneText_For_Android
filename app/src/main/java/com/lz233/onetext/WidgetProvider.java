@@ -1,5 +1,8 @@
 package com.lz233.onetext;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -7,21 +10,22 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lz233.onetext.tools.FileUtils;
-import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.core.app.NotificationCompat;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
-import android.view.View;
+
 import java.util.Random;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WidgetProvider extends AppWidgetProvider {
     private int onetext_code;
@@ -42,13 +46,14 @@ public class WidgetProvider extends AppWidgetProvider {
         for (int i = 0; i < appWidgetIds.length; i++) {
             int appWidgetId = appWidgetIds[i];
             //Log.i("lz", "onUpdate appWidgetId=" + appWidgetId);
-            Intent intent = new Intent();
+            /*Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                     Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-            intent.setClass(context, MainActivity.class);
+            intent.setClass(context, MainActivity.class);*/
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             Intent openIntent = new Intent(context,MainActivity.class);
+            openIntent.setPackage(context.getPackageName());
             PendingIntent openPendingIntent = PendingIntent.getActivity(context,0,openIntent,0);
             views.setOnClickPendingIntent(R.id.onetext_widget_layout,openPendingIntent);
             run(context,views);
@@ -105,7 +110,8 @@ public class WidgetProvider extends AppWidgetProvider {
                     onetext_code = sharedPreferences.getInt("onetext_code",random.nextInt(jsonArray.length()));
                 }
                 JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
-                final String text = jsonObject.optString("text").replace("\n"," ");
+                String originalText = jsonObject.optString("text");
+                final String text = originalText.replace("\n"," ");
                 final String by = jsonObject.optString("by");
                 views.setTextViewText(R.id.onetext_widget_text_textview,text);
                 if(!by.equals("")) {
@@ -113,6 +119,37 @@ public class WidgetProvider extends AppWidgetProvider {
                     views.setTextViewText(R.id.onetext_widget_by_textview,"—— "+by);
                 }else {
                     views.setViewVisibility(R.id.onetext_widget_by_textview,View.GONE);
+                }
+                if(sharedPreferences.getBoolean("widget_notification_enabled",false)) {
+                    RemoteViews notificationViewsLarge = new RemoteViews(context.getPackageName(), R.layout.notification_layout_large);
+                    notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_text_textview,originalText);
+                    if(!by.equals("")) {
+                        notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview,View.VISIBLE);
+                        notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_by_textview,"—— "+by);
+                    }else {
+                        notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview,View.GONE);
+                    }
+                    Intent openIntent = new Intent(context,MainActivity.class);
+                    openIntent.setPackage(context.getPackageName());
+                    PendingIntent openPendingIntent = PendingIntent.getActivity(context,0,openIntent,0);
+                    notificationViewsLarge.setOnClickPendingIntent(R.id.onetext_notification_large_layout,openPendingIntent);
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                            .setContentIntent(openPendingIntent)
+                            //.setCustomContentView(notificationViewsSmall)
+                            .setCustomBigContentView(notificationViewsLarge)
+                            //.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                            .setSmallIcon(R.drawable.ic_notification)
+                            .setContentTitle("“"+text+"”")
+                            //.setContentText("“"+text+"”")
+                            .setWhen(System.currentTimeMillis())
+                            .setSound(null)
+                            .setVibrate(new long[]{0});
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        builder.setChannelId("widget_onetext");
+                    }
+                    Notification notification = builder.build();
+                    notificationManager.notify(1, notification);
                 }
             }
         }catch (Exception e) {

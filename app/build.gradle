@@ -1,14 +1,17 @@
+
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
     defaultConfig {
+
+        //def time = Integer.valueOf(System.currentTimeMillis())
         applicationId "com.lz233.onetext"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 20190823
-        versionName '1.333'
+        versionCode = 20190825
+        versionName '1.3333'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

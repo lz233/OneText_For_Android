@@ -68,4 +68,7 @@
     <string name="seal_button_isoff">顯示</string>
     <string name="seal_button_ison">隱藏</string>
     <string name="seal_text">顯示一隻可愛的初音</string>
+    <string name="widget_notification_next_effective_text">下次徽件更新時生效</string>
+    <string name="widget_notification_permissions_text">請打開通知渠道</string>
+    <string name="widget_notification_text">推送一言</string>
 </resources>
