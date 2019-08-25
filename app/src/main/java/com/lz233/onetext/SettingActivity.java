@@ -148,7 +148,7 @@ public class SettingActivity extends BaseActivity {
                     //if(!FileUtils.isFile(Environment.getExternalStorageDirectory()+"/Android/data/com.lz233.onetext/files/Download/qiyi.ttf")){
                     if(!FileUtils.isFile(font_path_yiqi)){
                         //新建下载任务
-                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://salt-fish.club/1.ttf"));
+                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://yiyan.smci.club/ttf/1.ttf"));
                         request.setDestinationInExternalFilesDir(SettingActivity.this, Environment.DIRECTORY_DOWNLOADS,"Fonts/yiqi.ttf");
                         Context context = getApplicationContext();
                         downloadManager_yiqi= (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -173,7 +173,7 @@ public class SettingActivity extends BaseActivity {
                     //if(!FileUtils.isFile(Environment.getExternalStorageDirectory()+"/Android/data/com.lz233.onetext/files/Download/qiyi.ttf")){
                     if(!FileUtils.isFile(font_path_canger)){
                         //新建下载任务
-                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://salt-fish.club/2.ttf"));
+                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://yiyan.smci.club/ttf/2.ttf"));
                         request.setDestinationInExternalFilesDir(SettingActivity.this, Environment.DIRECTORY_DOWNLOADS,"Fonts/canger.ttf");
                         Context context = getApplicationContext();
                         downloadManager_canger= (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
