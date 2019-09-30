@@ -71,4 +71,5 @@
     <string name="widget_notification_next_effective_text">下次徽件更新時生效</string>
     <string name="widget_notification_permissions_text">請打開通知渠道</string>
     <string name="widget_notification_text">推送一言</string>
+    <string name="interface_daynight_text">顯示模式</string>
 </resources>

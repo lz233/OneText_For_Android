@@ -77,11 +77,11 @@ public class WidgetProvider extends AppWidgetProvider {
         try {
             SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
             if(sharedPreferences.getBoolean("widget_dark",false)){
-                views.setTextColor(R.id.onetext_widget_text_textview, context.getResources().getColor(R.color.colorWhite));
-                views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorWhite));
+                views.setTextColor(R.id.onetext_widget_text_textview, context.getResources().getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorWhiteWidget));
             }else {
-                views.setTextColor(R.id.onetext_widget_text_textview,context.getResources().getColor(R.color.colorText1));
-                views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorText2));
+                views.setTextColor(R.id.onetext_widget_text_textview,context.getResources().getColor(R.color.colorText1Widget));
+                views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorText2Widget));
             }
             if ((FileUtils.isFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"))|(FileUtils.isFile(sharedPreferences.getString("feed_local_path",null)))){
                 JSONArray jsonArray = null;

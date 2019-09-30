@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" "
-        android:textColor="@color/colorText1"
+        android:textColor="@color/colorText1Widget"
         android:textSize="@dimen/small_text_size" />
 
     <TextView
@@ -20,6 +20,6 @@
         android:layout_gravity="end"
         android:gravity="end"
         android:text="—— "
-        android:textColor="@color/colorText2"
+        android:textColor="@color/colorText2Widget"
         android:textSize="@dimen/small_text_size" />
 </LinearLayout>

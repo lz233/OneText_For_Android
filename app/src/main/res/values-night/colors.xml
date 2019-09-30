@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#828282</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorWhite">#000000</color>
+    <color name="colorWhiteWidget">#FFFFFF</color>
+    <color name="colorMD2BG">#808080</color>
+    <color name="colorAccent">#828282</color>
+    <color name="colorText1">#FFFFFB</color>
+    <color name="colorText2">#F5F5F5</color>
+    <color name="colorText1Widget">#1C1C1C</color>
+    <color name="colorText2Widget">#434343</color>
+    <color name="colorText3">#FCFAF2</color>
+    <color name="colorText4">#DFE4DE</color>
+</resources>

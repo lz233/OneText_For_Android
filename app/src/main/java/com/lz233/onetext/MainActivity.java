@@ -13,6 +13,7 @@ import com.lz233.onetext.tools.SaveBitmap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 
@@ -71,6 +72,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private AppCompatButton onetext_time_size_button;
     private IndicatorSeekBar onetext_from_size_seekbar;
     private AppCompatButton onetext_from_size_button;
+    /*static {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +86,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         }else if(sharedPreferences.getString("interface_style","default").equals("md2")){
             setContentView(R.layout.activity_main_2);
         }
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //fb
@@ -115,6 +118,17 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         AppCenter.start(getApplication(), "2bd0575c-79d2-45d9-97f3-95e6a81e34e0", Analytics.class, Crashes.class);
         //Analytics.trackEvent("My custom event");
         //Crashes.generateTestCrash();
+        switch (sharedPreferences.getInt("interface_daynight",0)){
+            case 0:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+            case 1:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case 2:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+        }
         onetext_quote1_textview.setTextSize(sharedPreferences.getInt("onetext_text_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.onetext_size))));
         onetext_text_textview.setTextSize(sharedPreferences.getInt("onetext_text_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.onetext_size))));
         onetext_quote2_textview.setTextSize(sharedPreferences.getInt("onetext_text_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.onetext_size))));

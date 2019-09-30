@@ -72,4 +72,5 @@
     <string name="widget_notification_next_effective_text">下次小部件更新时生效</string>
     <string name="widget_notification_permissions_text">请打开通知渠道</string>
     <string name="widget_notification_text">推送一言</string>
+    <string name="interface_daynight_text">显示模式</string>
 </resources>

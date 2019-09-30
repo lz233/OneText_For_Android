@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main_2"
-    android:background="@android:color/white">
+    android:background="@color/colorWhite">
 
 
     <FrameLayout
@@ -21,14 +21,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@android:color/white">
+                android:background="@color/colorWhite">
 
                 <LinearLayout
                     android:id="@+id/pic_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:background="@android:color/white">
+                    android:background="@color/colorWhite">
 
                     <LinearLayout
                         android:layout_width="match_parent"

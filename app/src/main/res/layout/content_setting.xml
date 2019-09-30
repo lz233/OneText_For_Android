@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".SettingActivity"
     tools:showIn="@layout/activity_setting"
-    android:background="@android:color/white">
+    android:background="@color/colorWhite">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -110,6 +110,30 @@
                 android:textSize="@dimen/text_size"
                 android:textColor="@color/colorText2"
                 android:layout_marginTop="@dimen/layout_margin"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/content_margin">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/small_text_size"
+                    android:textColor="@color/colorText3"
+                    android:text="@string/interface_daynight_text"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/interface_daynight_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0"
+                    android:textSize="@dimen/small_text_size"
+                    android:textColor="@color/colorText3"
+                    android:backgroundTint="@color/colorText3"
+                    android:entries="@array/daynight"/>
+            </LinearLayout>
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/interface_md2_switch"
                 android:layout_width="match_parent"

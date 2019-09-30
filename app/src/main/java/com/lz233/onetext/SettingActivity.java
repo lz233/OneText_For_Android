@@ -23,7 +23,9 @@ import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
@@ -34,13 +36,16 @@ import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -63,6 +68,7 @@ public class SettingActivity extends BaseActivity {
     private TextView font_system_textview;
     private TextView font_custom_textview;
     private SwitchCompat interface_md2_switch;
+    private AppCompatSpinner interface_daynight_spinner;
     private RadioGroup feed_type_radiogroup;
     private RadioButton feed_type_remote_radiobutton;
     private RadioButton feed_type_local_radiobutton;
@@ -100,6 +106,7 @@ public class SettingActivity extends BaseActivity {
         font_system_textview = findViewById(R.id.font_system_textview);
         font_custom_textview = findViewById(R.id.font_custom_textview);
         interface_md2_switch = findViewById(R.id.interface_md2_switch);
+        interface_daynight_spinner = findViewById(R.id.interface_daynight_spinner);
         feed_type_radiogroup = findViewById(R.id.feed_type_radiogroup);
         feed_type_remote_radiobutton = findViewById(R.id.feed_type_remote_radiobutton);
         feed_type_local_radiobutton = findViewById(R.id.feed_type_local_radiobutton);
@@ -119,6 +126,17 @@ public class SettingActivity extends BaseActivity {
         about_page_textview = findViewById(R.id.about_page_textview);
         //初始化
         updateFontStatus();
+        switch (sharedPreferences.getInt("interface_daynight",0)){
+            case 0:
+                interface_daynight_spinner.setSelection(0);
+                break;
+            case 1:
+                interface_daynight_spinner.setSelection(1);
+                break;
+            case 2:
+                interface_daynight_spinner.setSelection(2);
+                break;
+        }
         if(sharedPreferences.getString("interface_style","default").equals("md2")) {
             interface_md2_switch.setChecked(true);
         }
@@ -227,6 +245,50 @@ public class SettingActivity extends BaseActivity {
                     isSettingUpdated = true;
                     Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
+            }
+        });
+        final int[] OnItemSelectedInt = {0};
+        interface_daynight_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    OnItemSelectedInt[0] = OnItemSelectedInt[0] + 1;
+                    if(OnItemSelectedInt[0]>1){
+                        isSettingUpdated = true;
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    }
+                    switch (i) {
+                        case 0:
+                            editor.putInt("interface_daynight",0);
+                            break;
+                        case 1:
+                            editor.putInt("interface_daynight",1);
+                            break;
+                        case 2:
+                            editor.putInt("interface_daynight",2);
+                            break;
+                    }
+                }else {
+                    switch (i) {
+                        case 0:
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                            editor.putInt("interface_daynight",0);
+                            break;
+                        case 1:
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                            editor.putInt("interface_daynight",1);
+                            break;
+                        case 2:
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                            editor.putInt("interface_daynight",2);
+                            break;
+                    }
+                }
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
         feed_type_radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
