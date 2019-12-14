@@ -69,11 +69,10 @@
 
                             <TextView
                                 android:id="@+id/onetext_text_textview"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/layout_margin"
                                 android:layout_marginRight="@dimen/layout_margin"
-                                android:text=" "
                                 android:textColor="@color/colorText1"
                                 android:textSize="@dimen/onetext_size" />
 
@@ -88,13 +87,15 @@
 
                             <TextView
                                 android:id="@+id/onetext_by_textview"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/content_margin"
                                 android:layout_gravity="end"
                                 android:gravity="end"
                                 android:text="—— "
                                 android:textColor="@color/colorText2"
-                                android:textSize="@dimen/text_size" />
+                                android:textSize="@dimen/text_size"
+                                tools:ignore="HardcodedText" />
 
                             <TextView
                                 android:id="@+id/onetext_time_textview"
@@ -109,10 +110,10 @@
 
                             <TextView
                                 android:id="@+id/onetext_from_textview"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/layout_margin"
-                                android:text=" "
+                                android:layout_marginEnd="@dimen/content_margin"
                                 android:textColor="@color/colorText3"
                                 android:textSize="@dimen/small_text_size" />
                         </LinearLayout>

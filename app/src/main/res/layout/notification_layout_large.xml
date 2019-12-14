@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,11 +21,10 @@
 
                     <TextView
                         android:id="@+id/onetext_notification_large_text_textview"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/layout_margin"
                         android:layout_marginRight="@dimen/layout_margin"
-                        android:text=" "
                         android:textColor="@color/colorText1"
                         android:textSize="@dimen/onetext_size" />
 
@@ -39,12 +39,14 @@
 
                     <TextView
                         android:id="@+id/onetext_notification_large_by_textview"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/content_margin"
                         android:layout_gravity="end"
                         android:gravity="end"
                         android:text="—— "
                         android:textColor="@color/colorText2"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
 </LinearLayout>

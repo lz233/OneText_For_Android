@@ -20,6 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 #-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
--obfuscationdictionary dictionary-elder.txt
--classobfuscationdictionary dictionary-elder.txt
--packageobfuscationdictionary dictionary-elder.txt
+-obfuscationdictionary dictionary-moe.txt
+-classobfuscationdictionary dictionary-moe.txt
+-packageobfuscationdictionary dictionary-moe.txt

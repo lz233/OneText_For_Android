@@ -134,7 +134,7 @@
                     android:backgroundTint="@color/colorText3"
                     android:entries="@array/daynight"/>
             </LinearLayout>
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/interface_md2_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -273,7 +273,7 @@
                 android:textSize="@dimen/small_text_size"
                 android:textColor="@color/colorText3"
                 android:layout_marginTop="@dimen/content_margin"/>
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/widget_dark_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -281,7 +281,7 @@
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/small_text_size"
                 android:text="@string/widget_dark" />
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/widget_notification_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

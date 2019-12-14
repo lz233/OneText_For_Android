@@ -140,8 +140,9 @@ public class WidgetProvider extends AppWidgetProvider {
                             .setCustomBigContentView(notificationViewsLarge)
                             //.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                             .setSmallIcon(R.drawable.ic_notification)
+                            .setColor(context.getResources().getColor(R.color.colorText2))
                             .setContentTitle("“"+text+"”")
-                            //.setContentText("“"+text+"”")
+                            .setContentText(context.getText(R.string.widget_notification_tip_text))
                             .setWhen(System.currentTimeMillis())
                             .setSound(null)
                             .setVibrate(new long[]{0});

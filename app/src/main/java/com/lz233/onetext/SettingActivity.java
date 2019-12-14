@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.lz233.onetext.tools.FileUtils;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
@@ -67,7 +68,7 @@ public class SettingActivity extends BaseActivity {
     private TextView font_canger_textview;
     private TextView font_system_textview;
     private TextView font_custom_textview;
-    private SwitchCompat interface_md2_switch;
+    private SwitchMaterial interface_md2_switch;
     private AppCompatSpinner interface_daynight_spinner;
     private RadioGroup feed_type_radiogroup;
     private RadioButton feed_type_remote_radiobutton;
@@ -81,8 +82,8 @@ public class SettingActivity extends BaseActivity {
     private TextView feed_local_path_textview;
     private TextView feed_local_choose_textview;
     private TextView widget_enable_textview;
-    private SwitchCompat widget_dark_switch;
-    private SwitchCompat widget_notification_switch;
+    private SwitchMaterial widget_dark_switch;
+    private SwitchMaterial widget_notification_switch;
     private IndicatorSeekBar widget_refresh_seekbar;
     private ImageView widget_refresh_imageview;
     private TextView about_page_textview;
@@ -137,7 +138,7 @@ public class SettingActivity extends BaseActivity {
                 interface_daynight_spinner.setSelection(2);
                 break;
         }
-        if(sharedPreferences.getString("interface_style","default").equals("md2")) {
+        if(sharedPreferences.getString("interface_style","md2").equals("md2")) {
             interface_md2_switch.setChecked(true);
         }
         if(sharedPreferences.getString("feed_type","remote").equals("remote")) {

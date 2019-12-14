@@ -1,5 +1,6 @@
 package com.lz233.onetext;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -25,9 +26,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         if(mode == Configuration.UI_MODE_NIGHT_NO) {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }else{
-
         }
+        //设置为miui主题
+        //setMiuiTheme(BaseActivity.this,0,mode);
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -43,5 +44,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+    }
+    public static void setMiuiTheme(Activity act, int overrideTheme,int isnightmode) {
+        int themeResId = 0;
+        try {
+            themeResId = act.getResources().getIdentifier("Theme.DayNight", "style", "miui");
+        } catch (Throwable t) {}
+        if (themeResId == 0) themeResId = act.getResources().getIdentifier((isnightmode == Configuration.UI_MODE_NIGHT_YES) ? "Theme.Dark" : "Theme.Light", "style", "miui");
+        act.setTheme(themeResId);
+        act.getTheme().applyStyle(overrideTheme, true);
     }
 }
