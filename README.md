@@ -9,11 +9,11 @@ OneText follows the LGPL license, and on this basis you can modify it.
 
 In the development process, we are especially grateful:
 
-[lz233](https://github.com/lz233) [xbl233](https://github.com/xbl233)
+[lz233](https://github.com/lz233) [xbl233](https://github.com/xbl233) [Kanglyh](https://github.com/kanglyh)
 
 The development of this project is inseparable from the following projects:
 
-[Markwon](https://github.com/noties/Markwon) [MicrosoftAppCenter](https://appcenter.ms) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions)
+[Markwon](https://github.com/noties/Markwon) [MicrosoftAppCenter](https://appcenter.ms) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [proguard-elder-dictionary](https://github.com/heruoxin/proguard-elder-dictionary)
 
 The home page of this app: [Click me](https://github.com/lz233/OneText_For_Android)
 
