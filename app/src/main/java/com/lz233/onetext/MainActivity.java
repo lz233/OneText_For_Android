@@ -134,7 +134,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             public void accept(ErrorReport errorReport) {
                 try {
                     //Toast.makeText(MainActivity.this,errorReport.getStackTrace(),Toast.LENGTH_SHORT).show();
-                    Snackbar.make(getWindow().getDecorView(), errorReport.getStackTrace(), Snackbar.LENGTH_LONG).setAction(R.string.report_button, new View.OnClickListener() {
+                    Snackbar.make(getWindow().getDecorView(), R.string.report_text, Snackbar.LENGTH_LONG).setAction(R.string.report_button, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             startActivity(new Intent().setClass(MainActivity.this, CrashReportActivity.class));
