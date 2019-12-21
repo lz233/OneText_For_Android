@@ -3,7 +3,7 @@
     <string name="app_name">一言</string>
     <string name="about_page_text">關於頁面</string>
     <string name="about_text">關於</string>
-    <string name="created_time">創作于</string>
+    <string name="created_time">創作於</string>
     <string name="current_font_text">當前字體：</string>
     <string name="custom_feed_text">自定義源</string>
     <string name="default_text">默認</string>
@@ -19,20 +19,20 @@
     <string name="onetext_from_size_text">來源文字大小：</string>
     <string name="onetext_text_size_text">一言大小：</string>
     <string name="onetext_time_size_text">時間文字大小：</string>
-    <string name="record_time">記錄于</string>
+    <string name="record_time">記錄於</string>
     <string name="request_permissions_button">同意</string>
     <string name="request_permissions_text">需要一些權限</string>
     <string name="save_button">保存</string>
     <string name="save_fail">失敗</string>
     <string name="save_succeed">成功，保存為</string>
     <string name="save_text">保存圖片</string>
-    <string name="setting_succeed_text">成功，下次啓動生效</string>
+    <string name="setting_succeed_text">成功，下次啟動生效</string>
     <string name="title_activity_setting">設置</string>
-    <string name="widget_dark">暗色墻紙</string>
-    <string name="widget_disenable_text">徽件沒有啓用</string>
-    <string name="widget_enable_text">徽件已啓用</string>
-    <string name="widget_text">徽件</string>
-    <string name="about_page_introduction">一言是一個簡潔的小應用，能在啟動器上通過徽件顯示一些自定義的句子。你還可以在應用中生成句子截圖，並保存或分享。
+    <string name="widget_dark">暗色壁紙</string>
+    <string name="widget_disenable_text">小部件沒有啟用</string>
+    <string name="widget_enable_text">小部件已啟用</string>
+    <string name="widget_text">小部件</string>
+    <string name="about_page_introduction">一言是一個簡潔的小應用，能在啟動器上通過小部件顯示一些自定義的句子。你還可以在應用中生成句子截圖，並保存或分享。
 \n\n
 一言遵循LGPL許可證，在這個基礎上你可以修改它。
 \n\n
@@ -42,22 +42,23 @@
 \n\n
 本項目的開發離不開以下項目：
 \n
-[Markwon](https://github.com/noties/Markwon) [MicrosoftAppCenter](https://appcenter.ms) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [proguard-elder-dictionary](https://github.com/heruoxin/proguard-elder-dictionary)
+[Markwon](https://github.com/noties/Markwon) [MicrosoftAppCenter](https://appcenter.ms) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python)
 \n\n
 本應用的主頁：[點我](https://github.com/lz233/OneText_For_Android)
 \n\n
 核心庫的主頁：[點我](https://github.com/lz233/OneText-Library)
 \n\n
-本項目的Telegram群組：[點我](https://t.me/OneTextProject)
+本項目的Telegram羣組：[點我](https://t.me/OneTextProject)
     \n\n
-    關於如何提交句子到核心庫：[點我（簡體中文）](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E4%BA%A4%E5%8F%A5%E5%AD%90%EF%BC%9F)
+    關於如何提交句子到核心庫：[點我](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E4%BA%A4%E5%8F%A5%E5%AD%90%EF%BC%9F)
     \n\n
-        關於如何在Github上創建自己的訂閲源：[點我（簡體中文）](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9C%A8Github%E4%B8%8A%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E8%AE%A2%E9%98%85%E6%BA%90%EF%BC%9F)</string>
+        關於如何在Github上創建自己的訂閲源：[點我](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9C%A8Github%E4%B8%8A%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E8%AE%A2%E9%98%85%E6%BA%90%EF%BC%9F)
+    </string>
     <string name="succeed">成功</string>
-    <string name="widget_can_download">允許徽件更新源</string>
+    <string name="widget_can_download">允許小部件更新源</string>
     <string name="feed_url_no_changed_text">源沒有更改</string>
     <string name="hour">時</string>
-    <string name="widget_refresh_text">徽件刷新時間：</string>
+    <string name="widget_refresh_text">小部件刷新時間：</string>
     <string name="interface_md2">Material Design 2 風格</string>
     <string name="interface_text">界面</string>
     <string name="feed_local_choose_text">選擇</string>
@@ -68,9 +69,13 @@
     <string name="seal_button_isoff">顯示</string>
     <string name="seal_button_ison">隱藏</string>
     <string name="seal_text">顯示一隻可愛的初音</string>
-    <string name="widget_notification_next_effective_text">下次徽件更新時生效</string>
+    <string name="widget_notification_next_effective_text">下次小部件更新時生效</string>
     <string name="widget_notification_permissions_text">請打開通知渠道</string>
     <string name="widget_notification_text">推送一言</string>
     <string name="interface_daynight_text">顯示模式</string>
     <string name="widget_notification_tip_text">長按展開或收回。</string>
+    <string name="title_activity_crash_report">錯誤反饋</string>
+    <string name="report_page_tip">抱歉，本應用在上次崩潰了。如果你願意，請複製日誌併發送郵件到 lz233@outlook.com。</string>
+    <string name="report_text">抱歉，本應用在上次崩潰了。</string>
+    <string name="report_button">詳情</string>
 </resources>

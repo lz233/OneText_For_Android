@@ -74,4 +74,8 @@ Telegram group of this project: [Click me](https://t.me/OneTextProject)
         About how to create your own feed on Github: [Click me (simplified Chinese)](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9C%A8Github%E4%B8%8A%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E8%AE%A2%E9%98%85%E6%BA%90%EF%BC%9F)</string>
     <string name="interface_daynight_text">Display Mode</string>
     <string name="widget_notification_tip_text">Long press to expand or retract.</string>
+    <string name="title_activity_crash_report">Crash Report</string>
+    <string name="report_page_tip">Sorry, the app crashed last time. If you want, please copy the log and send an email to lz23333@outlook.com.</string>
+    <string name="report_text">Sorry, the app crashed last time.</string>
+    <string name="report_button">Details</string>
 </resources>

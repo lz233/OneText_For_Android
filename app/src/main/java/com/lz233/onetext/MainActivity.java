@@ -36,15 +36,27 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 import pub.devrel.easypermissions.EasyPermissions;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.AbstractCrashesListener;
 import com.microsoft.appcenter.crashes.Crashes;
+import com.microsoft.appcenter.crashes.model.ErrorReport;
+import com.microsoft.appcenter.utils.async.AppCenterConsumer;
+import com.microsoft.appcenter.utils.async.AppCenterFuture;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
+import com.zqc.opencc.android.lib.ChineseConverter;
+
+import static com.zqc.opencc.android.lib.ConversionType.S2HK;
+import static com.zqc.opencc.android.lib.ConversionType.S2T;
+import static com.zqc.opencc.android.lib.ConversionType.S2TW;
+import static com.zqc.opencc.android.lib.ConversionType.S2TWP;
+import static com.zqc.opencc.android.lib.ConversionType.T2S;
 
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks{
     private int onetext_code;
@@ -116,6 +128,22 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         requestPermissions(permissions);
         //初始化
         AppCenter.start(getApplication(), "2bd0575c-79d2-45d9-97f3-95e6a81e34e0", Analytics.class, Crashes.class);
+        AppCenterFuture<ErrorReport> future = Crashes.getLastSessionCrashReport();
+        future.thenAccept(new AppCenterConsumer<ErrorReport>() {
+            @Override
+            public void accept(ErrorReport errorReport) {
+                try {
+                    //Toast.makeText(MainActivity.this,errorReport.getStackTrace(),Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getWindow().getDecorView(), errorReport.getStackTrace(), Snackbar.LENGTH_LONG).setAction(R.string.report_button, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent().setClass(MainActivity.this, CrashReportActivity.class));
+                        }
+                    }).setActionTextColor(getResources().getColor(R.color.colorText2)).show();
+                }catch (Exception e){
+                }
+            }
+        });
         //Analytics.trackEvent("My custom event");
         //Crashes.generateTestCrash();
         switch (sharedPreferences.getInt("interface_daynight",0)){
@@ -163,12 +191,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     }
                     Boolean isSuccess = SaveBitmap.saveBitmapToSdCard(MainActivity.this,SaveBitmap.getCacheBitmapFromView(pic_layout), pic_file_path+pic_file_name);
                     if(isSuccess) {
-                        Snackbar.make(view, getString(R.string.save_succeed)+" "+pic_file_name, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.save_succeed)+" "+pic_file_name, Snackbar.LENGTH_SHORT).show();
                     }else {
-                        Snackbar.make(view, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
                     }
                 }else {
-                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -176,6 +204,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             @Override
             public void onClick(View view) {
                 run(true);
+                Analytics.trackEvent("Refreshed");
             }
         });
         seal_button.setOnClickListener(new View.OnClickListener() {
@@ -360,10 +389,36 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         onetext_code = sharedPreferences.getInt("onetext_code", random.nextInt(jsonArray.length()));
                     }
                     editor.apply();
+                    String language =Locale.getDefault().getLanguage();
+                    String country =Locale.getDefault().getCountry();
                     JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
-                    final String text = jsonObject.optString("text");
-                    final String by = jsonObject.optString("by");
-                    final String from = jsonObject.optString("from");
+                    String text;
+                    String by;
+                    String from;
+                    if(language.equals("zh")&country.equals("CN")) {
+                        text = jsonObject.optString("text");
+                        by = jsonObject.optString("by");
+                        from = jsonObject.optString("from");
+                    }else if(language.equals("zh")&country.equals("HK")) {
+                        text = ChineseConverter.convert(jsonObject.optString("text"), S2HK, MainActivity.this);
+                        by = ChineseConverter.convert(jsonObject.optString("by"),S2HK,MainActivity.this);
+                        from = ChineseConverter.convert(jsonObject.optString("from"),S2HK,MainActivity.this);
+                    }else if(language.equals("zh")&country.equals("MO")){
+                        text = ChineseConverter.convert(jsonObject.optString("text"), S2T, MainActivity.this);
+                        by = ChineseConverter.convert(jsonObject.optString("by"),S2T,MainActivity.this);
+                        from = ChineseConverter.convert(jsonObject.optString("from"),S2T,MainActivity.this);
+                    }else if(language.equals("zh")&country.equals("TW")){
+                        text = ChineseConverter.convert(jsonObject.optString("text"), S2TWP, MainActivity.this);
+                        by = ChineseConverter.convert(jsonObject.optString("by"),S2TWP,MainActivity.this);
+                        from = ChineseConverter.convert(jsonObject.optString("from"),S2TWP,MainActivity.this);
+                    }else {
+                        text = jsonObject.optString("text");
+                        by = jsonObject.optString("by");
+                        from = jsonObject.optString("from");
+                    }
+                    final String final_text = text;
+                    final String final_by = by;
+                    final String final_from = from;
                     JSONArray timeJsonArray = new JSONArray(jsonObject.optString("time"));
                     final String timeOfRecord = timeJsonArray.optString(0);
                     final String timeOfCreation = timeJsonArray.optString(1);
@@ -377,15 +432,15 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         @Override
                         public void run() {
                             //progressBar.setVisibility(View.GONE);
-                            onetext_text_textview.setText(text);
-                            if(!by.equals("")) {
-                                onetext_by_textview.setText("—— "+by);
+                            onetext_text_textview.setText(final_text);
+                            if(!final_by.equals("")) {
+                                onetext_by_textview.setText("—— "+final_by);
                                 onetext_by_textview.setVisibility(View.VISIBLE);
                             }else {
                                 onetext_by_textview.setVisibility(View.GONE);
                             }
-                            if(!from.equals("")) {
-                                onetext_from_textview.setText(from);
+                            if(!final_from.equals("")) {
+                                onetext_from_textview.setText(final_from);
                                 onetext_from_textview.setVisibility(View.VISIBLE);
                             }else {
                                 onetext_from_textview.setVisibility(View.GONE);

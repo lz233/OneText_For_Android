@@ -175,13 +175,13 @@ public class SettingActivity extends BaseActivity {
                         context.registerReceiver(receiver_yiqi, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                         font_yiqi_textview.setText(R.string.downloading_text);
                     }else {
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                         editor.putString("font_path",font_path_yiqi);
                         editor.apply();
                         updateFontStatus();
                     }
                 }else {
-                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -200,13 +200,13 @@ public class SettingActivity extends BaseActivity {
                         context.registerReceiver(receiver_canger, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                         font_canger_textview.setText(R.string.downloading_text);
                     }else {
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                         editor.putString("font_path",font_path_canger);
                         editor.apply();
                         updateFontStatus();
                     }
                 }else {
-                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -215,7 +215,7 @@ public class SettingActivity extends BaseActivity {
             public void onClick(View view) {
                 editor.remove("font_path");
                 editor.apply();
-                Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                 updateFontStatus();
             }
         });
@@ -228,7 +228,7 @@ public class SettingActivity extends BaseActivity {
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     startActivityForResult(intent,1);
                 }else {
-                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -239,12 +239,12 @@ public class SettingActivity extends BaseActivity {
                     editor.putString("interface_style","md2");
                     editor.apply();
                     isSettingUpdated = true;
-                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                 }else {
                     editor.putString("interface_style","default");
                     editor.apply();
                     isSettingUpdated = true;
-                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -256,7 +256,7 @@ public class SettingActivity extends BaseActivity {
                     OnItemSelectedInt[0] = OnItemSelectedInt[0] + 1;
                     if(OnItemSelectedInt[0]>1){
                         isSettingUpdated = true;
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                     }
                     switch (i) {
                         case 0:
@@ -312,28 +312,24 @@ public class SettingActivity extends BaseActivity {
                 editor.remove("onetext_code");
                 editor.apply();
                 isSettingUpdated = true;
-                Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
             }
         });
         feed_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json").equals(feed_edittext.getText().toString())){
-                    if(feed_edittext.getText().toString().equals("")) {
-                        editor.remove("feed_URL");
-                    }else {
-                        editor.putString("feed_URL",feed_edittext.getText().toString());
-                    }
-                    editor.remove("feed_latest_refresh_time");
-                    editor.remove("widget_latest_refresh_time");
-                    editor.remove("onetext_code");
-                    editor.apply();
-                    isSettingUpdated = true;
-                    FileUtils.deleteFile(getFilesDir().getPath()+"/OneText/OneText-Library.json");
-                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                if(feed_edittext.getText().toString().equals("")) {
+                    editor.remove("feed_URL");
                 }else {
-                    Snackbar.make(view, getString(R.string.feed_url_no_changed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    editor.putString("feed_URL",feed_edittext.getText().toString());
                 }
+                editor.remove("feed_latest_refresh_time");
+                editor.remove("widget_latest_refresh_time");
+                editor.remove("onetext_code");
+                editor.apply();
+                isSettingUpdated = true;
+                FileUtils.deleteFile(getFilesDir().getPath()+"/OneText/OneText-Library.json");
+                Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
             }
         });
         feed_refresh_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
@@ -355,7 +351,7 @@ public class SettingActivity extends BaseActivity {
                 feed_refresh_seekbar.setProgress(1);
                 editor.remove("feed_refresh_time");
                 editor.apply();
-                Snackbar.make(view, getString(R.string.succeed), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                Snackbar.make(view, getString(R.string.succeed), Snackbar.LENGTH_SHORT).show();
             }
         });
         feed_local_choose_textview.setOnClickListener(new View.OnClickListener() {
@@ -367,7 +363,7 @@ public class SettingActivity extends BaseActivity {
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     startActivityForResult(intent,2);
                 }else {
-                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -375,28 +371,14 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    if(sharedPreferences.getBoolean("widget_enabled",false)) {
-                        editor.putBoolean("widget_dark",true);
-                        editor.commit();
-                        Intent intent = new Intent("com.lz233.onetext.widget");
-                        intent.setPackage(getPackageName());
-                        SettingActivity.this.sendBroadcast(intent);
-                    }else {
-                        widget_dark_switch.setChecked(false);
-                        Snackbar.make(view, getString(R.string.widget_disenable_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                    }
+                    editor.putBoolean("widget_dark",true);
                 }else {
-                    if(sharedPreferences.getBoolean("widget_enabled",false)){
-                        editor.putBoolean("widget_dark",false);
-                        editor.commit();
-                        Intent intent = new Intent("com.lz233.onetext.widget");
-                        intent.setPackage(getPackageName());
-                        SettingActivity.this.sendBroadcast(intent);
-                    }else {
-                        widget_dark_switch.setChecked(true);
-                        Snackbar.make(view, getString(R.string.widget_disenable_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                    }
+                    editor.putBoolean("widget_dark",false);
                 }
+                editor.commit();
+                Intent intent = new Intent("com.lz233.onetext.widget");
+                intent.setPackage(getPackageName());
+                SettingActivity.this.sendBroadcast(intent);
             }
         });
         widget_notification_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -412,30 +394,24 @@ public class SettingActivity extends BaseActivity {
                     notificationManager.createNotificationChannel(channel);
                 }
                 if(b){
-                    if(sharedPreferences.getBoolean("widget_enabled",false)) {
-                        editor.putBoolean("widget_notification_enabled",true);
-                        editor.commit();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            final NotificationChannel channel = notificationManager.getNotificationChannel("widget_onetext");
-                            if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
-                                Snackbar.make(view, getString(R.string.widget_notification_permissions_text), Snackbar.LENGTH_SHORT).setAction(getString(R.string.request_permissions_button), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-                                        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-                                        intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel.getId());
-                                        startActivity(intent);
-                                    }
-                                }).show();
-                            }else {
-                                Snackbar.make(view, getString(R.string.widget_notification_next_effective_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                            }
-                        }else {
-                            Snackbar.make(view, getString(R.string.widget_notification_next_effective_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    editor.putBoolean("widget_notification_enabled",true);
+                    editor.commit();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        final NotificationChannel channel = notificationManager.getNotificationChannel("widget_onetext");
+                        if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+                            widget_notification_switch.setChecked(false);
+                            Snackbar.make(view, getString(R.string.widget_notification_permissions_text), Snackbar.LENGTH_SHORT).setAction(getString(R.string.request_permissions_button), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                                    intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel.getId());
+                                    startActivity(intent);
+                                }
+                            }).setActionTextColor(getResources().getColor(R.color.colorText2)).show();
                         }
                     }else {
-                        widget_notification_switch.setChecked(false);
-                        Snackbar.make(view, getString(R.string.widget_disenable_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.widget_notification_next_effective_text), Snackbar.LENGTH_SHORT).show();
                     }
                 }else {
                     editor.putBoolean("widget_notification_enabled",false);
@@ -462,7 +438,7 @@ public class SettingActivity extends BaseActivity {
                 widget_refresh_seekbar.setProgress(30);
                 editor.remove("widget_refresh_time");
                 editor.apply();
-                Snackbar.make(view, getString(R.string.succeed), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                Snackbar.make(view, getString(R.string.succeed), Snackbar.LENGTH_SHORT).show();
             }
         });
         about_page_textview.setOnClickListener(new View.OnClickListener() {
@@ -510,7 +486,7 @@ public class SettingActivity extends BaseActivity {
                 Uri uri = data.getData();
                 try {
                     String file_path = getPath(this, uri);
-                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                     editor.putString("font_path",file_path);
                     editor.apply();
                     //finishActivity(requestCode);
@@ -529,7 +505,7 @@ public class SettingActivity extends BaseActivity {
                     editor.remove("onetext_code");
                     editor.apply();
                     isSettingUpdated = true;
-                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                     feed_local_path_textview.setText(file_path);
                     //finishActivity(requestCode);
                     //Toast.makeText(this, "文件路径："+uri.getPath().toString(), Toast.LENGTH_SHORT).show();
@@ -569,7 +545,7 @@ public class SettingActivity extends BaseActivity {
                                 font_yiqi_textview.setText(R.string.font_yiqi);
                             }
                         });
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                         editor.putString("font_path",font_path_yiqi);
                         editor.apply();
                         updateFontStatus();
@@ -612,7 +588,7 @@ public class SettingActivity extends BaseActivity {
                                 font_canger_textview.setText(R.string.font_canger);
                             }
                         });
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                         editor.putString("font_path",font_path_yiqi);
                         editor.apply();
                         updateFontStatus();
