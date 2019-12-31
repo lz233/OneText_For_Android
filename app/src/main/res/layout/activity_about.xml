@@ -10,7 +10,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,6 +44,7 @@
                 android:id="@+id/about_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin"
                 android:layout_weight="0"
                 android:textSize="@dimen/text_size"
                 android:textColor="@color/colorText2" />

@@ -16,6 +16,8 @@ import com.microsoft.appcenter.utils.async.AppCenterFuture;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import io.noties.markwon.Markwon;
 
 public class CrashReportActivity extends BaseActivity {
     private TextView crash_report_textView;
+    final String[] report = new String[1];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +33,8 @@ public class CrashReportActivity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //fb
-        FloatingActionButton fab = findViewById(R.id.fab);
         crash_report_textView = findViewById(R.id.crash_report_textView);
-
         //初始化
-        final String[] report = new String[1];
         AppCenterFuture<ErrorReport> future = Crashes.getLastSessionCrashReport();
         future.thenAccept(new AppCenterConsumer<ErrorReport>() {
             @Override
@@ -48,14 +48,28 @@ public class CrashReportActivity extends BaseActivity {
                 }
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setPrimaryClip(ClipData.newPlainText("Label", report[0]));
-                Snackbar.make(getWindow().getDecorView(), R.string.succeed, Snackbar.LENGTH_SHORT).show();
-            }
-        });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_report, menu);
+        return true;
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_copy) {
+            ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setPrimaryClip(ClipData.newPlainText("Label", report[0]));
+            Snackbar.make(getWindow().getDecorView(), R.string.succeed, Snackbar.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

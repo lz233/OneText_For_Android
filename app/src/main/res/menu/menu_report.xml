@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.lz233.onetext.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings"
+        android:id="@+id/action_copy"
+        android:icon="@drawable/ic_file_copy"
         app:showAsAction="ifRoom" />
 </menu>

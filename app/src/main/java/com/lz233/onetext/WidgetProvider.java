@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.lz233.onetext.tools.FileUtils;
+import com.lz233.onetext.tools.OneTextUtils;
 import com.zqc.opencc.android.lib.ChineseConverter;
 
 import androidx.core.app.NotificationCompat;
@@ -117,30 +118,11 @@ public class WidgetProvider extends AppWidgetProvider {
                 String language = Locale.getDefault().getLanguage();
                 String country =Locale.getDefault().getCountry();
                 JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
-                String originalText;
-                String text;
-                String by;
-                if(language.equals("zh")&country.equals("CN")) {
-                    originalText = jsonObject.optString("text");
-                    text = originalText.replace("\n"," ");
-                    by = jsonObject.optString("by");
-                }else if(language.equals("zh")&country.equals("HK")) {
-                    originalText = ChineseConverter.convert(jsonObject.optString("text"), S2HK, context);
-                    text = originalText.replace("\n"," ");
-                    by = ChineseConverter.convert(jsonObject.optString("by"),S2HK,context);
-                }else if(language.equals("zh")&country.equals("MO")){
-                    originalText = ChineseConverter.convert(jsonObject.optString("text"), S2T, context);
-                    text = originalText.replace("\n"," ");
-                    by = ChineseConverter.convert(jsonObject.optString("by"),S2T,context);
-                }else if(language.equals("zh")&country.equals("TW")){
-                    originalText = ChineseConverter.convert(jsonObject.optString("text"), S2TWP, context);
-                    text = originalText.replace("\n"," ");
-                    by = ChineseConverter.convert(jsonObject.optString("by"),S2TWP,context);
-                }else {
-                    originalText = jsonObject.optString("text");
-                    text = originalText.replace("\n"," ");
-                    by = jsonObject.optString("by");
-                }
+                OneTextUtils oneTextUtils = new OneTextUtils(context);
+                String[] oneText = oneTextUtils.readOneText(oneTextUtils.getOneTextCode(false));
+                String originalText = oneText[0];
+                String text = originalText.replace("\n"," ");
+                String by = oneText[1];
                 views.setTextViewText(R.id.onetext_widget_text_textview,text);
                 if(!by.equals("")) {
                     views.setViewVisibility(R.id.onetext_widget_by_textview,View.VISIBLE);

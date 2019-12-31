@@ -11,7 +11,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -332,7 +333,8 @@
                 android:text="@string/about_page_text"
                 android:textSize="@dimen/small_text_size"
                 android:textColor="@color/colorText3"
-                android:layout_marginTop="@dimen/content_margin"/>
+                android:layout_marginTop="@dimen/content_margin"
+                android:layout_marginBottom="@dimen/layout_margin"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,9 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.lz233.onetext.tools.DownloadUtil;
 import com.lz233.onetext.tools.FileUtils;
+import com.lz233.onetext.tools.OneTextUtils;
 import com.lz233.onetext.tools.SaveBitmap;
 
 import androidx.annotation.NonNull;
@@ -18,31 +20,19 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.JSONException;
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.UUID;
 import pub.devrel.easypermissions.EasyPermissions;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
-import com.microsoft.appcenter.crashes.AbstractCrashesListener;
 import com.microsoft.appcenter.crashes.Crashes;
 import com.microsoft.appcenter.crashes.model.ErrorReport;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
@@ -50,13 +40,6 @@ import com.microsoft.appcenter.utils.async.AppCenterFuture;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
-import com.zqc.opencc.android.lib.ChineseConverter;
-
-import static com.zqc.opencc.android.lib.ConversionType.S2HK;
-import static com.zqc.opencc.android.lib.ConversionType.S2T;
-import static com.zqc.opencc.android.lib.ConversionType.S2TW;
-import static com.zqc.opencc.android.lib.ConversionType.S2TWP;
-import static com.zqc.opencc.android.lib.ConversionType.T2S;
 
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks{
     private int onetext_code;
@@ -128,19 +111,23 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         requestPermissions(permissions);
         //初始化
         AppCenter.start(getApplication(), "2bd0575c-79d2-45d9-97f3-95e6a81e34e0", Analytics.class, Crashes.class);
-        AppCenterFuture<ErrorReport> future = Crashes.getLastSessionCrashReport();
-        future.thenAccept(new AppCenterConsumer<ErrorReport>() {
+        AppCenterFuture<Boolean> hasCrashedInLastSession = Crashes.hasCrashedInLastSession();
+        hasCrashedInLastSession.thenAccept(new AppCenterConsumer<Boolean>() {
             @Override
-            public void accept(ErrorReport errorReport) {
-                try {
-                    //Toast.makeText(MainActivity.this,errorReport.getStackTrace(),Toast.LENGTH_SHORT).show();
-                    Snackbar.make(getWindow().getDecorView(), R.string.report_text, Snackbar.LENGTH_LONG).setAction(R.string.report_button, new View.OnClickListener() {
+            public void accept(Boolean aBoolean) {
+                if(aBoolean){
+                    AppCenterFuture<ErrorReport> getLastSessionCrashReport = Crashes.getLastSessionCrashReport();
+                    getLastSessionCrashReport.thenAccept(new AppCenterConsumer<ErrorReport>() {
                         @Override
-                        public void onClick(View view) {
-                            startActivity(new Intent().setClass(MainActivity.this, CrashReportActivity.class));
+                        public void accept(ErrorReport errorReport) {
+                            Snackbar.make(getWindow().getDecorView(), R.string.report_text, Snackbar.LENGTH_LONG).setAction(R.string.report_button, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    startActivity(new Intent().setClass(MainActivity.this, CrashReportActivity.class));
+                                }
+                            }).setActionTextColor(getResources().getColor(R.color.colorText2)).show();
                         }
-                    }).setActionTextColor(getResources().getColor(R.color.colorText2)).show();
-                }catch (Exception e){
+                    });
                 }
             }
         });
@@ -203,7 +190,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         refresh_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                run(true);
+                initRun(true);
                 Analytics.trackEvent("Refreshed");
             }
         });
@@ -344,116 +331,61 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onStart() {
         super.onStart();
         // The activity is about to become visible.
-        run(false);
+        initRun(false);
         //Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
     }
-    public void run(final Boolean forcedRefresh) {
+    public void initRun(final Boolean forcedRefresh) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Random random = new Random();
-                    String feed_type = sharedPreferences.getString("feed_type","remote");
-                    long currentTimeMillis = System.currentTimeMillis();
-                    boolean shouldUpdate = false;
-                    if((currentTimeMillis-sharedPreferences.getLong("feed_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",1)*3600000)){
-                        if(feed_type.equals("remote")) {
-                            if(!FileUtils.isFile(getFilesDir().getPath()+"/OneText/OneText-Library.json")){
+                    final OneTextUtils oneTextUtils = new OneTextUtils(MainActivity.this);
+                    if(!FileUtils.isFile(getFilesDir().getPath()+"/OneText/OneText-Library.json")){
+                        progressBar.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        DownloadUtil.get().download(sharedPreferences.getString("feed_URL", "https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"), getFilesDir().getPath() + "/OneText/", "OneText-Library.json", new DownloadUtil.OnDownloadListener() {
+                            @Override
+                            public void onDownloadSuccess(File file) {
                                 progressBar.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        progressBar.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 });
-                                FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
-                            } else{
-                                shouldUpdate = true;
+                                try {
+                                    showOneText(oneTextUtils,forcedRefresh);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                        editor.putLong("feed_latest_refresh_time",currentTimeMillis);
-                        //editor.commit();
-                    }
-                    JSONArray jsonArray = null;
-                    if(feed_type.equals("remote")) {
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath()+"/OneText/OneText-Library.json"));
-                    }
-                    if(feed_type.equals("local")) {
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(sharedPreferences.getString("feed_local_path",getFilesDir().getPath()+"/OneText/OneText-Library.json")));
-                    }
-                    if(((((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000))&(!sharedPreferences.getBoolean("widget_enabled",false)))|(sharedPreferences.getInt("onetext_code",-1) == -1))|(forcedRefresh)){
-                        onetext_code = random.nextInt(jsonArray.length());
-                        editor.putInt("onetext_code",onetext_code);
-                        editor.putLong("widget_latest_refresh_time",currentTimeMillis);
-                        //editor.apply();
-                    }else {
-                        onetext_code = sharedPreferences.getInt("onetext_code", random.nextInt(jsonArray.length()));
-                    }
-                    editor.apply();
-                    String language =Locale.getDefault().getLanguage();
-                    String country =Locale.getDefault().getCountry();
-                    JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
-                    String text;
-                    String by;
-                    String from;
-                    if(language.equals("zh")&country.equals("CN")) {
-                        text = jsonObject.optString("text");
-                        by = jsonObject.optString("by");
-                        from = jsonObject.optString("from");
-                    }else if(language.equals("zh")&country.equals("HK")) {
-                        text = ChineseConverter.convert(jsonObject.optString("text"), S2HK, MainActivity.this);
-                        by = ChineseConverter.convert(jsonObject.optString("by"),S2HK,MainActivity.this);
-                        from = ChineseConverter.convert(jsonObject.optString("from"),S2HK,MainActivity.this);
-                    }else if(language.equals("zh")&country.equals("MO")){
-                        text = ChineseConverter.convert(jsonObject.optString("text"), S2T, MainActivity.this);
-                        by = ChineseConverter.convert(jsonObject.optString("by"),S2T,MainActivity.this);
-                        from = ChineseConverter.convert(jsonObject.optString("from"),S2T,MainActivity.this);
-                    }else if(language.equals("zh")&country.equals("TW")){
-                        text = ChineseConverter.convert(jsonObject.optString("text"), S2TWP, MainActivity.this);
-                        by = ChineseConverter.convert(jsonObject.optString("by"),S2TWP,MainActivity.this);
-                        from = ChineseConverter.convert(jsonObject.optString("from"),S2TWP,MainActivity.this);
-                    }else {
-                        text = jsonObject.optString("text");
-                        by = jsonObject.optString("by");
-                        from = jsonObject.optString("from");
-                    }
-                    final String final_text = text;
-                    final String final_by = by;
-                    final String final_from = from;
-                    JSONArray timeJsonArray = new JSONArray(jsonObject.optString("time"));
-                    final String timeOfRecord = timeJsonArray.optString(0);
-                    final String timeOfCreation = timeJsonArray.optString(1);
-                    final String time;
-                    if (!timeOfCreation.equals("")) {
-                        time = getString(R.string.record_time)+"："+timeOfRecord+" "+getString(R.string.created_time)+"："+timeOfCreation;
-                    }else {
-                        time = getString(R.string.record_time)+"："+timeOfRecord;
-                    }
-                    onetext_text_textview.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //progressBar.setVisibility(View.GONE);
-                            onetext_text_textview.setText(final_text);
-                            if(!final_by.equals("")) {
-                                onetext_by_textview.setText("—— "+final_by);
-                                onetext_by_textview.setVisibility(View.VISIBLE);
-                            }else {
-                                onetext_by_textview.setVisibility(View.GONE);
+
+                            @Override
+                            public void onDownloading(final int progress) {
                             }
-                            if(!final_from.equals("")) {
-                                onetext_from_textview.setText(final_from);
-                                onetext_from_textview.setVisibility(View.VISIBLE);
-                            }else {
-                                onetext_from_textview.setVisibility(View.GONE);
+
+                            @Override
+                            public void onDownloadFailed(Exception e) {
+                                progressBar.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
                             }
-                            onetext_time_textview.setText(time);
-                        }
-                    });
+                        });
+                    }else {
+                        showOneText(oneTextUtils,forcedRefresh);
+                    }
                     //更新小部件
                     Intent intent = new Intent("com.lz233.onetext.widget");
                     intent.setPackage(getPackageName());
                     MainActivity.this.sendBroadcast(intent);
-                    if(shouldUpdate) {
-                        runUpdate();
+                    if(oneTextUtils.ifFeedShouldUpdate()){
+                        runFeedUpdate();
                     }else {
                         progressBar.post(new Runnable() {
                             @Override
@@ -468,7 +400,35 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             }
         }).start();
     }
-    private void runUpdate () {
+    private void showOneText(OneTextUtils oneTextUtils,Boolean forcedRefresh) throws JSONException {
+        onetext_code = oneTextUtils.getOneTextCode(forcedRefresh);
+        String[] oneText = oneTextUtils.readOneText(onetext_code);
+        final String final_text = oneText[0];
+        final String final_by = oneText[1];
+        final String final_from = oneText[2];
+        final String time = oneText[3];
+        onetext_text_textview.post(new Runnable() {
+            @Override
+            public void run() {
+                //progressBar.setVisibility(View.GONE);
+                onetext_text_textview.setText(final_text);
+                if(!final_by.equals("")) {
+                    onetext_by_textview.setText("—— "+final_by);
+                    onetext_by_textview.setVisibility(View.VISIBLE);
+                }else {
+                    onetext_by_textview.setVisibility(View.GONE);
+                }
+                if(!final_from.equals("")) {
+                    onetext_from_textview.setText(final_from);
+                    onetext_from_textview.setVisibility(View.VISIBLE);
+                }else {
+                    onetext_from_textview.setVisibility(View.GONE);
+                }
+                onetext_time_textview.setText(time);
+            }
+        });
+    }
+    private void runFeedUpdate () {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -478,13 +438,27 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         progressBar.setVisibility(View.VISIBLE);
                     }
                 });
-                FileUtils.downLoadFileFromURL(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"),getFilesDir().getPath()+"/OneText/","OneText-Library.json",true);
-                editor.remove("widget_request_download");
-                editor.apply();
-                progressBar.post(new Runnable() {
+                DownloadUtil.get().download(sharedPreferences.getString("feed_URL", "https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"), getFilesDir().getPath() + "/OneText/", "OneText-Library.json", new DownloadUtil.OnDownloadListener() {
                     @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
+                    public void onDownloadSuccess(File file) {
+                        progressBar.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                    @Override
+                    public void onDownloading(final int progress) {
+                    }
+                    @Override
+                    public void onDownloadFailed(Exception e) {
+                        progressBar.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
                     }
                 });
             }
@@ -497,7 +471,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         return true;
 
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -509,9 +482,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class));
         return true;
         }
-
         return super.onOptionsItemSelected(item);
-        }
+    }
     public void requestPermissions(final String[] permissions){
         //申请权限
         if (EasyPermissions.hasPermissions(this, permissions)) {
