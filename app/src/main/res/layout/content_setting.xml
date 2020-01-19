@@ -250,6 +250,7 @@
                     app:isb_indicator_color="@color/colorText3"
                     app:isb_thumb_color="@color/colorText3"
                     app:isb_track_progress_color="@color/colorAccent"
+                    app:isb_indicator_text_color="@color/colorAccent"
                     android:layout_marginEnd="@dimen/content_margin"/>
 
                 <ImageView

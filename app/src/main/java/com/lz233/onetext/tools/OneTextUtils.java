@@ -80,6 +80,8 @@ public class OneTextUtils{
     }
     public Boolean ifFeedShouldUpdate(){
         if((currentTimeMillis-sharedPreferences.getLong("feed_latest_refresh_time",0))>(sharedPreferences.getLong("feed_refresh_time",1)*3600000)){
+            editor.putLong("feed_latest_refresh_time",currentTimeMillis);
+            editor.apply();
             return true;
         }else {
             return false;
