@@ -64,18 +64,28 @@ public class OneTextUtils{
         }
         return oneText;
     }
-    public int getOneTextCode(Boolean forcedNewCode) throws JSONException {
-        int oneTextCode;
+    public int getOneTextCode(Boolean forcedNewCode,Boolean requestFromWidget) throws JSONException {
+        int oneTextCode = 0;
         Random random = new Random();
-        if(((((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000))&(!sharedPreferences.getBoolean("widget_enabled",false)))|(sharedPreferences.getInt("onetext_code",-1) == -1))|(forcedNewCode)){
-
+        if(((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000))|forcedNewCode){
+            if(requestFromWidget|(!sharedPreferences.getBoolean("widget_enabled",false))|forcedNewCode){
+                oneTextCode = random.nextInt(readOneTextJSONArray().length());
+                editor.putInt("onetext_code",oneTextCode);
+                editor.putLong("widget_latest_refresh_time",currentTimeMillis);
+                editor.apply();
+            }
+        }else {
+            oneTextCode = sharedPreferences.getInt("onetext_code", 0);
+        }
+        //旧版逻辑，弃用
+        /*if(((((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000))&(!sharedPreferences.getBoolean("widget_enabled",false)))|(sharedPreferences.getInt("onetext_code",-1) == -1))|(forcedNewCode)){
             oneTextCode = random.nextInt(readOneTextJSONArray().length());
             editor.putInt("onetext_code",oneTextCode);
             editor.putLong("widget_latest_refresh_time",currentTimeMillis);
             editor.apply();
         }else {
             oneTextCode = sharedPreferences.getInt("onetext_code", 0);
-        }
+        }*/
         return oneTextCode;
     }
     public Boolean ifFeedShouldUpdate(){

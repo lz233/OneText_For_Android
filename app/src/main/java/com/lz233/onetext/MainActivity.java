@@ -347,7 +347,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 progressBar.setVisibility(View.VISIBLE);
                             }
                         });
-                        DownloadUtil.get().download(sharedPreferences.getString("feed_URL", "https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"), getFilesDir().getPath() + "/OneText/", "OneText-Library.json", new DownloadUtil.OnDownloadListener() {
+                        DownloadUtil.get().download(sharedPreferences.getString("feed_URL", "https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"), getFilesDir().getPath()+"/OneText/", "OneText-Library.json", new DownloadUtil.OnDownloadListener() {
                             @Override
                             public void onDownloadSuccess(File file) {
                                 progressBar.post(new Runnable() {
@@ -401,7 +401,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         }).start();
     }
     private void showOneText(OneTextUtils oneTextUtils,Boolean forcedRefresh) throws JSONException {
-        onetext_code = oneTextUtils.getOneTextCode(forcedRefresh);
+        onetext_code = oneTextUtils.getOneTextCode(forcedRefresh,false);
         String[] oneText = oneTextUtils.readOneText(onetext_code);
         final String final_text = oneText[0];
         final String final_by = oneText[1];

@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.lz233.onetext.tools.DownloadUtil;
 import com.lz233.onetext.tools.FileUtils;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
@@ -47,6 +48,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -97,8 +100,8 @@ public class SettingActivity extends BaseActivity {
         view = getWindow().getDecorView();
         sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        font_path_yiqi = Environment.getExternalStorageDirectory()+"/Android/data/com.lz233.onetext/files/Download/Fonts/yiqi.ttf";
-        font_path_canger = Environment.getExternalStorageDirectory()+"/Android/data/com.lz233.onetext/files/Download/Fonts/canger.ttf";
+        font_path_yiqi = getFilesDir().getPath()+"/Fonts/yiqi.ttf";
+        font_path_canger = getFilesDir().getPath()+"/Fonts/canger.ttf";
         current_font_textview = findViewById(R.id.current_font_textview);
         font_yiqi_layout = findViewById(R.id.font_yiqi_layout);
         font_canger_layout = findViewById(R.id.font_canger_layout);
@@ -163,50 +166,72 @@ public class SettingActivity extends BaseActivity {
         font_yiqi_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(EasyPermissions.hasPermissions(SettingActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    //if(!FileUtils.isFile(Environment.getExternalStorageDirectory()+"/Android/data/com.lz233.onetext/files/Download/qiyi.ttf")){
-                    if(!FileUtils.isFile(font_path_yiqi)){
-                        //新建下载任务
-                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://font.salt-fish.club/1.ttf"));
-                        request.setDestinationInExternalFilesDir(SettingActivity.this, Environment.DIRECTORY_DOWNLOADS,"Fonts/yiqi.ttf");
-                        Context context = getApplicationContext();
-                        downloadManager_yiqi= (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                        taskid_yiqi = downloadManager_yiqi.enqueue(request);
-                        context.registerReceiver(receiver_yiqi, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-                        font_yiqi_textview.setText(R.string.downloading_text);
-                    }else {
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                        editor.putString("font_path",font_path_yiqi);
-                        editor.apply();
-                        updateFontStatus();
-                    }
+                if(!FileUtils.isFile(font_path_yiqi)){
+                    //新建下载任务
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DownloadUtil.get().download("https://onetext.xyz/1.ttf", getFilesDir().getPath() + "/Fonts/", "yiqi.ttf", new DownloadUtil.OnDownloadListener() {
+                                @Override
+                                public void onDownloadSuccess(File file) {
+                                    font_yiqi_textview.setText(R.string.font_yiqi);
+                                    editor.putString("font_path",font_path_yiqi);
+                                    editor.apply();
+                                    updateFontStatus();
+                                }
+                                @Override
+                                public void onDownloading(int progress) {
+                                    font_yiqi_textview.setText(getString(R.string.downloading_text)+" "+progress+"%");
+                                }
+                                @Override
+                                public void onDownloadFailed(Exception e) {
+                                    FileUtils.deleteFile(font_path_yiqi);
+                                    font_yiqi_textview.setText(R.string.download_failed_text);
+                                }
+                            });
+                        }
+                    }).start();
                 }else {
-                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
+                    editor.putString("font_path",font_path_yiqi);
+                    editor.apply();
+                    updateFontStatus();
                 }
             }
         });
         font_canger_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(EasyPermissions.hasPermissions(SettingActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    //if(!FileUtils.isFile(Environment.getExternalStorageDirectory()+"/Android/data/com.lz233.onetext/files/Download/qiyi.ttf")){
-                    if(!FileUtils.isFile(font_path_canger)){
-                        //新建下载任务
-                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://font.salt-fish.club/2.ttf"));
-                        request.setDestinationInExternalFilesDir(SettingActivity.this, Environment.DIRECTORY_DOWNLOADS,"Fonts/canger.ttf");
-                        Context context = getApplicationContext();
-                        downloadManager_canger= (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                        taskid_canger = downloadManager_canger.enqueue(request);
-                        context.registerReceiver(receiver_canger, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-                        font_canger_textview.setText(R.string.downloading_text);
-                    }else {
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                        editor.putString("font_path",font_path_canger);
-                        editor.apply();
-                        updateFontStatus();
-                    }
+                if(!FileUtils.isFile(font_path_canger)){
+                    //新建下载任务
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DownloadUtil.get().download("https://onetext.xyz/2.ttf", getFilesDir().getPath() + "/Fonts/", "canger.ttf", new DownloadUtil.OnDownloadListener() {
+                                @Override
+                                public void onDownloadSuccess(File file) {
+                                    font_canger_textview.setText(R.string.font_canger);
+                                    editor.putString("font_path",font_path_canger);
+                                    editor.apply();
+                                    updateFontStatus();
+                                }
+                                @Override
+                                public void onDownloading(int progress) {
+                                    font_canger_textview.setText(getString(R.string.downloading_text)+" "+progress+"%");
+                                }
+                                @Override
+                                public void onDownloadFailed(Exception e) {
+                                    FileUtils.deleteFile(font_path_canger);
+                                    font_canger_textview.setText(R.string.download_failed_text);
+                                }
+                            });
+                        }
+                    }).start();
                 }else {
-                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
+                    editor.putString("font_path",font_path_canger);
+                    editor.apply();
+                    updateFontStatus();
                 }
             }
         });
@@ -515,92 +540,6 @@ public class SettingActivity extends BaseActivity {
             }
         }
     }
-    //广播接受者，接收下载状态
-    private BroadcastReceiver receiver_yiqi = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            DownloadManager.Query query = new DownloadManager.Query();
-            query.setFilterById(taskid_yiqi);//筛选下载任务，传入任务ID，可变参数
-            Cursor c = downloadManager_yiqi.query(query);
-            if (c.moveToFirst()) {
-                int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                switch (status) {
-                    case DownloadManager.STATUS_PAUSED:
-                        //MLog.i(">>>下载暂停");
-                    case DownloadManager.STATUS_PENDING:
-                        //MLog.i(">>>下载延迟");
-                    case DownloadManager.STATUS_RUNNING:
-                        //MLog.i(">>>正在下载");
-                        break;
-                    case DownloadManager.STATUS_SUCCESSFUL:
-                        //MLog.i(">>>下载完成");
-                        //下载完成安装APK
-                        //downloadPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + versionName;
-                        //installAPK(new File(downloadPath));
-                        //Toast.makeText(SettingActivity.this,"ok",Toast.LENGTH_SHORT).show();
-                        //FileUtils.copyFile(Environment.getExternalStorageDirectory()+"/Android/data/com.lz233.onetext/files/Download/qiyi.ttf",font_path_yiqi,true,true);
-                        font_yiqi_textview.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                font_yiqi_textview.setText(R.string.font_yiqi);
-                            }
-                        });
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                        editor.putString("font_path",font_path_yiqi);
-                        editor.apply();
-                        updateFontStatus();
-                        break;
-                    case DownloadManager.STATUS_FAILED:
-                        //MLog.i(">>>下载失败");
-                        font_yiqi_textview.setText(R.string.download_failed_text);
-                        break;
-                }
-            }
-        }
-    };
-    //广播接受者，接收下载状态
-    private BroadcastReceiver receiver_canger = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            DownloadManager.Query query = new DownloadManager.Query();
-            query.setFilterById(taskid_canger);//筛选下载任务，传入任务ID，可变参数
-            Cursor c = downloadManager_canger.query(query);
-            if (c.moveToFirst()) {
-                int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                switch (status) {
-                    case DownloadManager.STATUS_PAUSED:
-                        //MLog.i(">>>下载暂停");
-                    case DownloadManager.STATUS_PENDING:
-                        //MLog.i(">>>下载延迟");
-                    case DownloadManager.STATUS_RUNNING:
-                        //MLog.i(">>>正在下载");
-                        break;
-                    case DownloadManager.STATUS_SUCCESSFUL:
-                        //MLog.i(">>>下载完成");
-                        //下载完成安装APK
-                        //downloadPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + versionName;
-                        //installAPK(new File(downloadPath));
-                        //Toast.makeText(SettingActivity.this,"ok",Toast.LENGTH_SHORT).show();
-                        //FileUtils.copyFile(Environment.getExternalStorageDirectory()+"/Android/data/com.lz233.onetext/files/Download/qiyi.ttf",font_path_yiqi,true,true);
-                        font_canger_textview.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                font_canger_textview.setText(R.string.font_canger);
-                            }
-                        });
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                        editor.putString("font_path",font_path_yiqi);
-                        editor.apply();
-                        updateFontStatus();
-                        break;
-                    case DownloadManager.STATUS_FAILED:
-                        //MLog.i(">>>下载失败");
-                        font_canger_textview.setText(R.string.download_failed_text);
-                        break;
-                }
-            }
-        }
-    };
     @SuppressLint("NewApi")
     public String getPath(final Context context, final Uri uri) {
 

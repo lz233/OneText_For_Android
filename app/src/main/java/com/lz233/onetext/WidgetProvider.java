@@ -119,7 +119,7 @@ public class WidgetProvider extends AppWidgetProvider {
                 String country =Locale.getDefault().getCountry();
                 JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
                 OneTextUtils oneTextUtils = new OneTextUtils(context);
-                String[] oneText = oneTextUtils.readOneText(oneTextUtils.getOneTextCode(false));
+                String[] oneText = oneTextUtils.readOneText(oneTextUtils.getOneTextCode(false,true));
                 String originalText = oneText[0];
                 String text = originalText.replace("\n"," ");
                 String by = oneText[1];
