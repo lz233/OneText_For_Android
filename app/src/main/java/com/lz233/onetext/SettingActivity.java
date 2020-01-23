@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Instrumentation;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -30,6 +31,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -167,26 +169,61 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(!FileUtils.isFile(font_path_yiqi)){
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel channel = new NotificationChannel("download_file", getString(R.string.font_notification_text), NotificationManager.IMPORTANCE_DEFAULT);
+                        channel.setSound(null,null);
+                        channel.enableLights(false);
+                        channel.enableVibration(false);
+                        channel.setVibrationPattern(new long[]{0});
+                        notificationManager.createNotificationChannel(channel);
+                    }
                     //新建下载任务
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                             DownloadUtil.get().download("https://onetext.xyz/1.ttf", getFilesDir().getPath() + "/Fonts/", "yiqi.ttf", new DownloadUtil.OnDownloadListener() {
                                 @Override
                                 public void onDownloadSuccess(File file) {
-                                    font_yiqi_textview.setText(R.string.font_yiqi);
                                     editor.putString("font_path",font_path_yiqi);
                                     editor.apply();
                                     updateFontStatus();
+                                    notificationManager.cancel(2);
                                 }
                                 @Override
                                 public void onDownloading(int progress) {
-                                    font_yiqi_textview.setText(getString(R.string.downloading_text)+" "+progress+"%");
+                                    NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
+                                            .setSmallIcon(R.drawable.ic_notification)
+                                            .setColor(getColor(R.color.colorText2))
+                                            .setContentTitle(getString(R.string.font_notification_title)+getString(R.string.font_yiqi))
+                                            .setContentText(progress+"%")
+                                            .setWhen(System.currentTimeMillis())
+                                            .setSound(null)
+                                            .setVibrate(new long[]{0});
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        builder.setChannelId("download_file");
+                                    }
+                                    Notification notification = builder.build();
+                                    notificationManager.notify(2, notification);
                                 }
                                 @Override
                                 public void onDownloadFailed(Exception e) {
+                                    e.printStackTrace();
                                     FileUtils.deleteFile(font_path_yiqi);
-                                    font_yiqi_textview.setText(R.string.download_failed_text);
+                                    NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
+                                            .setSmallIcon(R.drawable.ic_notification)
+                                            .setColor(getColor(R.color.colorText2))
+                                            .setContentTitle(getString(R.string.font_notification_failed))
+                                            .setContentText(getString(R.string.font_yiqi))
+                                            .setWhen(System.currentTimeMillis())
+                                            .setSound(null)
+                                            .setVibrate(new long[]{0});
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        builder.setChannelId("download_file");
+                                    }
+                                    Notification notification = builder.build();
+                                    notificationManager.notify(2, notification);
                                 }
                             });
                         }
@@ -203,26 +240,61 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(!FileUtils.isFile(font_path_canger)){
+                    final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel channel = new NotificationChannel("download_file", getString(R.string.font_notification_text), NotificationManager.IMPORTANCE_DEFAULT);
+                        channel.setSound(null,null);
+                        channel.enableLights(false);
+                        channel.enableVibration(false);
+                        channel.setVibrationPattern(new long[]{0});
+                        notificationManager.createNotificationChannel(channel);
+                    }
                     //新建下载任务
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                             DownloadUtil.get().download("https://onetext.xyz/2.ttf", getFilesDir().getPath() + "/Fonts/", "canger.ttf", new DownloadUtil.OnDownloadListener() {
                                 @Override
                                 public void onDownloadSuccess(File file) {
-                                    font_canger_textview.setText(R.string.font_canger);
                                     editor.putString("font_path",font_path_canger);
                                     editor.apply();
                                     updateFontStatus();
+                                    notificationManager.cancel(3);
                                 }
                                 @Override
                                 public void onDownloading(int progress) {
-                                    font_canger_textview.setText(getString(R.string.downloading_text)+" "+progress+"%");
+                                    NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
+                                            .setSmallIcon(R.drawable.ic_notification)
+                                            .setColor(getColor(R.color.colorText2))
+                                            .setContentTitle(getString(R.string.font_notification_title)+getString(R.string.font_canger))
+                                            .setContentText(progress+"%")
+                                            .setWhen(System.currentTimeMillis())
+                                            .setSound(null)
+                                            .setVibrate(new long[]{0});
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        builder.setChannelId("download_file");
+                                    }
+                                    Notification notification = builder.build();
+                                    notificationManager.notify(3, notification);
                                 }
                                 @Override
                                 public void onDownloadFailed(Exception e) {
+                                    e.printStackTrace();
                                     FileUtils.deleteFile(font_path_canger);
-                                    font_canger_textview.setText(R.string.download_failed_text);
+                                    NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
+                                            .setSmallIcon(R.drawable.ic_notification)
+                                            .setColor(getColor(R.color.colorText2))
+                                            .setContentTitle(getString(R.string.font_notification_failed))
+                                            .setContentText(getString(R.string.font_canger))
+                                            .setWhen(System.currentTimeMillis())
+                                            .setSound(null)
+                                            .setVibrate(new long[]{0});
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        builder.setChannelId("download_file");
+                                    }
+                                    Notification notification = builder.build();
+                                    notificationManager.notify(3, notification);
                                 }
                             });
                         }

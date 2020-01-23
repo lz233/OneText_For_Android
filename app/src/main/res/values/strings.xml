@@ -18,8 +18,6 @@
     <string name="font_yiqi" translatable="false">义启新宋体</string>
     <string name="font_canger" translatable="false">苍耳今楷</string>
     <string name="font_custom_text">Choose a custom font</string>
-    <string name="downloading_text">Downloading</string>
-    <string name="download_failed_text">Download failed</string>
     <string name="current_font_text">Current font:</string>
     <string name="font_system_text">Restore system font</string>
     <string name="interface_text">Interface</string>
@@ -78,4 +76,7 @@ Telegram group of this project: [Click me](https://t.me/OneTextProject)
     <string name="report_page_tip">Sorry, the app crashed last time. If you want, please copy the log and send an email to lz23333@outlook.com.</string>
     <string name="report_text">Sorry, the app crashed last time.</string>
     <string name="report_button">Details</string>
+    <string name="font_notification_text">Download File</string>
+    <string name="font_notification_title">Downloading:</string>
+    <string name="font_notification_failed">Download Failed</string>
 </resources>

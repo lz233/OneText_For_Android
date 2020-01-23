@@ -4,14 +4,28 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -22,11 +36,30 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         SharedPreferences sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
         super.onCreate(savedInstanceState);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        //Q导航栏沉浸
+        ViewGroup rootView=(ViewGroup)findViewById(android.R.id.content);
+        /*ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), new OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+                v.setPadding(0,0,0,insets.getSystemWindowInsetBottom());
+                return insets;
+            }
+        });*/
         //状态栏icon黑色
         int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if ((Build.VERSION.SDK_INT<Build.VERSION_CODES.Q)|(getNavigationBarHeight()>=113)) {
+            //rootView.setPadding(0,0,0,getNavigationBarHeight());
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+                rootView.setPadding(0,0,0,getNavigationBarHeight());
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }else {
+                rootView.setFitsSystemWindows(true);
+            }
+        }else {
+            rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
         if(mode == Configuration.UI_MODE_NIGHT_NO) {
-            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR|View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         }
         //设置为miui主题
         //setMiuiTheme(BaseActivity.this,0,mode);
@@ -43,6 +76,24 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+    }
+    private int getNavigationBarHeight() {
+        Resources resources = this.getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        Log.v("dbw", "Navi height:" + height);
+        return height;
+    }
+    public boolean isNavigationBarShow(){
+        DisplayMetrics metrics =new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        Rect outRect1 = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(outRect1);
+        int activityHeight = outRect1.height();
+        Log.v("dbw", "hei1:"+height+"\nhei2:"+activityHeight);
+        return activityHeight != height;
     }
     public static void setMiuiTheme(Activity act, int overrideTheme,int isnightmode) {
         int themeResId = 0;

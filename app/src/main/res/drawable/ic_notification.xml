@@ -4,27 +4,21 @@
     android:viewportWidth="500"
     android:viewportHeight="500">
     <path
-        android:fillColor="#c789a0"
-        android:name="圆角矩形 1"
+        android:fillColor="@color/colorText2"
         android:pathData="m173 72h257c11 0 20 9 20 20v40.6h-297v-40.6c0 -11 9 -20 20 -20z" />
     <path
-        android:fillColor="#c789a0"
-        android:name="圆角矩形 1"
+        android:fillColor="@color/colorText2"
         android:pathData="m153 146.1h297v60.6h-297v-60.6z" />
     <path
-        android:fillColor="#c789a0"
-        android:name="圆角矩形 1"
+        android:fillColor="@color/colorText2"
         android:pathData="m153 220.2h297v60.6h-297v-60.6z" />
     <path
-        android:fillColor="#c789a0"
-        android:name="圆角矩形 1"
+        android:fillColor="@color/colorText2"
         android:pathData="m153 294.3h297v60.6h-297v-60.6z" />
     <path
-        android:fillColor="#c789a0"
-        android:name="圆角矩形 1"
+        android:fillColor="@color/colorText2"
         android:pathData="m153 368.4h297v40.6c0 11 -9 20 -20 20h-257c-11 0 -20 -9 -20 -20v-40.6z" />
     <path
-        android:fillColor="#b47b90"
-        android:name="椭圆 1"
+        android:fillColor="@color/colorText2"
         android:pathData="m151.5 105c56.1 0 101.5 45.4 101.5 101.5c0 56.1 -45.4 101.5 -101.5 101.5c-56.1 0 -101.5 -45.4 -101.5 -101.5c0 -56.1 45.4 -101.5 101.5 -101.5z" />
 </vector>

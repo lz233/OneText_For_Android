@@ -7,8 +7,6 @@
     <string name="current_font_text">当前字体：</string>
     <string name="custom_feed_text">自定义源</string>
     <string name="default_text">默认</string>
-    <string name="download_failed_text">下载失败</string>
-    <string name="downloading_text">下载中</string>
     <string name="feed_refresh_text">源刷新时间：</string>
     <string name="feed_url_text">清除以恢复默认源</string>
     <string name="font_custom_text">选择一个自定义字体</string>
@@ -78,4 +76,7 @@
     <string name="report_page_tip">抱歉，本应用在上次崩溃了。如果你愿意，请复制日志并发送邮件到 lz233@outlook.com。</string>
     <string name="report_text">抱歉，本应用在上次崩溃了。</string>
     <string name="report_button">详情</string>
+    <string name="font_notification_text">下载文件</string>
+    <string name="font_notification_title">下载中：</string>
+    <string name="font_notification_failed">下载失败</string>
 </resources>

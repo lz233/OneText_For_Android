@@ -6,10 +6,10 @@ android {
     defaultConfig {
         Date date = new Date()
         applicationId "com.lz233.onetext"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName '1.333333333'
+        versionName '1.3333333333'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -26,7 +26,7 @@ dependencies {
     implementation 'com.microsoft.appcenter:appcenter-analytics:2.5.0'
     implementation 'com.microsoft.appcenter:appcenter-crashes:2.5.0'
     implementation 'com.zqc.opencc.android.lib:lib-opencc-android:1.0.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.3.1'
     implementation 'com.takisoft.fix:preference-v7-simplemenu:28.0.0.0'
     implementation 'io.noties.markwon:core:4.2.0'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
@@ -36,7 +36,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.2.0-alpha03'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

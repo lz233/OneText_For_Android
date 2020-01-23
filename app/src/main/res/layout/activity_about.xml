@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AboutActivity"
-    android:background="@color/colorWhite"
-    android:fitsSystemWindows="true">
+    android:background="@color/colorWhite">
 
     <ScrollView
         android:layout_width="match_parent"
