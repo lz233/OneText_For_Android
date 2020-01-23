@@ -22,6 +22,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         SharedPreferences sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         //状态栏icon黑色
         int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         if(mode == Configuration.UI_MODE_NIGHT_NO) {
@@ -29,9 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         //设置为miui主题
         //setMiuiTheme(BaseActivity.this,0,mode);
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         //全局自定义字体
         ViewPump.init(ViewPump.builder()
                 .addInterceptor(new CalligraphyInterceptor(

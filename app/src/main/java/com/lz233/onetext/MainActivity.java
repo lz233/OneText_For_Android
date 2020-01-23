@@ -76,11 +76,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //sp
         sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        if(sharedPreferences.getString("interface_style","md2").equals("default")){
+        setContentView(R.layout.activity_main);
+        /*if(sharedPreferences.getString("interface_style","md2").equals("default")){
             setContentView(R.layout.activity_main);
         }else if(sharedPreferences.getString("interface_style","md2").equals("md2")){
             setContentView(R.layout.activity_main_2);
-        }
+        }*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //fb
