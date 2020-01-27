@@ -33,26 +33,29 @@ public class OneTextUtils{
         editor = sharedPreferences.edit();
     }
     public String[] readOneText(int OneTextCode) throws JSONException {
+        int chinese_type = sharedPreferences.getInt("chinese_type",0);
         String language = Locale.getDefault().getLanguage();
         String country =Locale.getDefault().getCountry();
         String[] oneText = new String[4];
         JSONObject jsonObject = new JSONObject(readOneTextJSONArray().optString(OneTextCode));
-        if(language.equals("zh")&country.equals("HK")) {
-            oneText[0] = ChineseConverter.convert(jsonObject.optString("text"), S2HK, context);
-            oneText[1] = ChineseConverter.convert(jsonObject.optString("by"),S2HK,context);
-            oneText[2] = ChineseConverter.convert(jsonObject.optString("from"),S2HK,context);
-        }else if(language.equals("zh")&country.equals("MO")){
-            oneText[0] = ChineseConverter.convert(jsonObject.optString("text"), S2T, context);
-            oneText[1] = ChineseConverter.convert(jsonObject.optString("by"),S2T,context);
-            oneText[2] = ChineseConverter.convert(jsonObject.optString("from"),S2T,context);
-        }else if(language.equals("zh")&country.equals("TW")){
-            oneText[0] = ChineseConverter.convert(jsonObject.optString("text"), S2TWP, context);
-            oneText[1] = ChineseConverter.convert(jsonObject.optString("by"),S2TWP,context);
-            oneText[2] = ChineseConverter.convert(jsonObject.optString("from"),S2TWP,context);
-        }else {
-            oneText[0] = jsonObject.optString("text");
-            oneText[1] = jsonObject.optString("by");
-            oneText[2] = jsonObject.optString("from");
+        if(chinese_type == 0){
+            if(language.equals("zh")&country.equals("HK")) {
+                oneTextViaS2HK(oneText,jsonObject);
+            }else if(language.equals("zh")&country.equals("MO")){
+                oneTextViaS2T(oneText,jsonObject);
+            }else if(language.equals("zh")&country.equals("TW")){
+                oneTextViaS2TWP(oneText,jsonObject);
+            }else {
+                oneTextViaOriginal(oneText,jsonObject);
+            }
+        }else if (chinese_type == 1){
+            oneTextViaOriginal(oneText,jsonObject);
+        }else if(chinese_type == 2){
+            oneTextViaS2T(oneText,jsonObject);
+        }else if(chinese_type == 3){
+            oneTextViaS2HK(oneText,jsonObject);
+        }else if(chinese_type == 4){
+            oneTextViaS2TWP(oneText,jsonObject);
         }
         JSONArray timeJsonArray = new JSONArray(jsonObject.optString("time"));
         final String timeOfRecord = timeJsonArray.optString(0);
@@ -62,6 +65,30 @@ public class OneTextUtils{
         }else {
             oneText[3] = context.getString(R.string.record_time)+"："+timeOfRecord;
         }
+        return oneText;
+    }
+    private String[] oneTextViaS2HK (String[] oneText,JSONObject jsonObject){
+        oneText[0] = ChineseConverter.convert(jsonObject.optString("text"), S2HK, context);
+        oneText[1] = ChineseConverter.convert(jsonObject.optString("by"),S2HK,context);
+        oneText[2] = ChineseConverter.convert(jsonObject.optString("from"),S2HK,context);
+        return oneText;
+    }
+    private String[] oneTextViaS2T (String[] oneText,JSONObject jsonObject){
+        oneText[0] = ChineseConverter.convert(jsonObject.optString("text"), S2T, context);
+        oneText[1] = ChineseConverter.convert(jsonObject.optString("by"),S2T,context);
+        oneText[2] = ChineseConverter.convert(jsonObject.optString("from"),S2T,context);
+        return oneText;
+    }
+    private String[] oneTextViaS2TWP (String[] oneText,JSONObject jsonObject){
+        oneText[0] = ChineseConverter.convert(jsonObject.optString("text"), S2TWP, context);
+        oneText[1] = ChineseConverter.convert(jsonObject.optString("by"),S2TWP,context);
+        oneText[2] = ChineseConverter.convert(jsonObject.optString("from"),S2TWP,context);
+        return oneText;
+    }
+    private String[] oneTextViaOriginal (String[] oneText,JSONObject jsonObject){
+        oneText[0] = jsonObject.optString("text");
+        oneText[1] = jsonObject.optString("by");
+        oneText[2] = jsonObject.optString("from");
         return oneText;
     }
     public int getOneTextCode(Boolean forcedNewCode,Boolean requestFromWidget) throws JSONException {
@@ -97,7 +124,7 @@ public class OneTextUtils{
             return false;
         }
     }
-    public JSONArray readOneTextJSONArray() throws JSONException {
+    private JSONArray readOneTextJSONArray() throws JSONException {
         String feed_type = sharedPreferences.getString("feed_type","remote");
         JSONArray jsonArray = null;
         if(feed_type.equals("remote")) {

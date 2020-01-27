@@ -22,10 +22,13 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.lz233.onetext.tools.DownloadUtil;
 import com.lz233.onetext.tools.FileUtils;
+import com.lz233.onetext.tools.SpinnerAdapter;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatSpinner;
@@ -40,7 +43,9 @@ import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,6 +57,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -60,10 +67,6 @@ public class SettingActivity extends BaseActivity {
     private View view;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private long taskid_yiqi;
-    private DownloadManager downloadManager_yiqi;
-    private long taskid_canger;
-    private DownloadManager downloadManager_canger;
     private String font_path_yiqi;
     private String font_path_canger;
     private TextView current_font_textview;
@@ -73,8 +76,8 @@ public class SettingActivity extends BaseActivity {
     private TextView font_canger_textview;
     private TextView font_system_textview;
     private TextView font_custom_textview;
-    private SwitchMaterial interface_md2_switch;
     private AppCompatSpinner interface_daynight_spinner;
+    private AppCompatSpinner chinese_type_spinner;
     private RadioGroup feed_type_radiogroup;
     private RadioButton feed_type_remote_radiobutton;
     private RadioButton feed_type_local_radiobutton;
@@ -88,6 +91,7 @@ public class SettingActivity extends BaseActivity {
     private TextView feed_local_choose_textview;
     private TextView widget_enable_textview;
     private SwitchMaterial widget_dark_switch;
+    private SwitchMaterial widget_center_switch;
     private SwitchMaterial widget_notification_switch;
     private IndicatorSeekBar widget_refresh_seekbar;
     private ImageView widget_refresh_imageview;
@@ -98,6 +102,8 @@ public class SettingActivity extends BaseActivity {
         setContentView(R.layout.activity_setting);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //曲 线 救 国
+        fuckNav(findViewById(R.id.last_layout));
         //by
         view = getWindow().getDecorView();
         sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
@@ -111,8 +117,8 @@ public class SettingActivity extends BaseActivity {
         font_canger_textview = findViewById(R.id.font_canger_textview);
         font_system_textview = findViewById(R.id.font_system_textview);
         font_custom_textview = findViewById(R.id.font_custom_textview);
-        interface_md2_switch = findViewById(R.id.interface_md2_switch);
         interface_daynight_spinner = findViewById(R.id.interface_daynight_spinner);
+        chinese_type_spinner = findViewById(R.id.chinese_type_spinner);
         feed_type_radiogroup = findViewById(R.id.feed_type_radiogroup);
         feed_type_remote_radiobutton = findViewById(R.id.feed_type_remote_radiobutton);
         feed_type_local_radiobutton = findViewById(R.id.feed_type_local_radiobutton);
@@ -126,6 +132,7 @@ public class SettingActivity extends BaseActivity {
         feed_local_choose_textview = findViewById(R.id.feed_local_choose_textview);
         widget_enable_textview = findViewById(R.id.widget_enable_textview);
         widget_dark_switch = findViewById(R.id.widget_dark_switch);
+        widget_center_switch = findViewById(R.id.widget_center_switch);
         widget_notification_switch = findViewById(R.id.widget_notification_switch);
         widget_refresh_seekbar = findViewById(R.id.widget_refresh_seekbar);
         widget_refresh_imageview = findViewById(R.id.widget_refresh_imageview);
@@ -143,8 +150,21 @@ public class SettingActivity extends BaseActivity {
                 interface_daynight_spinner.setSelection(2);
                 break;
         }
-        if(sharedPreferences.getString("interface_style","md2").equals("md2")) {
-            interface_md2_switch.setChecked(true);
+        switch (sharedPreferences.getInt("chinese_type",0)){
+            case 0:
+                chinese_type_spinner.setSelection(0);
+                break;
+            case 1:
+                chinese_type_spinner.setSelection(1);
+                break;
+            case 2:
+                chinese_type_spinner.setSelection(2);
+                break;
+            case 3:
+                chinese_type_spinner.setSelection(3);
+            case 4:
+                chinese_type_spinner.setSelection(4);
+
         }
         if(sharedPreferences.getString("feed_type","remote").equals("remote")) {
             feed_type_remote_radiobutton.setChecked(true);
@@ -163,13 +183,14 @@ public class SettingActivity extends BaseActivity {
         widget_refresh_seekbar.setIndicatorTextFormat(getString(R.string.widget_refresh_text)+" ${PROGRESS} "+getString(R.string.minute));
         widget_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",30));
         widget_dark_switch.setChecked(sharedPreferences.getBoolean("widget_dark",false));
+        widget_center_switch.setChecked(sharedPreferences.getBoolean("widget_center",false));
         widget_notification_switch.setChecked(sharedPreferences.getBoolean("widget_notification_enabled",false));
         // 监听器
         font_yiqi_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!FileUtils.isFile(font_path_yiqi)){
-                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel channel = new NotificationChannel("download_file", getString(R.string.font_notification_text), NotificationManager.IMPORTANCE_DEFAULT);
                         channel.setSound(null,null);
@@ -228,6 +249,91 @@ public class SettingActivity extends BaseActivity {
                             });
                         }
                     }).start();
+                    /*DownloadTask task = new DownloadTask.Builder("https://onetext.xyz/1.ttf",new File(getFilesDir().getPath()+"/Fonts/"))
+                            .setFilename("yiqi.ttf")
+                            // the minimal interval millisecond for callback progress
+                            .setMinIntervalMillisCallbackProcess(30)
+                            // do re-download even if the task has already been completed in the past.
+                            .setPassIfAlreadyCompleted(false)
+                            .build();
+                    final Long[] length = new Long[2];
+                    length[0] = Long.valueOf(0);
+                    task.enqueue(new DownloadListener() {
+                        @Override
+                        public void taskStart(@NonNull DownloadTask task) {
+                        }
+                        @Override
+                        public void connectTrialStart(@NonNull DownloadTask task, @NonNull Map<String, List<String>> requestHeaderFields) {
+                        }
+                        @Override
+                        public void connectTrialEnd(@NonNull DownloadTask task, int responseCode, @NonNull Map<String, List<String>> responseHeaderFields) {
+                        }
+                        @Override
+                        public void downloadFromBeginning(@NonNull DownloadTask task, @NonNull BreakpointInfo info, @NonNull ResumeFailedCause cause) {
+                        }
+                        @Override
+                        public void downloadFromBreakpoint(@NonNull DownloadTask task, @NonNull BreakpointInfo info) {
+                        }
+                        @Override
+                        public void connectStart(@NonNull DownloadTask task, int blockIndex, @NonNull Map<String, List<String>> requestHeaderFields) {
+                        }
+                        @Override
+                        public void connectEnd(@NonNull DownloadTask task, int blockIndex, int responseCode, @NonNull Map<String, List<String>> responseHeaderFields) {
+                        }
+                        @Override
+                        public void fetchStart(@NonNull DownloadTask task, int blockIndex, long contentLength) {
+                            length[1] = contentLength;
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
+                                    .setSmallIcon(R.drawable.ic_notification)
+                                    .setColor(getColor(R.color.colorText2))
+                                    .setContentTitle("fetchStart")
+                                    .setContentText(length[1]+" %")
+                                    .setWhen(System.currentTimeMillis())
+                                    .setSound(null)
+                                    .setVibrate(new long[]{0});
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                builder.setChannelId("download_file");
+                            }
+                            Notification notification = builder.build();
+                            notificationManager.notify(3, notification);
+                        }
+                        @Override
+                        public void fetchProgress(@NonNull DownloadTask task, int blockIndex, long increaseBytes) {
+                            length[0] = length[0]+increaseBytes;
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
+                                    .setSmallIcon(R.drawable.ic_notification)
+                                    .setColor(getColor(R.color.colorText2))
+                                    .setContentTitle(getString(R.string.font_notification_title)+getString(R.string.font_yiqi))
+                                    .setContentText((length[0]/length[1])*50+" %")
+                                    .setWhen(System.currentTimeMillis())
+                                    .setSound(null)
+                                    .setVibrate(new long[]{0});
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                builder.setChannelId("download_file");
+                            }
+                            Notification notification = builder.build();
+                            notificationManager.notify(2, notification);
+                        }
+                        @Override
+                        public void fetchEnd(@NonNull DownloadTask task, int blockIndex, long contentLength) {
+                        }
+                        @Override
+                        public void taskEnd(@NonNull DownloadTask task, @NonNull EndCause cause, @Nullable Exception realCause) {
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
+                                    .setSmallIcon(R.drawable.ic_notification)
+                                    .setColor(getColor(R.color.colorText2))
+                                    .setContentTitle(getString(R.string.font_notification_title)+getString(R.string.font_yiqi))
+                                    .setContentText((length[0])+" %\n"+cause)
+                                    .setWhen(System.currentTimeMillis())
+                                    .setSound(null)
+                                    .setVibrate(new long[]{0});
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                builder.setChannelId("download_file");
+                            }
+                            Notification notification = builder.build();
+                            notificationManager.notify(2, notification);
+                        }
+                    });*/
                 }else {
                     Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                     editor.putString("font_path",font_path_yiqi);
@@ -329,64 +435,39 @@ public class SettingActivity extends BaseActivity {
                 }
             }
         });
-        interface_md2_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    editor.putString("interface_style","md2");
-                    editor.apply();
-                    isSettingUpdated = true;
-                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                }else {
-                    editor.putString("interface_style","default");
-                    editor.apply();
-                    isSettingUpdated = true;
-                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
-        final int[] OnItemSelectedInt = {0};
+        /*SpinnerAdapter adapter = SpinnerAdapter.createFromResource(SettingActivity.this,R.array.daynight,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        interface_daynight_spinner.setBackgroundResource(R.drawable.bgstyle_md2);
+        interface_daynight_spinner.setAdapter(adapter);*/
         interface_daynight_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    OnItemSelectedInt[0] = OnItemSelectedInt[0] + 1;
-                    if(OnItemSelectedInt[0]>1){
-                        isSettingUpdated = true;
-                        Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                    }
-                    switch (i) {
-                        case 0:
-                            editor.putInt("interface_daynight",0);
-                            break;
-                        case 1:
-                            editor.putInt("interface_daynight",1);
-                            break;
-                        case 2:
-                            editor.putInt("interface_daynight",2);
-                            break;
-                    }
-                }else {
-                    switch (i) {
-                        case 0:
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                            editor.putInt("interface_daynight",0);
-                            break;
-                        case 1:
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                            editor.putInt("interface_daynight",1);
-                            break;
-                        case 2:
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                            editor.putInt("interface_daynight",2);
-                            break;
-                    }
+                switch (i) {
+                    case 0:
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                        break;
+                    case 1:
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        break;
+                    case 2:
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        break;
                 }
+                editor.putInt("interface_daynight",i);
                 editor.apply();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+            }
+        });
+        chinese_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                editor.putInt("chinese_type",i);
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
         feed_type_radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -471,6 +552,20 @@ public class SettingActivity extends BaseActivity {
                     editor.putBoolean("widget_dark",true);
                 }else {
                     editor.putBoolean("widget_dark",false);
+                }
+                editor.commit();
+                Intent intent = new Intent("com.lz233.onetext.widget");
+                intent.setPackage(getPackageName());
+                SettingActivity.this.sendBroadcast(intent);
+            }
+        });
+        widget_center_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    editor.putBoolean("widget_center",true);
+                }else {
+                    editor.putBoolean("widget_center",false);
                 }
                 editor.commit();
                 Intent intent = new Intent("com.lz233.onetext.widget");
@@ -563,7 +658,8 @@ public class SettingActivity extends BaseActivity {
                     current_font_textview.setVisibility(View.GONE);
                 }else {
                     current_font_textview.setVisibility(View.VISIBLE);
-                    current_font_textview.setText(getString(R.string.current_font_text)+" "+sharedPreferences.getString("font_path",""));
+                    File file = new File(sharedPreferences.getString("font_path",""));
+                    current_font_textview.setText(getString(R.string.current_font_text)+file.getName());
                 }
             }
         });

@@ -1,5 +1,6 @@
 package com.lz233.onetext;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.noties.markwon.Markwon;
@@ -26,12 +28,15 @@ import io.noties.markwon.Markwon;
 public class CrashReportActivity extends BaseActivity {
     private TextView crash_report_textView;
     final String[] report = new String[1];
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crash_report);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //曲 线 救 国
+        fuckNav(findViewById(R.id.crash_report_textView));
         //fb
         crash_report_textView = findViewById(R.id.crash_report_textView);
         //初始化

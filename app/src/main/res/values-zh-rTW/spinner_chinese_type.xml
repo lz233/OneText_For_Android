@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="chinese_type">
+        <item>跟隨系統</item>
+        <item>跟隨訂閱源</item>
+        <item>繁體中文</item>
+        <item>香港繁體</item>
+        <item>正體中文</item>
+    </string-array>
+</resources>

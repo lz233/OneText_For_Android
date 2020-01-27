@@ -5,13 +5,12 @@
     <string name="about_text">關於</string>
     <string name="created_time">創作於</string>
     <string name="current_font_text">當前字體：</string>
-    <string name="custom_feed_text">自定義源</string>
+    <string name="feed_text">訂閱源</string>
     <string name="default_text">默認</string>
     <string name="feed_refresh_text">源刷新時間：</string>
     <string name="feed_url_text">清除以恢復默認源</string>
     <string name="font_custom_text">選擇一個自定義字體</string>
     <string name="font_system_text">恢復默認字體</string>
-    <string name="fonts_text">字體</string>
     <string name="minute">分</string>
     <string name="onetext_by_size_text">作者文字大小：</string>
     <string name="onetext_from_size_text">來源文字大小：</string>
@@ -45,8 +44,6 @@
 本應用的主頁：[點我](https://github.com/lz233/OneText_For_Android)
 \n\n
 核心庫的主頁：[點我](https://github.com/lz233/OneText-Library)
-\n\n
-本項目的Telegram羣組：[點我](https://t.me/OneTextProject)
     \n\n
     關於如何提交句子到核心庫：[點我](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E4%BA%A4%E5%8F%A5%E5%AD%90%EF%BC%9F)
     \n\n
@@ -76,7 +73,11 @@
     <string name="report_page_tip">抱歉，本應用在上次崩潰了。如果你願意，請複製日誌併發送郵件到 lz233@outlook.com。</string>
     <string name="report_text">抱歉，本應用在上次崩潰了。</string>
     <string name="report_button">詳情</string>
-    <string name="font_notification_failed">"下載失敗 "</string>
-    <string name="font_notification_text">"下載文件 "</string>
-    <string name="font_notification_title">"下載中： "</string>
+    <string name="font_notification_text">下載文件</string>
+    <string name="font_notification_title">下載中：</string>
+    <string name="font_notification_failed">下載失敗</string>
+    <string name="share_text">分享</string>
+    <string name="behavior_text">行爲</string>
+    <string name="chinese_type">中文類型</string>
+    <string name="widget_center">小部件居中</string>
 </resources>

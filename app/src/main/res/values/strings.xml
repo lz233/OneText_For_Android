@@ -14,15 +14,14 @@
     <string name="seal_button_ison">Hide</string>
     <string name="seal_button_isoff">Show</string>
     <string name="title_activity_setting">Setting</string>
-    <string name="fonts_text">Fonts</string>
     <string name="font_yiqi" translatable="false">义启新宋体</string>
     <string name="font_canger" translatable="false">苍耳今楷</string>
     <string name="font_custom_text">Choose a custom font</string>
-    <string name="current_font_text">Current font:</string>
+    <string name="current_font_text">Current font: </string>
     <string name="font_system_text">Restore system font</string>
     <string name="interface_text">Interface</string>
     <string name="interface_md2">Material Design 2 Style</string>
-    <string name="custom_feed_text">Custom Feed</string>
+    <string name="feed_text">Feed</string>
     <string name="feed_type_remote_text">Remote JSON</string>
     <string name="feed_type_local_text">Local JSON</string>
     <string name="feed_local_choose_text">Choose</string>
@@ -64,8 +63,6 @@ The development of this project is inseparable from the following projects:
 The home page of this app: [Click me](https://github.com/lz233/OneText_For_Android)
 \n\n
 Homepage of the core library: [Click me](https://github.com/lz233/OneText-Library)
-\n\n
-Telegram group of this project: [Click me](https://t.me/OneTextProject)
     \n\n
     About how to submit sentences to the core library: [Click me (simplified Chinese)](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E4%BA%A4%E5%8F%A5%E5%AD%90%EF%BC%9F)
     \n\n
@@ -79,4 +76,8 @@ Telegram group of this project: [Click me](https://t.me/OneTextProject)
     <string name="font_notification_text">Download File</string>
     <string name="font_notification_title">Downloading:</string>
     <string name="font_notification_failed">Download Failed</string>
+    <string name="share_text">Share</string>
+    <string name="behavior_text">Behavior</string>
+    <string name="chinese_type">Chinese Type</string>
+    <string name="widget_center">Center Widget</string>
 </resources>

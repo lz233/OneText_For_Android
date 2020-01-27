@@ -9,10 +9,16 @@
         android:id="@+id/onetext_widget_text_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" "
         android:textColor="@color/colorText1Widget"
         android:textSize="@dimen/small_text_size" />
-
+    <TextView
+        android:id="@+id/onetext_widget_center_text_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/colorText1Widget"
+        android:textSize="@dimen/small_text_size" />
     <TextView
         android:id="@+id/onetext_widget_by_textview"
         android:layout_width="wrap_content"

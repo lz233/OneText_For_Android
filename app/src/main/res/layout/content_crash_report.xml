@@ -14,7 +14,6 @@
         android:layout_marginStart="@dimen/layout_margin"
         android:layout_marginEnd="@dimen/layout_margin"
         android:orientation="vertical">
-
         <TextView
             android:id="@+id/crash_report_textView"
             android:layout_width="match_parent"

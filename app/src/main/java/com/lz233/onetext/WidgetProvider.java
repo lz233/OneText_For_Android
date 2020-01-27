@@ -83,48 +83,30 @@ public class WidgetProvider extends AppWidgetProvider {
         try {
             SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
             if(sharedPreferences.getBoolean("widget_dark",false)){
-                views.setTextColor(R.id.onetext_widget_text_textview, context.getResources().getColor(R.color.colorWhiteWidget));
-                views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_text_textview, context.getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_center_text_textview,context.getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_by_textview,context.getColor(R.color.colorWhiteWidget));
             }else {
-                views.setTextColor(R.id.onetext_widget_text_textview,context.getResources().getColor(R.color.colorText1Widget));
-                views.setTextColor(R.id.onetext_widget_by_textview,context.getResources().getColor(R.color.colorText2Widget));
+                views.setTextColor(R.id.onetext_widget_text_textview,context.getColor(R.color.colorText1Widget));
+                views.setTextColor(R.id.onetext_widget_center_text_textview,context.getColor(R.color.colorText1Widget));
+                views.setTextColor(R.id.onetext_widget_by_textview,context.getColor(R.color.colorText2Widget));
             }
             if ((FileUtils.isFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"))|(FileUtils.isFile(sharedPreferences.getString("feed_local_path",null)))){
-                JSONArray jsonArray = null;
-                Long currentTimeMillis = System.currentTimeMillis();
-                Random random = new Random();
-                String feed_type = sharedPreferences.getString("feed_type","remote");
-                if((currentTimeMillis-sharedPreferences.getLong("widget_latest_refresh_time",0))>(sharedPreferences.getLong("widget_refresh_time",30)*60000)){
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    if(feed_type.equals("remote")){
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
-                    }
-                    if(feed_type.equals("local")) {
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(sharedPreferences.getString("feed_local_path",context.getFilesDir().getPath()+"/OneText/OneText-Library.json")));
-                    }
-                    onetext_code = random.nextInt(jsonArray.length());
-                    editor.putInt("onetext_code",onetext_code);
-                    editor.putLong("widget_latest_refresh_time",currentTimeMillis);
-                    editor.commit();
-                }else {
-                    if(feed_type.equals("remote")){
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"));
-                    }
-                    if(feed_type.equals("local")) {
-                        jsonArray = new JSONArray(FileUtils.readTextFromFile(sharedPreferences.getString("feed_local_path",context.getFilesDir().getPath()+"/OneText/OneText-Library.json")));
-                    }
-                    onetext_code = sharedPreferences.getInt("onetext_code",random.nextInt(jsonArray.length()));
-                }
-                String language = Locale.getDefault().getLanguage();
-                String country =Locale.getDefault().getCountry();
-                JSONObject jsonObject = new JSONObject(jsonArray.optString(onetext_code));
                 OneTextUtils oneTextUtils = new OneTextUtils(context);
                 String[] oneText = oneTextUtils.readOneText(oneTextUtils.getOneTextCode(false,true));
                 String originalText = oneText[0];
                 String text = originalText.replace("\n"," ");
                 String by = oneText[1];
-                views.setTextViewText(R.id.onetext_widget_text_textview,text);
-                if(!by.equals("")) {
+                if(sharedPreferences.getBoolean("widget_center",false)){
+                    views.setTextViewText(R.id.onetext_widget_center_text_textview,text);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview,View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview,View.VISIBLE);
+                }else {
+                    views.setTextViewText(R.id.onetext_widget_text_textview,text);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview,View.VISIBLE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview,View.GONE);
+                }
+                if((!by.equals(""))&(!sharedPreferences.getBoolean("widget_center",false))) {
                     views.setViewVisibility(R.id.onetext_widget_by_textview,View.VISIBLE);
                     views.setTextViewText(R.id.onetext_widget_by_textview,"—— "+by);
                 }else {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="chinese_type">
+        <item>Follow System</item>
+        <item>Follow Feed</item>
+        <item>Traditional Chinese</item>
+        <item>HK Chinese</item>
+        <item>TW Chinese</item>
+    </string-array>
+</resources>

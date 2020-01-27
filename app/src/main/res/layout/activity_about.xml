@@ -28,6 +28,43 @@
                 android:layout_marginTop="60dp"
                 app:srcCompat="@drawable/ic_icon" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/coolapk_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="@dimen/content_margin"
+                    app:srcCompat="@drawable/ic_coolapk" />
+                <ImageView
+                    android:id="@+id/msappcenter_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="@dimen/content_margin"
+                    app:srcCompat="@drawable/ic_msappcenter" />
+                <ImageView
+                    android:id="@+id/github_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="@dimen/content_margin"
+                    app:srcCompat="@drawable/ic_github" />
+                <ImageView
+                    android:id="@+id/telegram_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="@dimen/content_margin"
+                    app:srcCompat="@drawable/ic_telegram" />
+                <ImageView
+                    android:id="@+id/mstodo_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="@dimen/content_margin"
+                    app:srcCompat="@drawable/ic_mstodo" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/ver_textview"
                 android:layout_width="wrap_content"

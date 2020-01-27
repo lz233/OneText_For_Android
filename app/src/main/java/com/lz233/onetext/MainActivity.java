@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,11 +20,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -84,6 +91,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         }*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //曲 线 救 国
+        fuckNav(findViewById(R.id.last_layout));
         //fb
         pic_layout = findViewById(R.id.pic_layout);
         progressBar = findViewById(R.id.progressBar);
@@ -121,12 +130,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     getLastSessionCrashReport.thenAccept(new AppCenterConsumer<ErrorReport>() {
                         @Override
                         public void accept(ErrorReport errorReport) {
-                            Snackbar.make(getWindow().getDecorView(), R.string.report_text, Snackbar.LENGTH_LONG).setAction(R.string.report_button, new View.OnClickListener() {
+                            ViewGroup rootView=(ViewGroup)findViewById(android.R.id.content);
+                            Snackbar.make(rootView, R.string.report_text, Snackbar.LENGTH_LONG).setAction(R.string.report_button, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     startActivity(new Intent().setClass(MainActivity.this, CrashReportActivity.class));
                                 }
-                            }).setActionTextColor(getResources().getColor(R.color.colorText2)).show();
+                            }).show();
                         }
                     });
                 }
@@ -171,15 +181,24 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             @Override
             public void onClick(View view) {
                 if(EasyPermissions.hasPermissions(MainActivity.this, permissions)){
-                    String pic_file_name = "OneText "+System.currentTimeMillis()+".jpg";
-                    String pic_file_path = Environment.getExternalStorageDirectory()+"/Pictures/OneText/";
+                    final String pic_file_name = "OneText "+System.currentTimeMillis()+".jpg";
+                    final String pic_file_path = Environment.getExternalStorageDirectory()+"/Pictures/OneText/";
                     if(!FileUtils.isDirectory(pic_file_path)) {
                         File file = new File(pic_file_path);
                         file.mkdirs();
                     }
                     Boolean isSuccess = SaveBitmap.saveBitmapToSdCard(MainActivity.this,SaveBitmap.getCacheBitmapFromView(pic_layout), pic_file_path+pic_file_name);
                     if(isSuccess) {
-                        Snackbar.make(view, getString(R.string.save_succeed)+" "+pic_file_name, Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(view, getString(R.string.save_succeed)+" "+pic_file_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_SEND);
+                                intent.putExtra(Intent.EXTRA_STREAM, FileUtils.getUriFromFile(new File(pic_file_path+pic_file_name),MainActivity.this));
+                                intent.setType("image/*");
+                                startActivity(Intent.createChooser(intent, getString(R.string.share_text)));
+                            }
+                        }).show();
                     }else {
                         Snackbar.make(view, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
                     }

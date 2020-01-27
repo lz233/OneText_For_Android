@@ -1,6 +1,10 @@
 package com.lz233.onetext.tools;
 
+import android.content.Context;
+import android.net.Uri;
+
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -97,5 +101,12 @@ public class FileUtils {
             e.printStackTrace();
         }
         return null;
+    }
+    public static Uri getUriFromFile(File file, Context context)  {
+        Uri imageUri = null;
+        if (file != null && file.exists() && file.isFile()) {
+            imageUri = FileProvider.getUriForFile(context,"com.lz233.onetext.fileprovider",file);
+        }
+        return imageUri;
     }
 }
