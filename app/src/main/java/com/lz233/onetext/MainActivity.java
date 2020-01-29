@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Environment;
 import android.util.Log;
@@ -52,6 +53,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private int onetext_code;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private SwipeRefreshLayout onetext_swiperefreshlayout;
     private ProgressBar progressBar;
     private LinearLayout pic_layout;
     private TextView onetext_quote1_textview;
@@ -94,6 +96,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //曲 线 救 国
         fuckNav(findViewById(R.id.last_layout));
         //fb
+        onetext_swiperefreshlayout= findViewById(R.id.onetext_swiperefreshlayout);
         pic_layout = findViewById(R.id.pic_layout);
         progressBar = findViewById(R.id.progressBar);
         onetext_quote1_textview = findViewById(R.id.onetext_quote1_textview);
@@ -177,6 +180,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_time_size_seekbar.setProgress(sharedPreferences.getInt("onetext_time_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         onetext_from_size_seekbar.setProgress(sharedPreferences.getInt("onetext_from_size",px2sp(this,getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         //监听器
+        onetext_swiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initRun(true);
+                onetext_swiperefreshlayout.setRefreshing(false);
+            }
+        });
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

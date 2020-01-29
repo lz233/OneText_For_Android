@@ -10,11 +10,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 import com.lz233.onetext.tools.FileUtils;
 import com.lz233.onetext.tools.OneTextUtils;
@@ -24,6 +27,7 @@ import androidx.core.app.NotificationCompat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
 
 import java.util.Locale;
 import java.util.Random;
@@ -83,13 +87,17 @@ public class WidgetProvider extends AppWidgetProvider {
         try {
             SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
             if(sharedPreferences.getBoolean("widget_dark",false)){
-                views.setTextColor(R.id.onetext_widget_text_textview, context.getColor(R.color.colorWhiteWidget));
-                views.setTextColor(R.id.onetext_widget_center_text_textview,context.getColor(R.color.colorWhiteWidget));
-                views.setTextColor(R.id.onetext_widget_by_textview,context.getColor(R.color.colorWhiteWidget));
-            }else {
                 views.setTextColor(R.id.onetext_widget_text_textview,context.getColor(R.color.colorText1Widget));
                 views.setTextColor(R.id.onetext_widget_center_text_textview,context.getColor(R.color.colorText1Widget));
                 views.setTextColor(R.id.onetext_widget_by_textview,context.getColor(R.color.colorText2Widget));
+            }else {
+                views.setTextColor(R.id.onetext_widget_text_textview, context.getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_center_text_textview,context.getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_by_textview,context.getColor(R.color.colorWhiteWidget));
+                //LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                //View viewParent= inflater.inflate((XmlPullParser) views, null);
+                //TextView view =viewParent.findViewById(R.id.onetext_widget_center_text_textview);
+                //view.setTextColor(Color.RED);
             }
             if ((FileUtils.isFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"))|(FileUtils.isFile(sharedPreferences.getString("feed_local_path",null)))){
                 OneTextUtils oneTextUtils = new OneTextUtils(context);

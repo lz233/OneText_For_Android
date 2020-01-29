@@ -25,7 +25,7 @@
     <string name="save_text">儲存圖片</string>
     <string name="setting_succeed_text">成功，下次啟動生效</string>
     <string name="title_activity_setting">設定</string>
-    <string name="widget_dark">暗色桌布</string>
+    <string name="widget_dark">暗色小部件</string>
     <string name="widget_disenable_text">小部件沒有啟用</string>
     <string name="widget_enable_text">小部件已啟用</string>
     <string name="widget_text">小部件</string>

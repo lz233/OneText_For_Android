@@ -10,15 +10,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorText1Widget"
-        android:textSize="@dimen/small_text_size" />
+        android:textSize="@dimen/small_text_size"
+        android:shadowColor="#B0000000"
+        android:shadowRadius="15"/>
     <TextView
         android:id="@+id/onetext_widget_center_text_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="@color/colorText1Widget"
-        android:textSize="@dimen/small_text_size" />
+        android:textSize="@dimen/small_text_size"
+        android:shadowColor="#B0000000"
+        android:shadowRadius="15"/>
     <TextView
         android:id="@+id/onetext_widget_by_textview"
         android:layout_width="wrap_content"
@@ -27,5 +31,7 @@
         android:gravity="end"
         android:text="—— "
         android:textColor="@color/colorText2Widget"
-        android:textSize="@dimen/small_text_size" />
+        android:textSize="@dimen/small_text_size"
+        android:shadowColor="#B0000000"
+        android:shadowRadius="15"/>
 </LinearLayout>

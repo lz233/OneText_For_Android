@@ -25,7 +25,7 @@
     <string name="save_text">保存图片</string>
     <string name="setting_succeed_text">成功，下次启动生效</string>
     <string name="title_activity_setting">设置</string>
-    <string name="widget_dark">暗色壁纸</string>
+    <string name="widget_dark">暗色小部件</string>
     <string name="widget_disenable_text">小部件没有启用</string>
     <string name="widget_enable_text">小部件已启用</string>
     <string name="widget_text">小部件</string>
