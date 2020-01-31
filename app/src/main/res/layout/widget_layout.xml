@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/onetext_widget_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/content_margin"
-    android:id="@+id/onetext_widget_layout">
+    android:orientation="vertical"
+    android:padding="@dimen/content_margin">
+
+    <TextView
+        android:id="@+id/onetext_widget_text_textview_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#B0000000"
+        android:shadowRadius="8"
+        android:textColor="@color/colorText1Widget"
+        android:textSize="@dimen/small_text_size" />
+
+    <TextView
+        android:id="@+id/onetext_widget_center_text_textview_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:shadowColor="#B0000000"
+        android:shadowRadius="8"
+        android:textColor="@color/colorText1Widget"
+        android:textSize="@dimen/small_text_size" />
+
+    <TextView
+        android:id="@+id/onetext_widget_by_textview_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:gravity="end"
+        android:shadowColor="#B0000000"
+        android:shadowRadius="8"
+        android:text="—— "
+        android:textColor="@color/colorText2Widget"
+        android:textSize="@dimen/small_text_size" />
+
     <TextView
         android:id="@+id/onetext_widget_text_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorText1Widget"
-        android:textSize="@dimen/small_text_size"
-        android:shadowColor="#B0000000"
-        android:shadowRadius="15"/>
+        android:textSize="@dimen/small_text_size" />
+
     <TextView
         android:id="@+id/onetext_widget_center_text_textview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="@color/colorText1Widget"
-        android:textSize="@dimen/small_text_size"
-        android:shadowColor="#B0000000"
-        android:shadowRadius="15"/>
+        android:textSize="@dimen/small_text_size" />
+
     <TextView
         android:id="@+id/onetext_widget_by_textview"
         android:layout_width="wrap_content"
@@ -31,7 +62,5 @@
         android:gravity="end"
         android:text="—— "
         android:textColor="@color/colorText2Widget"
-        android:textSize="@dimen/small_text_size"
-        android:shadowColor="#B0000000"
-        android:shadowRadius="15"/>
+        android:textSize="@dimen/small_text_size" />
 </LinearLayout>

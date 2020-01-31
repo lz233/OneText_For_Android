@@ -8,7 +8,6 @@
     <string name="feed_text">訂閱源</string>
     <string name="default_text">默認</string>
     <string name="feed_refresh_text">源刷新時間：</string>
-    <string name="feed_url_text">清除以恢復默認源</string>
     <string name="font_custom_text">選擇一個自定義字體</string>
     <string name="font_system_text">恢復默認字體</string>
     <string name="minute">分</string>
@@ -25,7 +24,7 @@
     <string name="save_text">保存圖片</string>
     <string name="setting_succeed_text">成功，下次啓動生效</string>
     <string name="title_activity_setting">設置</string>
-    <string name="widget_dark">暗色小部件</string>
+    <string name="widget_dark">暗色</string>
     <string name="widget_disenable_text">小部件沒有啓用</string>
     <string name="widget_enable_text">小部件已啓用</string>
     <string name="widget_text">小部件</string>
@@ -51,14 +50,10 @@
     </string>
     <string name="succeed">成功</string>
     <string name="widget_can_download">允許小部件更新源</string>
-    <string name="feed_url_no_changed_text">源沒有更改</string>
     <string name="hour">時</string>
     <string name="widget_refresh_text">小部件刷新時間：</string>
     <string name="interface_md2">Material Design 2 風格</string>
     <string name="interface_text">界面</string>
-    <string name="feed_local_choose_text">選擇</string>
-    <string name="feed_type_local_text">本地JSON</string>
-    <string name="feed_type_remote_text">遠端JSON</string>
     <string name="refresh_onetext_button">刷新</string>
     <string name="refresh_onetext_text">來個新句子</string>
     <string name="seal_button_isoff">顯示</string>
@@ -79,5 +74,13 @@
     <string name="share_text">分享</string>
     <string name="behavior_text">行爲</string>
     <string name="chinese_type">中文類型</string>
-    <string name="widget_center">小部件居中</string>
+    <string name="widget_center">居中</string>
+    <string name="feed_edit_text">編輯</string>
+    <string name="feed_delete_text">刪除</string>
+    <string name="setfeed_name_text">名稱</string>
+    <string name="setfeed_type_text">類型 [remote/local]</string>
+    <string name="setfeed_url_text">鏈接</string>
+    <string name="setfeed_path_text">路徑 [長按選擇文件]</string>
+    <string name="feed_cannot_delete_text">不允許刪除最後一個源。</string>
+    <string name="widget_shadow">陰影</string>
 </resources>

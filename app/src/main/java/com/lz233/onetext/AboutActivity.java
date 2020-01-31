@@ -1,13 +1,10 @@
 package com.lz233.onetext;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lz233.onetext.tools.App;
@@ -22,6 +19,7 @@ public class AboutActivity extends BaseActivity {
     private ImageView mstodo_imageview;
     private TextView ver_textview;
     private TextView about_textview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +65,7 @@ public class AboutActivity extends BaseActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://to-do.microsoft.com/sharing?InvitationToken=WI9tpCxeg9ktR5mg-AI-qwPXapdT_kGucjpSBCP6fwLE9bN5Uz2vS61gY9X8RTaC0")));
             }
         });
-        ver_textview.setText(App.getAppVersionName(AboutActivity.this)+" ("+String.valueOf(App.getAppVersionCode(AboutActivity.this)+")"));
+        ver_textview.setText(App.getAppVersionName(AboutActivity.this) + " (" + String.valueOf(App.getAppVersionCode(AboutActivity.this) + ")"));
         final Markwon markwon = Markwon.create(getApplicationContext());
         markwon.setMarkdown(about_textview, getString(R.string.about_page_introduction));
 

@@ -1,0 +1,12 @@
+[
+	{
+		"feed_name":"OneText Library",
+		"feed_type":"remote",
+		"feed_url":"https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"
+	},
+	{
+		"feed_name":"[TEST] Hitokoto",
+		"feed_type":"remote",
+		"feed_url":"https://github.com/xbl233/OneText-Library/raw/master/all.json"
+	}
+]

@@ -2,12 +2,10 @@ package com.lz233.onetext;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.DownloadManager;
-import android.app.Instrumentation;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -18,55 +16,51 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.lz233.onetext.tools.DownloadUtil;
-import com.lz233.onetext.tools.FileUtils;
-import com.lz233.onetext.tools.SpinnerAdapter;
-import com.warkiz.widget.IndicatorSeekBar;
-import com.warkiz.widget.OnSeekChangeListener;
-import com.warkiz.widget.SeekParams;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.lz233.onetext.tools.DownloadUtil;
+import com.lz233.onetext.tools.FileUtils;
+import com.lz233.onetext.tools.feed.Feed;
+import com.lz233.onetext.tools.feed.FeedAdapter;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class SettingActivity extends BaseActivity {
     private Boolean isSettingUpdated = false;
-    private View view;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private Receiver receiver;
+    private View view;
     private String font_path_yiqi;
     private String font_path_canger;
     private TextView current_font_textview;
@@ -78,24 +72,21 @@ public class SettingActivity extends BaseActivity {
     private TextView font_custom_textview;
     private AppCompatSpinner interface_daynight_spinner;
     private AppCompatSpinner chinese_type_spinner;
-    private RadioGroup feed_type_radiogroup;
-    private RadioButton feed_type_remote_radiobutton;
-    private RadioButton feed_type_local_radiobutton;
-    private LinearLayout feed_remote_layout;
-    private LinearLayout feed_local_layout;
-    private EditText feed_edittext;
-    private ImageView feed_imageview;
+    private ImageView feed_reset_imageview;
+    private ImageView feed_add_imageview;
+    private RecyclerView feed_recyclerview;
+    private List<Feed> feedList = new ArrayList<>();
     private IndicatorSeekBar feed_refresh_seekbar;
     private ImageView feed_refresh_imageview;
-    private TextView feed_local_path_textview;
-    private TextView feed_local_choose_textview;
     private TextView widget_enable_textview;
     private SwitchMaterial widget_dark_switch;
+    private SwitchMaterial widget_shadow_switch;
     private SwitchMaterial widget_center_switch;
     private SwitchMaterial widget_notification_switch;
     private IndicatorSeekBar widget_refresh_seekbar;
     private ImageView widget_refresh_imageview;
     private TextView about_page_textview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,10 +97,10 @@ public class SettingActivity extends BaseActivity {
         fuckNav(findViewById(R.id.last_layout));
         //by
         view = getWindow().getDecorView();
-        sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("setting", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        font_path_yiqi = getFilesDir().getPath()+"/Fonts/yiqi.ttf";
-        font_path_canger = getFilesDir().getPath()+"/Fonts/canger.ttf";
+        font_path_yiqi = getFilesDir().getPath() + "/Fonts/yiqi.ttf";
+        font_path_canger = getFilesDir().getPath() + "/Fonts/canger.ttf";
         current_font_textview = findViewById(R.id.current_font_textview);
         font_yiqi_layout = findViewById(R.id.font_yiqi_layout);
         font_canger_layout = findViewById(R.id.font_canger_layout);
@@ -119,19 +110,14 @@ public class SettingActivity extends BaseActivity {
         font_custom_textview = findViewById(R.id.font_custom_textview);
         interface_daynight_spinner = findViewById(R.id.interface_daynight_spinner);
         chinese_type_spinner = findViewById(R.id.chinese_type_spinner);
-        feed_type_radiogroup = findViewById(R.id.feed_type_radiogroup);
-        feed_type_remote_radiobutton = findViewById(R.id.feed_type_remote_radiobutton);
-        feed_type_local_radiobutton = findViewById(R.id.feed_type_local_radiobutton);
-        feed_remote_layout = findViewById(R.id.feed_remote_layout);
-        feed_local_layout = findViewById(R.id.feed_local_layout);
-        feed_edittext = findViewById(R.id.feed_edittext);
-        feed_imageview = findViewById(R.id.feed_imageview);
+        feed_reset_imageview = findViewById(R.id.feed_reset_imageview);
+        feed_add_imageview = findViewById(R.id.feed_add_imageview);
+        feed_recyclerview = findViewById(R.id.feed_recyclerview);
         feed_refresh_seekbar = findViewById(R.id.feed_refresh_seekbar);
         feed_refresh_imageview = findViewById(R.id.feed_refresh_imageview);
-        feed_local_path_textview = findViewById(R.id.feed_local_path_textview);
-        feed_local_choose_textview = findViewById(R.id.feed_local_choose_textview);
         widget_enable_textview = findViewById(R.id.widget_enable_textview);
         widget_dark_switch = findViewById(R.id.widget_dark_switch);
+        widget_shadow_switch = findViewById(R.id.widget_shadow_switch);
         widget_center_switch = findViewById(R.id.widget_center_switch);
         widget_notification_switch = findViewById(R.id.widget_notification_switch);
         widget_refresh_seekbar = findViewById(R.id.widget_refresh_seekbar);
@@ -139,7 +125,13 @@ public class SettingActivity extends BaseActivity {
         about_page_textview = findViewById(R.id.about_page_textview);
         //初始化
         updateFontStatus();
-        switch (sharedPreferences.getInt("interface_daynight",0)){
+        //接收广播
+        receiver = new Receiver();
+        registerReceiver(receiver, new IntentFilter("com.lz233.onetext.updatefeedlist"));
+        registerReceiver(receiver, new IntentFilter("com.lz233.onetext.issettingupdated"));
+        Intent intent = new Intent(this, Service.class);
+        startService(intent);
+        switch (sharedPreferences.getInt("interface_daynight", 0)) {
             case 0:
                 interface_daynight_spinner.setSelection(0);
                 break;
@@ -150,7 +142,7 @@ public class SettingActivity extends BaseActivity {
                 interface_daynight_spinner.setSelection(2);
                 break;
         }
-        switch (sharedPreferences.getInt("chinese_type",0)){
+        switch (sharedPreferences.getInt("chinese_type", 0)) {
             case 0:
                 chinese_type_spinner.setSelection(0);
                 break;
@@ -166,34 +158,23 @@ public class SettingActivity extends BaseActivity {
                 chinese_type_spinner.setSelection(4);
 
         }
-        if(sharedPreferences.getString("feed_type","remote").equals("remote")) {
-            feed_type_remote_radiobutton.setChecked(true);
-            feed_remote_layout.setVisibility(View.VISIBLE);
-            feed_local_layout.setVisibility(View.GONE);
-        }
-        if (sharedPreferences.getString("feed_type","remote").equals("local")) {
-            feed_type_local_radiobutton.setChecked(true);
-            feed_local_layout.setVisibility(View.VISIBLE);
-            feed_remote_layout.setVisibility(View.GONE);
-        }
-        feed_edittext.setText(sharedPreferences.getString("feed_URL","https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"));
-        feed_local_path_textview.setText(sharedPreferences.getString("feed_local_path",""));
-        feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text)+" ${PROGRESS} "+getString(R.string.hour));
-        feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",1));
-        widget_refresh_seekbar.setIndicatorTextFormat(getString(R.string.widget_refresh_text)+" ${PROGRESS} "+getString(R.string.minute));
-        widget_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time",30));
-        widget_dark_switch.setChecked(sharedPreferences.getBoolean("widget_dark",false));
-        widget_center_switch.setChecked(sharedPreferences.getBoolean("widget_center",false));
-        widget_notification_switch.setChecked(sharedPreferences.getBoolean("widget_notification_enabled",false));
+        feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text) + " ${PROGRESS} " + getString(R.string.hour));
+        feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time", 1));
+        widget_refresh_seekbar.setIndicatorTextFormat(getString(R.string.widget_refresh_text) + " ${PROGRESS} " + getString(R.string.minute));
+        widget_refresh_seekbar.setProgress(sharedPreferences.getLong("widget_refresh_time", 30));
+        widget_dark_switch.setChecked(sharedPreferences.getBoolean("widget_dark", false));
+        widget_shadow_switch.setChecked(sharedPreferences.getBoolean("widget_shadow", false));
+        widget_center_switch.setChecked(sharedPreferences.getBoolean("widget_center", false));
+        widget_notification_switch.setChecked(sharedPreferences.getBoolean("widget_notification_enabled", false));
         // 监听器
         font_yiqi_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!FileUtils.isFile(font_path_yiqi)){
+                if (!FileUtils.isFile(font_path_yiqi)) {
                     final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel channel = new NotificationChannel("download_file", getString(R.string.font_notification_text), NotificationManager.IMPORTANCE_DEFAULT);
-                        channel.setSound(null,null);
+                        channel.setSound(null, null);
                         channel.enableLights(false);
                         channel.enableVibration(false);
                         channel.setVibrationPattern(new long[]{0});
@@ -207,18 +188,19 @@ public class SettingActivity extends BaseActivity {
                             DownloadUtil.get().download("https://onetext.xyz/1.ttf", getFilesDir().getPath() + "/Fonts/", "yiqi.ttf", new DownloadUtil.OnDownloadListener() {
                                 @Override
                                 public void onDownloadSuccess(File file) {
-                                    editor.putString("font_path",font_path_yiqi);
+                                    editor.putString("font_path", font_path_yiqi);
                                     editor.apply();
                                     updateFontStatus();
                                     notificationManager.cancel(2);
                                 }
+
                                 @Override
                                 public void onDownloading(int progress) {
                                     NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
                                             .setSmallIcon(R.drawable.ic_notification)
                                             .setColor(getColor(R.color.colorText2))
-                                            .setContentTitle(getString(R.string.font_notification_title)+getString(R.string.font_yiqi))
-                                            .setContentText(progress+"%")
+                                            .setContentTitle(getString(R.string.font_notification_title) + progress + "%")
+                                            .setContentText(getString(R.string.font_yiqi))
                                             .setWhen(System.currentTimeMillis())
                                             .setSound(null)
                                             .setVibrate(new long[]{0});
@@ -228,6 +210,7 @@ public class SettingActivity extends BaseActivity {
                                     Notification notification = builder.build();
                                     notificationManager.notify(2, notification);
                                 }
+
                                 @Override
                                 public void onDownloadFailed(Exception e) {
                                     e.printStackTrace();
@@ -334,9 +317,9 @@ public class SettingActivity extends BaseActivity {
                             notificationManager.notify(2, notification);
                         }
                     });*/
-                }else {
+                } else {
                     Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                    editor.putString("font_path",font_path_yiqi);
+                    editor.putString("font_path", font_path_yiqi);
                     editor.apply();
                     updateFontStatus();
                 }
@@ -345,11 +328,11 @@ public class SettingActivity extends BaseActivity {
         font_canger_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!FileUtils.isFile(font_path_canger)){
+                if (!FileUtils.isFile(font_path_canger)) {
                     final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel channel = new NotificationChannel("download_file", getString(R.string.font_notification_text), NotificationManager.IMPORTANCE_DEFAULT);
-                        channel.setSound(null,null);
+                        channel.setSound(null, null);
                         channel.enableLights(false);
                         channel.enableVibration(false);
                         channel.setVibrationPattern(new long[]{0});
@@ -363,18 +346,19 @@ public class SettingActivity extends BaseActivity {
                             DownloadUtil.get().download("https://onetext.xyz/2.ttf", getFilesDir().getPath() + "/Fonts/", "canger.ttf", new DownloadUtil.OnDownloadListener() {
                                 @Override
                                 public void onDownloadSuccess(File file) {
-                                    editor.putString("font_path",font_path_canger);
+                                    editor.putString("font_path", font_path_canger);
                                     editor.apply();
                                     updateFontStatus();
                                     notificationManager.cancel(3);
                                 }
+
                                 @Override
                                 public void onDownloading(int progress) {
                                     NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
                                             .setSmallIcon(R.drawable.ic_notification)
                                             .setColor(getColor(R.color.colorText2))
-                                            .setContentTitle(getString(R.string.font_notification_title)+getString(R.string.font_canger))
-                                            .setContentText(progress+"%")
+                                            .setContentTitle(getString(R.string.font_notification_title) + progress + "%")
+                                            .setContentText(getString(R.string.font_canger))
                                             .setWhen(System.currentTimeMillis())
                                             .setSound(null)
                                             .setVibrate(new long[]{0});
@@ -384,6 +368,7 @@ public class SettingActivity extends BaseActivity {
                                     Notification notification = builder.build();
                                     notificationManager.notify(3, notification);
                                 }
+
                                 @Override
                                 public void onDownloadFailed(Exception e) {
                                     e.printStackTrace();
@@ -405,9 +390,9 @@ public class SettingActivity extends BaseActivity {
                             });
                         }
                     }).start();
-                }else {
+                } else {
                     Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                    editor.putString("font_path",font_path_canger);
+                    editor.putString("font_path", font_path_canger);
                     editor.apply();
                     updateFontStatus();
                 }
@@ -425,12 +410,12 @@ public class SettingActivity extends BaseActivity {
         font_custom_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(EasyPermissions.hasPermissions(SettingActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (EasyPermissions.hasPermissions(SettingActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    startActivityForResult(intent,1);
-                }else {
+                    startActivityForResult(intent, 1);
+                } else {
                     Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
                 }
             }
@@ -453,9 +438,10 @@ public class SettingActivity extends BaseActivity {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                         break;
                 }
-                editor.putInt("interface_daynight",i);
+                editor.putInt("interface_daynight", i);
                 editor.apply();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -463,63 +449,45 @@ public class SettingActivity extends BaseActivity {
         chinese_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                editor.putInt("chinese_type",i);
+                editor.putInt("chinese_type", i);
                 editor.apply();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        feed_type_radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        feed_reset_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.feed_type_remote_radiobutton:
-                        editor.putString("feed_type","remote");
-                        feed_remote_layout.setVisibility(View.VISIBLE);
-                        feed_local_layout.setVisibility(View.GONE);
-                        break;
-                    case R.id.feed_type_local_radiobutton:
-                        editor.putString("feed_type","local");
-                        feed_local_layout.setVisibility(View.VISIBLE);
-                        feed_remote_layout.setVisibility(View.GONE);
-                        break;
-                }
+            public void onClick(View v) {
+                editor.remove("feed_code");
                 editor.remove("feed_latest_refresh_time");
                 editor.remove("widget_latest_refresh_time");
                 editor.remove("onetext_code");
-                editor.apply();
-                isSettingUpdated = true;
-                Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
+                editor.commit();
+                FileUtils.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
+                FileUtils.copyAssets(SettingActivity.this, "Feed", getFilesDir().getPath() + "/Feed");
+                initFeed();
             }
         });
-        feed_imageview.setOnClickListener(new View.OnClickListener() {
+        feed_add_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(feed_edittext.getText().toString().equals("")) {
-                    editor.remove("feed_URL");
-                }else {
-                    editor.putString("feed_URL",feed_edittext.getText().toString());
-                }
-                editor.remove("feed_latest_refresh_time");
-                editor.remove("widget_latest_refresh_time");
-                editor.remove("onetext_code");
-                editor.apply();
-                isSettingUpdated = true;
-                FileUtils.deleteFile(getFilesDir().getPath()+"/OneText/OneText-Library.json");
-                Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                startActivity(new Intent(SettingActivity.this, SetFeedActivity.class));
             }
         });
         feed_refresh_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
             public void onSeeking(SeekParams seekParams) {
             }
+
             @Override
             public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
-                editor.putLong("feed_refresh_time",seekBar.getProgress());
+                editor.putLong("feed_refresh_time", seekBar.getProgress());
                 editor.apply();
             }
         });
@@ -532,26 +500,27 @@ public class SettingActivity extends BaseActivity {
                 Snackbar.make(view, getString(R.string.succeed), Snackbar.LENGTH_SHORT).show();
             }
         });
-        feed_local_choose_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(EasyPermissions.hasPermissions(SettingActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    startActivityForResult(intent,2);
-                }else {
-                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
         widget_dark_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    editor.putBoolean("widget_dark",true);
-                }else {
-                    editor.putBoolean("widget_dark",false);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    editor.putBoolean("widget_dark", true);
+                } else {
+                    editor.putBoolean("widget_dark", false);
+                }
+                editor.commit();
+                Intent intent = new Intent("com.lz233.onetext.widget");
+                intent.setPackage(getPackageName());
+                SettingActivity.this.sendBroadcast(intent);
+            }
+        });
+        widget_shadow_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    editor.putBoolean("widget_shadow", true);
+                } else {
+                    editor.putBoolean("widget_shadow", false);
                 }
                 editor.commit();
                 Intent intent = new Intent("com.lz233.onetext.widget");
@@ -561,11 +530,11 @@ public class SettingActivity extends BaseActivity {
         });
         widget_center_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    editor.putBoolean("widget_center",true);
-                }else {
-                    editor.putBoolean("widget_center",false);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    editor.putBoolean("widget_center", true);
+                } else {
+                    editor.putBoolean("widget_center", false);
                 }
                 editor.commit();
                 Intent intent = new Intent("com.lz233.onetext.widget");
@@ -575,24 +544,22 @@ public class SettingActivity extends BaseActivity {
         });
         widget_notification_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel channel = new NotificationChannel("widget_onetext", getString(R.string.widget_notification_text), NotificationManager.IMPORTANCE_DEFAULT);
-                    channel.setSound(null,null);
+                    channel.setSound(null, null);
                     channel.enableLights(false);
                     channel.enableVibration(false);
                     channel.setVibrationPattern(new long[]{0});
                     notificationManager.createNotificationChannel(channel);
                 }
-                if(b){
-                    editor.putBoolean("widget_notification_enabled",true);
-                    editor.commit();
+                if (isChecked) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         final NotificationChannel channel = notificationManager.getNotificationChannel("widget_onetext");
                         if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
                             widget_notification_switch.setChecked(false);
-                            Snackbar.make(view, getString(R.string.widget_notification_permissions_text), Snackbar.LENGTH_SHORT).setAction(getString(R.string.request_permissions_button), new View.OnClickListener() {
+                            Snackbar.make(rootview, getString(R.string.widget_notification_permissions_text), Snackbar.LENGTH_SHORT).setAction(getString(R.string.request_permissions_button), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
@@ -600,13 +567,14 @@ public class SettingActivity extends BaseActivity {
                                     intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel.getId());
                                     startActivity(intent);
                                 }
-                            }).setActionTextColor(getResources().getColor(R.color.colorText2)).show();
+                            }).show();
                         }
-                    }else {
-                        Snackbar.make(view, getString(R.string.widget_notification_next_effective_text), Snackbar.LENGTH_SHORT).show();
                     }
-                }else {
-                    editor.putBoolean("widget_notification_enabled",false);
+                    editor.putBoolean("widget_notification_enabled", true);
+                    editor.commit();
+                    Snackbar.make(rootview, getString(R.string.widget_notification_next_effective_text), Snackbar.LENGTH_SHORT).show();
+                } else {
+                    editor.putBoolean("widget_notification_enabled", false);
                     editor.commit();
                 }
             }
@@ -615,12 +583,14 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onSeeking(SeekParams seekParams) {
             }
+
             @Override
             public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
-                editor.putLong("widget_refresh_time",seekBar.getProgress());
+                editor.putLong("widget_refresh_time", seekBar.getProgress());
                 editor.apply();
             }
         });
@@ -640,37 +610,77 @@ public class SettingActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     protected void onStart() {
         super.onStart();
         // The activity is about to become visible.
-        if(sharedPreferences.getBoolean("widget_enabled",false)) {
+        initFeed();
+        if (sharedPreferences.getBoolean("widget_enabled", false)) {
             widget_enable_textview.setText(R.string.widget_enable_text);
-        }else {
+        } else {
             widget_enable_textview.setText(R.string.widget_disenable_text);
         }
     }
+
     private void updateFontStatus() {
         current_font_textview.post(new Runnable() {
             @Override
             public void run() {
-                if(sharedPreferences.getString("font_path","").equals("")){
+                if (sharedPreferences.getString("font_path", "").equals("")) {
                     current_font_textview.setVisibility(View.GONE);
-                }else {
+                } else {
                     current_font_textview.setVisibility(View.VISIBLE);
-                    File file = new File(sharedPreferences.getString("font_path",""));
-                    current_font_textview.setText(getString(R.string.current_font_text)+file.getName());
+                    File file = new File(sharedPreferences.getString("font_path", ""));
+                    current_font_textview.setText(getString(R.string.current_font_text) + file.getName());
                 }
             }
         });
     }
-    public boolean onKeyDown(int keyCode, KeyEvent event){
-        if((keyCode == KeyEvent.KEYCODE_BACK)&isSettingUpdated) { //监控/拦截/屏蔽返回键
+
+    public void initFeed() {
+        feedList.clear();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        feed_recyclerview.setLayoutManager(linearLayoutManager);
+        FeedAdapter feedAdapter = new FeedAdapter(feedList);
+        feed_recyclerview.setAdapter(feedAdapter);
+        int selectedInt = sharedPreferences.getInt("feed_code", 0);
+        try {
+            JSONArray jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath() + "/Feed/Feed.json"));
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = new JSONObject(jsonArray.optString(i));
+                String feedType = jsonObject.optString("feed_type");
+                int feedTypeImageInt = 0;
+                Boolean ifSelected;
+                if (feedType.equals("remote")) {
+                    feedTypeImageInt = R.drawable.ic_cloud;
+                } else if (feedType.equals("local")) {
+                    feedTypeImageInt = R.drawable.ic_file;
+                } else if (feedType.equals("internet")) {
+                    feedTypeImageInt = R.drawable.ic_world;
+                }
+                if (selectedInt == i) {
+                    ifSelected = true;
+                } else {
+                    ifSelected = false;
+                }
+                Feed feed = new Feed(this, feedTypeImageInt, jsonObject.optString("feed_name"), ifSelected);
+                feedList.add(feed);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) & isSettingUpdated) { //监控/拦截/屏蔽返回键
             System.exit(0);
             return false;
         }
         return super.onKeyDown(keyCode, event);
     }
+
     @SuppressLint("MissingSuperCall")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
@@ -680,7 +690,7 @@ public class SettingActivity extends BaseActivity {
                 try {
                     String file_path = getPath(this, uri);
                     Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                    editor.putString("font_path",file_path);
+                    editor.putString("font_path", file_path);
                     editor.apply();
                     //finishActivity(requestCode);
                     updateFontStatus();
@@ -689,25 +699,9 @@ public class SettingActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             }
-            if (requestCode == 2) {
-                Uri uri = data.getData();
-                try {
-                    String file_path = getPath(this, uri);
-                    editor.putString("feed_local_path",file_path);
-                    editor.remove("feed_latest_refresh_time");
-                    editor.remove("onetext_code");
-                    editor.apply();
-                    isSettingUpdated = true;
-                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                    feed_local_path_textview.setText(file_path);
-                    //finishActivity(requestCode);
-                    //Toast.makeText(this, "文件路径："+uri.getPath().toString(), Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
+
     @SuppressLint("NewApi")
     public String getPath(final Context context, final Uri uri) {
 
@@ -765,6 +759,7 @@ public class SettingActivity extends BaseActivity {
         }
         return null;
     }
+
     /**
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
@@ -803,6 +798,7 @@ public class SettingActivity extends BaseActivity {
     public boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
+
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is MediaProvider.
@@ -810,11 +806,24 @@ public class SettingActivity extends BaseActivity {
     public boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
+
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is DownloadsProvider.
      */
     public boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    class Receiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("com.lz233.onetext.updatefeedlist")) {
+                initFeed();
+            }
+            if (intent.getAction().equals("com.lz233.onetext.issettingupdated")) {
+                isSettingUpdated = true;
+            }
+        }
     }
 }

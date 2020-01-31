@@ -21,17 +21,16 @@ public class DownloadUtil {
     private static DownloadUtil downloadUtil;
     private final OkHttpClient okHttpClient;
 
+    public DownloadUtil() {
+        okHttpClient = new OkHttpClient();
+    }
+
     public static DownloadUtil get() {
         if (downloadUtil == null) {
             downloadUtil = new DownloadUtil();
         }
         return downloadUtil;
     }
-
-    public DownloadUtil() {
-        okHttpClient = new OkHttpClient();
-    }
-
 
     /**
      * @param url          下载连接
@@ -95,7 +94,7 @@ public class DownloadUtil {
                     listener.onDownloadSuccess(file);
                 } catch (Exception e) {
                     listener.onDownloadFailed(e);
-                }finally {
+                } finally {
 
                     try {
                         if (is != null) {
@@ -116,7 +115,7 @@ public class DownloadUtil {
     }
 
 
-    public interface OnDownloadListener{
+    public interface OnDownloadListener {
 
         /**
          * 下载成功之后的文件

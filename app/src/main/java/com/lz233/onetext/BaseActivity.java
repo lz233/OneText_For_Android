@@ -1,30 +1,18 @@
 package com.lz233.onetext;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.text.Layout;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -33,13 +21,16 @@ import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
+
 public abstract class BaseActivity extends AppCompatActivity {
+    protected ViewGroup rootview;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        SharedPreferences sharedPreferences = getSharedPreferences("setting",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("setting", MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         //Q导航栏沉浸
-        final ViewGroup rootView=(ViewGroup)findViewById(android.R.id.content);
+        rootview = findViewById(android.R.id.content);
 
         /*ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), new OnApplyWindowInsetsListener() {
             @Override
@@ -50,23 +41,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         });*/
         //状态栏icon黑色
         int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        if(mode == Configuration.UI_MODE_NIGHT_NO) {
-            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR|View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        if (mode == Configuration.UI_MODE_NIGHT_NO) {
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         }
-        rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        ViewCompat.setOnApplyWindowInsetsListener(rootView, new OnApplyWindowInsetsListener() {
+        rootview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        ViewCompat.setOnApplyWindowInsetsListener(rootview, new OnApplyWindowInsetsListener() {
             @Override
             public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                rootView.setPadding(insets.getSystemWindowInsetLeft(),0,insets.getSystemWindowInsetRight(),0);
+                rootview.setPadding(insets.getSystemWindowInsetLeft(), 0, insets.getSystemWindowInsetRight(), 0);
                 return insets;
             }
         });
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             //rootView.setFitsSystemWindows(true);
             //rootView.setPadding(0,0,0,getNavigationBarHeight());
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
-            //rootView.setFitsSystemWindows(true);
+        //rootView.setFitsSystemWindows(true);
         /*if ((Build.VERSION.SDK_INT<Build.VERSION_CODES.Q)|(getNavigationBarHeight()>dp2px(16))) {
             //rootView.setPadding(0,0,0,getNavigationBarHeight());
             if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
@@ -87,30 +78,34 @@ public abstract class BaseActivity extends AppCompatActivity {
         ViewPump.init(ViewPump.builder()
                 .addInterceptor(new CalligraphyInterceptor(
                         new CalligraphyConfig.Builder()
-                                .setDefaultFontPath(sharedPreferences.getString("font_path",null))
+                                .setDefaultFontPath(sharedPreferences.getString("font_path", null))
                                 .setFontAttrId(R.attr.fontPath)
                                 .build()))
                 .build());
     }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
+
     private int getNavigationBarHeight() {
         Resources resources = this.getResources();
-        int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
         //Log.v("dbw", "Navi height:" + height);
         return height;
     }
-    public void fuckNav(View last_layout){
+
+    public void fuckNav(View last_layout) {
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) last_layout.getLayoutParams();
-        lp.setMargins(getResources().getDimensionPixelSize(R.dimen.layout_margin),0,getResources().getDimensionPixelSize(R.dimen.layout_margin),getNavigationBarHeight()+getResources().getDimensionPixelSize(R.dimen.layout_margin));
+        lp.setMargins(getResources().getDimensionPixelSize(R.dimen.layout_margin), 0, getResources().getDimensionPixelSize(R.dimen.layout_margin), getNavigationBarHeight() + getResources().getDimensionPixelSize(R.dimen.layout_margin));
         last_layout.setLayoutParams(lp);
     }
-    public void fuckNav(View last_layout,int left,int top,int right,int bottom){
+
+    public void fuckNav(View last_layout, int left, int top, int right, int bottom) {
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) last_layout.getLayoutParams();
-        lp.setMargins(left,top,right,bottom);
+        lp.setMargins(left, top, right, bottom);
         last_layout.setLayoutParams(lp);
     }
     /*

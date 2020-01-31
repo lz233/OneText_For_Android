@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/layout_margin"
+    android:background="@drawable/bgstyle_md2"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/feed_select_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="@dimen/layout_margin">
+
+        <ImageView
+            android:id="@+id/feed_type_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_marginRight="@dimen/layout_margin"
+            android:src="@drawable/ic_settings" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/feed_name_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/content_margin"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/small_text_size" />
+
+            <TextView
+                android:id="@+id/feed_edit_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/content_margin"
+                android:text="@string/feed_edit_text"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/small_text_size" />
+
+            <TextView
+                android:id="@+id/feed_delete_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/content_margin"
+                android:text="@string/feed_delete_text"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/small_text_size" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

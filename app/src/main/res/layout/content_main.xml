@@ -4,35 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main"
-    android:background="@color/colorWhite">
+    tools:showIn="@layout/activity_main">
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/onetext_swiperefreshlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/colorWhite">
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/pic_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:background="@color/colorWhite">
+                        android:background="@color/colorWhite"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -47,16 +50,19 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:indeterminate="true" />
+
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
+
                                 <ImageView
                                     android:id="@+id/seal_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/moemiku"
                                     android:layout_alignParentEnd="true"
-                                    android:layout_alignParentBottom="true" />
+                                    android:layout_alignParentBottom="true"
+                                    android:src="@drawable/moemiku" />
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
@@ -93,8 +99,8 @@
                                         android:id="@+id/onetext_by_textview"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/content_margin"
                                         android:layout_gravity="end"
+                                        android:layout_marginStart="@dimen/content_margin"
                                         android:gravity="end"
                                         android:text="—— "
                                         android:textColor="@color/colorText2"
@@ -138,187 +144,201 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:layout_margin="@dimen/layout_margin">
+                            android:layout_margin="@dimen/layout_margin"
+                            android:orientation="vertical">
 
                             <LinearLayout
                                 android:id="@+id/request_permissions_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:orientation="horizontal"
                                 android:layout_marginBottom="@dimen/layout_margin"
+                                android:orientation="horizontal"
                                 android:visibility="gone">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/content_margin"
                                     android:layout_weight="1"
                                     android:text="@string/request_permissions_text"
-                                    android:textSize="@dimen/text_size"
                                     android:textColor="@color/colorText2"
-                                    android:layout_gravity="center"
-                                    android:layout_marginRight="@dimen/content_margin"/>
+                                    android:textSize="@dimen/text_size" />
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_weight="0"
                                     app:cardCornerRadius="@dimen/cardview_radius"
                                     app:cardElevation="0dp"
-                                    app:cardMaxElevation="0dp"
-                                    android:layout_gravity="center">
+                                    app:cardMaxElevation="0dp">
+
                                     <androidx.appcompat.widget.AppCompatButton
                                         android:id="@+id/request_permissions_button"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/bgstyle_md2"
-                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:layout_gravity="center"
-                                        android:elevation="0dp"
                                         android:layout_weight="0"
+                                        android:background="@drawable/bgstyle_md2"
+                                        android:elevation="0dp"
+                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:text="@string/request_permissions_button" />
                                 </androidx.cardview.widget.CardView>
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:layout_marginBottom="@dimen/layout_margin">
+                                android:layout_marginBottom="@dimen/layout_margin"
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/content_margin"
                                     android:layout_weight="1"
                                     android:text="@string/save_text"
-                                    android:textSize="@dimen/text_size"
                                     android:textColor="@color/colorText2"
-                                    android:layout_gravity="center"
-                                    android:layout_marginRight="@dimen/content_margin"/>
+                                    android:textSize="@dimen/text_size" />
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_weight="0"
                                     app:cardCornerRadius="@dimen/cardview_radius"
                                     app:cardElevation="0dp"
-                                    app:cardMaxElevation="0dp"
-                                    android:layout_gravity="center">
+                                    app:cardMaxElevation="0dp">
+
                                     <androidx.appcompat.widget.AppCompatButton
                                         android:id="@+id/save_button"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/bgstyle_md2"
-                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:layout_gravity="center"
-                                        android:elevation="0dp"
                                         android:layout_weight="0"
+                                        android:background="@drawable/bgstyle_md2"
+                                        android:elevation="0dp"
+                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:text="@string/save_button" />
                                 </androidx.cardview.widget.CardView>
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:layout_marginBottom="@dimen/layout_margin">
+                                android:layout_marginBottom="@dimen/layout_margin"
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/content_margin"
                                     android:layout_weight="1"
                                     android:text="@string/refresh_onetext_text"
-                                    android:textSize="@dimen/text_size"
                                     android:textColor="@color/colorText2"
-                                    android:layout_gravity="center"
-                                    android:layout_marginRight="@dimen/content_margin"/>
+                                    android:textSize="@dimen/text_size" />
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_weight="0"
                                     app:cardCornerRadius="@dimen/cardview_radius"
                                     app:cardElevation="0dp"
-                                    app:cardMaxElevation="0dp"
-                                    android:layout_gravity="center">
+                                    app:cardMaxElevation="0dp">
+
                                     <androidx.appcompat.widget.AppCompatButton
                                         android:id="@+id/refresh_button"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/bgstyle_md2"
-                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:layout_gravity="center"
-                                        android:elevation="0dp"
                                         android:layout_weight="0"
+                                        android:background="@drawable/bgstyle_md2"
+                                        android:elevation="0dp"
+                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:text="@string/refresh_onetext_button" />
                                 </androidx.cardview.widget.CardView>
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:layout_marginBottom="@dimen/layout_margin">
+                                android:layout_marginBottom="@dimen/layout_margin"
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/content_margin"
                                     android:layout_weight="1"
                                     android:text="@string/seal_text"
-                                    android:textSize="@dimen/text_size"
                                     android:textColor="@color/colorText2"
-                                    android:layout_gravity="center"
-                                    android:layout_marginRight="@dimen/content_margin"/>
+                                    android:textSize="@dimen/text_size" />
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_weight="0"
                                     app:cardCornerRadius="@dimen/cardview_radius"
                                     app:cardElevation="0dp"
-                                    app:cardMaxElevation="0dp"
-                                    android:layout_gravity="center">
+                                    app:cardMaxElevation="0dp">
+
                                     <androidx.appcompat.widget.AppCompatButton
                                         android:id="@+id/seal_button"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/bgstyle_md2"
-                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:layout_gravity="center"
+                                        android:layout_weight="0"
+                                        android:background="@drawable/bgstyle_md2"
                                         android:elevation="0dp"
-                                        android:layout_weight="0"/>
+                                        android:foreground="?android:attr/selectableItemBackground" />
                                 </androidx.cardview.widget.CardView>
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:layout_marginBottom="@dimen/layout_margin">
+                                android:layout_marginBottom="@dimen/layout_margin"
+                                android:orientation="horizontal">
 
                                 <com.warkiz.widget.IndicatorSeekBar
                                     android:id="@+id/onetext_text_size_seekbar"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:thumbTint="@color/colorText2"
-                                    android:layout_weight="1"
                                     android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/content_margin"
+                                    android:layout_weight="1"
+                                    android:thumbTint="@color/colorText2"
+                                    app:isb_indicator_color="@color/colorText2"
+                                    app:isb_indicator_text_color="@color/colorWhite"
                                     app:isb_max="40"
                                     app:isb_show_indicator="rectangle"
-                                    app:isb_indicator_color="@color/colorText2"
                                     app:isb_thumb_color="@color/colorText2"
-                                    app:isb_track_progress_color="@color/colorAccent"
-                                    app:isb_indicator_text_color="@color/colorWhite"
-                                    android:layout_marginRight="@dimen/content_margin"/>
+                                    app:isb_track_progress_color="@color/colorAccent" />
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_weight="0"
                                     app:cardCornerRadius="@dimen/cardview_radius"
                                     app:cardElevation="0dp"
-                                    app:cardMaxElevation="0dp"
-                                    android:layout_gravity="center">
+                                    app:cardMaxElevation="0dp">
+
                                     <androidx.appcompat.widget.AppCompatButton
                                         android:id="@+id/onetext_text_size_button"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/bgstyle_md2"
-                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:layout_gravity="center"
-                                        android:elevation="0dp"
                                         android:layout_weight="0"
+                                        android:background="@drawable/bgstyle_md2"
+                                        android:elevation="0dp"
+                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:text="@string/default_text" />
                                 </androidx.cardview.widget.CardView>
                             </LinearLayout>
@@ -326,40 +346,42 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:layout_marginBottom="@dimen/layout_margin">
+                                android:layout_marginBottom="@dimen/layout_margin"
+                                android:orientation="horizontal">
 
                                 <com.warkiz.widget.IndicatorSeekBar
                                     android:id="@+id/onetext_by_size_seekbar"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:thumbTint="@color/colorText2"
-                                    android:layout_weight="1"
                                     android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/content_margin"
+                                    android:layout_weight="1"
+                                    android:thumbTint="@color/colorText2"
+                                    app:isb_indicator_color="@color/colorText2"
+                                    app:isb_indicator_text_color="@color/colorWhite"
                                     app:isb_max="30"
                                     app:isb_show_indicator="rectangle"
-                                    app:isb_indicator_color="@color/colorText2"
                                     app:isb_thumb_color="@color/colorText2"
-                                    app:isb_track_progress_color="@color/colorAccent"
-                                    app:isb_indicator_text_color="@color/colorWhite"
-                                    android:layout_marginRight="@dimen/content_margin"/>
+                                    app:isb_track_progress_color="@color/colorAccent" />
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_weight="0"
                                     app:cardCornerRadius="@dimen/cardview_radius"
                                     app:cardElevation="0dp"
-                                    app:cardMaxElevation="0dp"
-                                    android:layout_gravity="center">
+                                    app:cardMaxElevation="0dp">
+
                                     <androidx.appcompat.widget.AppCompatButton
                                         android:id="@+id/onetext_by_size_button"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/bgstyle_md2"
-                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:layout_gravity="center"
-                                        android:elevation="0dp"
                                         android:layout_weight="0"
+                                        android:background="@drawable/bgstyle_md2"
+                                        android:elevation="0dp"
+                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:text="@string/default_text" />
                                 </androidx.cardview.widget.CardView>
                             </LinearLayout>
@@ -367,43 +389,46 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:layout_marginBottom="@dimen/layout_margin">
+                                android:layout_marginBottom="@dimen/layout_margin"
+                                android:orientation="horizontal">
 
                                 <com.warkiz.widget.IndicatorSeekBar
                                     android:id="@+id/onetext_time_size_seekbar"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:thumbTint="@color/colorText2"
-                                    android:layout_weight="1"
                                     android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/content_margin"
+                                    android:layout_weight="1"
+                                    android:thumbTint="@color/colorText2"
+                                    app:isb_indicator_color="@color/colorText2"
+                                    app:isb_indicator_text_color="@color/colorWhite"
                                     app:isb_max="30"
                                     app:isb_show_indicator="rectangle"
-                                    app:isb_indicator_color="@color/colorText2"
                                     app:isb_thumb_color="@color/colorText2"
-                                    app:isb_track_progress_color="@color/colorAccent"
-                                    app:isb_indicator_text_color="@color/colorWhite"
-                                    android:layout_marginRight="@dimen/content_margin"/>
+                                    app:isb_track_progress_color="@color/colorAccent" />
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_weight="0"
                                     app:cardCornerRadius="@dimen/cardview_radius"
                                     app:cardElevation="0dp"
-                                    app:cardMaxElevation="0dp"
-                                    android:layout_gravity="center">
+                                    app:cardMaxElevation="0dp">
+
                                     <androidx.appcompat.widget.AppCompatButton
                                         android:id="@+id/onetext_time_size_button"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/bgstyle_md2"
-                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:layout_gravity="center"
-                                        android:elevation="0dp"
                                         android:layout_weight="0"
+                                        android:background="@drawable/bgstyle_md2"
+                                        android:elevation="0dp"
+                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:text="@string/default_text" />
                                 </androidx.cardview.widget.CardView>
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -413,33 +438,35 @@
                                     android:id="@+id/onetext_from_size_seekbar"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:thumbTint="@color/colorText2"
-                                    android:layout_weight="1"
                                     android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/content_margin"
+                                    android:layout_weight="1"
+                                    android:thumbTint="@color/colorText2"
+                                    app:isb_indicator_color="@color/colorText2"
+                                    app:isb_indicator_text_color="@color/colorWhite"
                                     app:isb_max="30"
                                     app:isb_show_indicator="rectangle"
-                                    app:isb_indicator_color="@color/colorText2"
                                     app:isb_thumb_color="@color/colorText2"
-                                    app:isb_track_progress_color="@color/colorAccent"
-                                    app:isb_indicator_text_color="@color/colorWhite"
-                                    android:layout_marginRight="@dimen/content_margin"/>
+                                    app:isb_track_progress_color="@color/colorAccent" />
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_weight="0"
                                     app:cardCornerRadius="@dimen/cardview_radius"
                                     app:cardElevation="0dp"
-                                    app:cardMaxElevation="0dp"
-                                    android:layout_gravity="center">
+                                    app:cardMaxElevation="0dp">
+
                                     <androidx.appcompat.widget.AppCompatButton
                                         android:id="@+id/onetext_from_size_button"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/bgstyle_md2"
-                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:layout_gravity="center"
-                                        android:elevation="0dp"
                                         android:layout_weight="0"
+                                        android:background="@drawable/bgstyle_md2"
+                                        android:elevation="0dp"
+                                        android:foreground="?android:attr/selectableItemBackground"
                                         android:text="@string/default_text" />
                                 </androidx.cardview.widget.CardView>
                             </LinearLayout>

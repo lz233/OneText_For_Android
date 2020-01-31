@@ -16,32 +16,32 @@ public class SpinnerAdapter<T> extends ArrayAdapter<T> {
 
     private int selectedPostion;
 
-    public void setSelectedPostion(int selectedPostion) {
-        this.selectedPostion = selectedPostion;
-    }
-
     public SpinnerAdapter(@NonNull Context context, int resource, @NonNull T[] objects) {
         super(context, resource, objects);
+    }
+
+    public static @NonNull
+    SpinnerAdapter<CharSequence> createFromResource(@NonNull Context context,
+                                                    @ArrayRes int textArrayResId, @LayoutRes int textViewResId) {
+        final CharSequence[] strings = context.getResources().getTextArray(textArrayResId);
+        return new SpinnerAdapter<>(context, textViewResId, strings);
+    }
+
+    public void setSelectedPostion(int selectedPostion) {
+        this.selectedPostion = selectedPostion;
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = super.getDropDownView(position, convertView, parent);
-        TextView textView = (TextView)view;
-        if(selectedPostion == position){
-            textView.setTextColor(Color.argb(255,222,222,222));
+        TextView textView = (TextView) view;
+        if (selectedPostion == position) {
+            textView.setTextColor(Color.argb(255, 222, 222, 222));
             textView.getPaint().setFakeBoldText(true);
-        }
-        else{
+        } else {
             textView.setTextColor(0xff6d6d6d);
             textView.getPaint().setFakeBoldText(false);
         }
         return view;
-    }
-
-    public static @NonNull SpinnerAdapter<CharSequence> createFromResource(@NonNull Context context,
-                                                                           @ArrayRes int textArrayResId, @LayoutRes int textViewResId) {
-        final CharSequence[] strings = context.getResources().getTextArray(textArrayResId);
-        return new SpinnerAdapter<>(context, textViewResId, strings);
     }
 }

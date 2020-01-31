@@ -1,7 +1,6 @@
 package com.lz233.onetext;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -10,42 +9,29 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.TextView;
-
-import com.lz233.onetext.tools.FileUtils;
-import com.lz233.onetext.tools.OneTextUtils;
-import com.zqc.opencc.android.lib.ChineseConverter;
 
 import androidx.core.app.NotificationCompat;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
-
-import java.util.Locale;
-import java.util.Random;
+import com.lz233.onetext.tools.FileUtils;
+import com.lz233.onetext.tools.OneTextUtils;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
-import static com.zqc.opencc.android.lib.ConversionType.S2HK;
-import static com.zqc.opencc.android.lib.ConversionType.S2T;
-import static com.zqc.opencc.android.lib.ConversionType.S2TWP;
 
 public class WidgetProvider extends AppWidgetProvider {
     private int onetext_code;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         AppWidgetManager manger = AppWidgetManager.getInstance(context);
-        ComponentName thisName = new ComponentName(context,WidgetProvider.class);
+        ComponentName thisName = new ComponentName(context, WidgetProvider.class);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-        run(context,views);
-        manger.updateAppWidget(thisName,views);
+        run(context, views);
+        manger.updateAppWidget(thisName, views);
         super.onReceive(context, intent);
     }
 
@@ -62,17 +48,18 @@ public class WidgetProvider extends AppWidgetProvider {
             intent.setClass(context, MainActivity.class);*/
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-            Intent openIntent = new Intent(context,MainActivity.class);
+            Intent openIntent = new Intent(context, MainActivity.class);
             openIntent.setPackage(context.getPackageName());
-            PendingIntent openPendingIntent = PendingIntent.getActivity(context,0,openIntent,0);
-            views.setOnClickPendingIntent(R.id.onetext_widget_layout,openPendingIntent);
-            run(context,views);
+            PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, 0);
+            views.setOnClickPendingIntent(R.id.onetext_widget_layout, openPendingIntent);
+            run(context, views);
             //views.setOnClickPendingIntent(R.id.onetext_widget_layout,getPendingIntent(context,R.id.onetext_widget_layout));
             // 更新小部件
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
-    private PendingIntent getPendingIntent(Context context, int resID){
+
+    private PendingIntent getPendingIntent(Context context, int resID) {
         Intent intent = new Intent();
         intent.setClass(context, WidgetProvider.class);//如果没有这一句，表示匿名的。加上表示是显式的。在单个按钮的时候是没啥区别的，但是多个的时候就有问题了
         intent.setAction("btn.text.com");
@@ -80,59 +67,100 @@ public class WidgetProvider extends AppWidgetProvider {
         // 因为在绑定的时候，是将同一个id绑定在一起的，所以哪个控件点击，发送的intent中data中的id就是哪个控件的id
         intent.setData(Uri.parse("id:" + resID));
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,intent,0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         return pendingIntent;
     }
+
     public void run(final Context context, final RemoteViews views) {
         try {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("setting",Context.MODE_PRIVATE);
-            if(sharedPreferences.getBoolean("widget_dark",false)){
-                views.setTextColor(R.id.onetext_widget_text_textview,context.getColor(R.color.colorText1Widget));
-                views.setTextColor(R.id.onetext_widget_center_text_textview,context.getColor(R.color.colorText1Widget));
-                views.setTextColor(R.id.onetext_widget_by_textview,context.getColor(R.color.colorText2Widget));
-            }else {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("setting", Context.MODE_PRIVATE);
+            if (sharedPreferences.getBoolean("widget_dark", false)) {
+                views.setTextColor(R.id.onetext_widget_text_textview_shadow, context.getColor(R.color.colorText1Widget));
+                views.setTextColor(R.id.onetext_widget_center_text_textview_shadow, context.getColor(R.color.colorText1Widget));
+                views.setTextColor(R.id.onetext_widget_by_textview_shadow, context.getColor(R.color.colorText2Widget));
+                views.setTextColor(R.id.onetext_widget_text_textview, context.getColor(R.color.colorText1Widget));
+                views.setTextColor(R.id.onetext_widget_center_text_textview, context.getColor(R.color.colorText1Widget));
+                views.setTextColor(R.id.onetext_widget_by_textview, context.getColor(R.color.colorText2Widget));
+            } else {
+                views.setTextColor(R.id.onetext_widget_text_textview_shadow, context.getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_center_text_textview_shadow, context.getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_by_textview_shadow, context.getColor(R.color.colorWhiteWidget));
                 views.setTextColor(R.id.onetext_widget_text_textview, context.getColor(R.color.colorWhiteWidget));
-                views.setTextColor(R.id.onetext_widget_center_text_textview,context.getColor(R.color.colorWhiteWidget));
-                views.setTextColor(R.id.onetext_widget_by_textview,context.getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_center_text_textview, context.getColor(R.color.colorWhiteWidget));
+                views.setTextColor(R.id.onetext_widget_by_textview, context.getColor(R.color.colorWhiteWidget));
                 //LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 //View viewParent= inflater.inflate((XmlPullParser) views, null);
                 //TextView view =viewParent.findViewById(R.id.onetext_widget_center_text_textview);
                 //view.setTextColor(Color.RED);
             }
-            if ((FileUtils.isFile(context.getFilesDir().getPath()+"/OneText/OneText-Library.json"))|(FileUtils.isFile(sharedPreferences.getString("feed_local_path",null)))){
+            if ((FileUtils.isFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json")) | (FileUtils.isFile(sharedPreferences.getString("feed_local_path", null)))) {
                 OneTextUtils oneTextUtils = new OneTextUtils(context);
-                String[] oneText = oneTextUtils.readOneText(oneTextUtils.getOneTextCode(false,true));
+                String[] oneText = oneTextUtils.readOneText(oneTextUtils.getOneTextCode(false, true));
                 String originalText = oneText[0];
-                String text = originalText.replace("\n"," ");
+                String text = originalText.replace("\n", " ");
                 String by = oneText[1];
-                if(sharedPreferences.getBoolean("widget_center",false)){
-                    views.setTextViewText(R.id.onetext_widget_center_text_textview,text);
-                    views.setViewVisibility(R.id.onetext_widget_text_textview,View.GONE);
-                    views.setViewVisibility(R.id.onetext_widget_center_text_textview,View.VISIBLE);
-                }else {
-                    views.setTextViewText(R.id.onetext_widget_text_textview,text);
-                    views.setViewVisibility(R.id.onetext_widget_text_textview,View.VISIBLE);
-                    views.setViewVisibility(R.id.onetext_widget_center_text_textview,View.GONE);
-                }
-                if((!by.equals(""))&(!sharedPreferences.getBoolean("widget_center",false))) {
-                    views.setViewVisibility(R.id.onetext_widget_by_textview,View.VISIBLE);
-                    views.setTextViewText(R.id.onetext_widget_by_textview,"—— "+by);
-                }else {
-                    views.setViewVisibility(R.id.onetext_widget_by_textview,View.GONE);
-                }
-                if(sharedPreferences.getBoolean("widget_notification_enabled",false)) {
-                    RemoteViews notificationViewsLarge = new RemoteViews(context.getPackageName(), R.layout.notification_layout_large);
-                    notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_text_textview,originalText);
-                    if(!by.equals("")) {
-                        notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview,View.VISIBLE);
-                        notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_by_textview,"—— "+by);
-                    }else {
-                        notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview,View.GONE);
+                if (sharedPreferences.getBoolean("widget_center", false)) {
+                    if (sharedPreferences.getBoolean("widget_shadow", false)) {
+                        views.setTextViewText(R.id.onetext_widget_center_text_textview_shadow, text);
+                        views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.VISIBLE);
+                        views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
+                    } else {
+                        views.setTextViewText(R.id.onetext_widget_center_text_textview, text);
+                        views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.VISIBLE);
+                        views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
                     }
-                    Intent openIntent = new Intent(context,MainActivity.class);
+                } else {
+                    if (sharedPreferences.getBoolean("widget_shadow", false)) {
+                        views.setTextViewText(R.id.onetext_widget_text_textview_shadow, text);
+                        views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.VISIBLE);
+                        views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
+                        if (!by.equals("")) {
+                            views.setTextViewText(R.id.onetext_widget_by_textview_shadow, "—— " + by);
+                            views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.VISIBLE);
+                            views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
+                        } else {
+                            views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                            views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
+                        }
+                    } else {
+                        views.setTextViewText(R.id.onetext_widget_text_textview, text);
+                        views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_text_textview, View.VISIBLE);
+                        views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
+                        if (!by.equals("")) {
+                            views.setTextViewText(R.id.onetext_widget_by_textview, "—— " + by);
+                            views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                            views.setViewVisibility(R.id.onetext_widget_by_textview, View.VISIBLE);
+                        } else {
+                            views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                            views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
+                        }
+                    }
+                }
+                if (sharedPreferences.getBoolean("widget_notification_enabled", false)) {
+                    RemoteViews notificationViewsLarge = new RemoteViews(context.getPackageName(), R.layout.notification_layout_large);
+                    notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_text_textview, originalText);
+                    if (!by.equals("")) {
+                        notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview, View.VISIBLE);
+                        notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_by_textview, "—— " + by);
+                    } else {
+                        notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview, View.GONE);
+                    }
+                    Intent openIntent = new Intent(context, MainActivity.class);
                     openIntent.setPackage(context.getPackageName());
-                    PendingIntent openPendingIntent = PendingIntent.getActivity(context,0,openIntent,0);
-                    notificationViewsLarge.setOnClickPendingIntent(R.id.onetext_notification_large_layout,openPendingIntent);
+                    PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, 0);
+                    notificationViewsLarge.setOnClickPendingIntent(R.id.onetext_notification_large_layout, openPendingIntent);
                     NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                             .setContentIntent(openPendingIntent)
@@ -141,7 +169,7 @@ public class WidgetProvider extends AppWidgetProvider {
                             //.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                             .setSmallIcon(R.drawable.ic_notification)
                             .setColor(context.getColor(R.color.colorText2))
-                            .setContentTitle("“"+text+"”")
+                            .setContentTitle("“" + text + "”")
                             .setContentText(context.getText(R.string.widget_notification_tip_text))
                             .setWhen(System.currentTimeMillis())
                             .setSound(null)
@@ -153,17 +181,18 @@ public class WidgetProvider extends AppWidgetProvider {
                     notificationManager.notify(1, notification);
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-        /**
-         * 当 Widget 被删除时调用该方法。
-         *
-         * @param context
-         * @param appWidgetIds
-         */
+
+    /**
+     * 当 Widget 被删除时调用该方法。
+     *
+     * @param context
+     * @param appWidgetIds
+     */
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
@@ -178,8 +207,8 @@ public class WidgetProvider extends AppWidgetProvider {
      */
     @Override
     public void onEnabled(Context context) {
-        SharedPreferences.Editor editor = context.getSharedPreferences("setting",Context.MODE_PRIVATE).edit();
-        editor.putBoolean("widget_enabled",true);
+        SharedPreferences.Editor editor = context.getSharedPreferences("setting", Context.MODE_PRIVATE).edit();
+        editor.putBoolean("widget_enabled", true);
         editor.apply();
         super.onEnabled(context);
     }
@@ -191,8 +220,8 @@ public class WidgetProvider extends AppWidgetProvider {
      */
     @Override
     public void onDisabled(Context context) {
-        SharedPreferences.Editor editor = context.getSharedPreferences("setting",Context.MODE_PRIVATE).edit();
-        editor.putBoolean("widget_enabled",false);
+        SharedPreferences.Editor editor = context.getSharedPreferences("setting", Context.MODE_PRIVATE).edit();
+        editor.putBoolean("widget_enabled", false);
         editor.apply();
         super.onDisabled(context);
     }

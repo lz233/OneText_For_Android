@@ -19,14 +19,15 @@ public class App {
         }
         return versionName;
     }
+
     //返回当前程序版本号
     public static int getAppVersionCode(Context context) {
         int versioncode = 0;
         try {
             PackageManager pm = context.getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(context.getPackageName(),0);
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
             versioncode = pi.versionCode;
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.e("VersionCodeInfo", "Exception", e);
         }
         return versioncode;

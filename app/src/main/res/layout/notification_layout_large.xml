@@ -1,52 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/onetext_notification_large_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/layout_margin"
-    android:id="@+id/onetext_notification_large_layout">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/layout_margin">
 
-                    <TextView
-                        android:id="@+id/onetext_notification_large_quote1_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="“"
-                        android:textColor="@color/colorText1"
-                        android:textSize="@dimen/onetext_size" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/onetext_notification_large_text_textview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/layout_margin"
-                        android:layout_marginRight="@dimen/layout_margin"
-                        android:textColor="@color/colorText1"
-                        android:textSize="@dimen/onetext_size" />
+        <TextView
+            android:id="@+id/onetext_notification_large_quote1_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="“"
+            android:textColor="@color/colorText1"
+            android:textSize="@dimen/onetext_size" />
 
-                    <TextView
-                        android:id="@+id/onetext_notification_large_quote2_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="”"
-                        android:textColor="@color/colorText1"
-                        android:textSize="@dimen/onetext_size" />
+        <TextView
+            android:id="@+id/onetext_notification_large_text_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/layout_margin"
+            android:layout_marginRight="@dimen/layout_margin"
+            android:textColor="@color/colorText1"
+            android:textSize="@dimen/onetext_size" />
 
-                    <TextView
-                        android:id="@+id/onetext_notification_large_by_textview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/content_margin"
-                        android:layout_gravity="end"
-                        android:gravity="end"
-                        android:text="—— "
-                        android:textColor="@color/colorText2"
-                        android:textSize="@dimen/text_size"
-                        tools:ignore="HardcodedText" />
-                </LinearLayout>
+        <TextView
+            android:id="@+id/onetext_notification_large_quote2_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="”"
+            android:textColor="@color/colorText1"
+            android:textSize="@dimen/onetext_size" />
+
+        <TextView
+            android:id="@+id/onetext_notification_large_by_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="@dimen/content_margin"
+            android:gravity="end"
+            android:text="—— "
+            android:textColor="@color/colorText2"
+            android:textSize="@dimen/text_size"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 </LinearLayout>

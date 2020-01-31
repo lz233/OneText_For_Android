@@ -25,27 +25,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public  class SaveBitmap {
+public class SaveBitmap {
 
     /**
      * 将 Bitmap 保存到SD卡
+     *
      * @param context
      * @param mybitmap
      * @param path
      * @return
      */
-    public static boolean saveBitmapToSdCard(Context context, Bitmap mybitmap, String path){
+    public static boolean saveBitmapToSdCard(Context context, Bitmap mybitmap, String path) {
         boolean result = false;
 
 
         File file = new File(path);
         FileOutputStream fileOutputStream = null;
-        if (!file.exists()){
+        if (!file.exists()) {
             try {
                 // 判断SD卡是否存在，并且是否具有读写权限
-                if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     fileOutputStream = new FileOutputStream(file);
-                    mybitmap.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream);
+                    mybitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
                     fileOutputStream.flush();
                     fileOutputStream.close();
 
@@ -56,8 +57,7 @@ public  class SaveBitmap {
                     context.sendBroadcast(intent);
                     //Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show();
                     result = true;
-                }
-                else{
+                } else {
                     //Toast.makeText(context, "不能读取到SD卡", Toast.LENGTH_SHORT).show();
                 }
 
@@ -74,6 +74,7 @@ public  class SaveBitmap {
     /**
      * 手动测量摆放View
      * 对于手动 inflate 或者其他方式代码生成加载的View进行测量，避免该View无尺寸
+     *
      * @param v
      * @param width
      * @param height
@@ -96,10 +97,10 @@ public  class SaveBitmap {
     }
 
 
-
     /**
      * 获取一个 View 的缓存视图
-     *  (前提是这个View已经渲染完成显示在页面上)
+     * (前提是这个View已经渲染完成显示在页面上)
+     *
      * @param view
      * @return
      */
@@ -119,7 +120,8 @@ public  class SaveBitmap {
     }
 
     /**
-     *  对ScrollView进行截图
+     * 对ScrollView进行截图
+     *
      * @param scrollView
      * @return
      */
