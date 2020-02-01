@@ -32,7 +32,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.3.1'
     implementation 'io.noties.markwon:core:4.2.0'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
-    implementation 'com.yanzhenjie:permission:2.0.3'
+    //implementation 'com.yanzhenjie:permission:2.0.3'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
     implementation 'io.github.inflationx:viewpump:2.0.3'
