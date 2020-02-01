@@ -83,4 +83,6 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="setfeed_path_text">Path [Long press to select a file]</string>
     <string name="feed_cannot_delete_text">Not allowed to delete last feed.</string>
     <string name="widget_shadow">With shadow</string>
+    <string name="onetext_refresh_faild_text">Refresh Failed</string>
+    <string name="onetext_refresh_faild_button">Retry</string>
 </resources>

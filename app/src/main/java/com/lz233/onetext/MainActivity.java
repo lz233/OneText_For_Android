@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -34,6 +35,9 @@ import com.microsoft.appcenter.utils.async.AppCenterFuture;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.runtime.Permission;
 
 import org.json.JSONException;
 
@@ -41,6 +45,7 @@ import java.io.File;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
+import pub.devrel.easypermissions.PermissionRequest;
 
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
     private int onetext_code;
@@ -404,7 +409,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             @Override
                             public void updateFailed(Exception e) {
                                 FileUtils.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
-                                System.exit(0);
+                                Snackbar.make(rootview, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.refresh_onetext_button, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        initRun(forcedRefresh);
+                                    }
+                                }).show();
+                                //System.exit(0);
                             }
                         });
                     } else {
@@ -484,13 +495,19 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
                     @Override
                     public void updateFailed(Exception e) {
+                        FileUtils.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
                         progressBar.post(new Runnable() {
                             @Override
                             public void run() {
-                                FileUtils.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
                                 progressBar.setVisibility(View.GONE);
                             }
                         });
+                        Snackbar.make(rootview, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.refresh_onetext_button, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                initRun(false);
+                            }
+                        }).show();
                     }
                 });
             }

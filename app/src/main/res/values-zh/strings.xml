@@ -83,4 +83,6 @@
     <string name="setfeed_path_text">路径 [长按选择文件]</string>
     <string name="feed_cannot_delete_text">不允许删除最后一个源。</string>
     <string name="widget_shadow">阴影</string>
+    <string name="onetext_refresh_faild_text">更新失败</string>
+    <string name="onetext_refresh_faild_button">重试</string>
 </resources>
