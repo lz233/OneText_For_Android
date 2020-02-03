@@ -1,4 +1,4 @@
-package com.lz233.onetext;
+package com.lz233.onetext.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -11,7 +11,6 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -37,10 +36,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.lz233.onetext.tools.DownloadUtil;
-import com.lz233.onetext.tools.FileUtils;
+import com.lz233.onetext.R;
 import com.lz233.onetext.tools.feed.Feed;
 import com.lz233.onetext.tools.feed.FeedAdapter;
+import com.lz233.onetext.tools.utils.DownloadUtil;
+import com.lz233.onetext.tools.utils.FileUtil;
+import com.lz233.onetext.view.NiceImageView;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -57,10 +58,12 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class SettingActivity extends BaseActivity {
     private Boolean isSettingUpdated = false;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
     private Receiver receiver;
     private View view;
+    private LinearLayout oauth_linearlayout;
+    private NiceImageView oauth_avatar_imageview;
+    private TextView oauth_name_textview;
+    private TextView oauth_bio_textview;
     private String font_path_yiqi;
     private String font_path_canger;
     private TextView current_font_textview;
@@ -71,6 +74,7 @@ public class SettingActivity extends BaseActivity {
     private TextView font_system_textview;
     private TextView font_custom_textview;
     private AppCompatSpinner interface_daynight_spinner;
+    private SwitchMaterial oauth_hide_switch;
     private AppCompatSpinner chinese_type_spinner;
     private ImageView feed_reset_imageview;
     private ImageView feed_add_imageview;
@@ -97,10 +101,12 @@ public class SettingActivity extends BaseActivity {
         fuckNav(findViewById(R.id.last_layout));
         //by
         view = getWindow().getDecorView();
-        sharedPreferences = getSharedPreferences("setting", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
         font_path_yiqi = getFilesDir().getPath() + "/Fonts/yiqi.ttf";
         font_path_canger = getFilesDir().getPath() + "/Fonts/canger.ttf";
+        oauth_linearlayout = findViewById(R.id.oauth_linearlayout);
+        oauth_avatar_imageview = findViewById(R.id.oauth_avatar_imageview);
+        oauth_name_textview = findViewById(R.id.oauth_name_textview);
+        oauth_bio_textview = findViewById(R.id.oauth_bio_textview);
         current_font_textview = findViewById(R.id.current_font_textview);
         font_yiqi_layout = findViewById(R.id.font_yiqi_layout);
         font_canger_layout = findViewById(R.id.font_canger_layout);
@@ -109,6 +115,7 @@ public class SettingActivity extends BaseActivity {
         font_system_textview = findViewById(R.id.font_system_textview);
         font_custom_textview = findViewById(R.id.font_custom_textview);
         interface_daynight_spinner = findViewById(R.id.interface_daynight_spinner);
+        oauth_hide_switch = findViewById(R.id.oauth_hide_switch);
         chinese_type_spinner = findViewById(R.id.chinese_type_spinner);
         feed_reset_imageview = findViewById(R.id.feed_reset_imageview);
         feed_add_imageview = findViewById(R.id.feed_add_imageview);
@@ -142,6 +149,10 @@ public class SettingActivity extends BaseActivity {
                 interface_daynight_spinner.setSelection(2);
                 break;
         }
+        if(sharedPreferences.getBoolean("oauth_hide",false)){
+            oauth_linearlayout.setVisibility(View.GONE);
+        }
+        oauth_hide_switch.setChecked(sharedPreferences.getBoolean("oauth_hide",false));
         switch (sharedPreferences.getInt("chinese_type", 0)) {
             case 0:
                 chinese_type_spinner.setSelection(0);
@@ -170,7 +181,7 @@ public class SettingActivity extends BaseActivity {
         font_yiqi_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!FileUtils.isFile(font_path_yiqi)) {
+                if (!FileUtil.isFile(font_path_yiqi)) {
                     final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel channel = new NotificationChannel("download_file", getString(R.string.font_notification_text), NotificationManager.IMPORTANCE_DEFAULT);
@@ -214,7 +225,7 @@ public class SettingActivity extends BaseActivity {
                                 @Override
                                 public void onDownloadFailed(Exception e) {
                                     e.printStackTrace();
-                                    FileUtils.deleteFile(font_path_yiqi);
+                                    FileUtil.deleteFile(font_path_yiqi);
                                     NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
                                             .setSmallIcon(R.drawable.ic_notification)
                                             .setColor(getColor(R.color.colorText2))
@@ -328,7 +339,7 @@ public class SettingActivity extends BaseActivity {
         font_canger_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!FileUtils.isFile(font_path_canger)) {
+                if (!FileUtil.isFile(font_path_canger)) {
                     final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel channel = new NotificationChannel("download_file", getString(R.string.font_notification_text), NotificationManager.IMPORTANCE_DEFAULT);
@@ -372,7 +383,7 @@ public class SettingActivity extends BaseActivity {
                                 @Override
                                 public void onDownloadFailed(Exception e) {
                                     e.printStackTrace();
-                                    FileUtils.deleteFile(font_path_canger);
+                                    FileUtil.deleteFile(font_path_canger);
                                     NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
                                             .setSmallIcon(R.drawable.ic_notification)
                                             .setColor(getColor(R.color.colorText2))
@@ -446,6 +457,19 @@ public class SettingActivity extends BaseActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+        oauth_hide_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    oauth_linearlayout.setVisibility(View.GONE);
+                    editor.putBoolean("oauth_hide", true);
+                } else {
+                    oauth_linearlayout.setVisibility(View.VISIBLE);
+                    editor.putBoolean("oauth_hide", false);
+                }
+                editor.apply();
+            }
+        });
         chinese_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -465,8 +489,8 @@ public class SettingActivity extends BaseActivity {
                 editor.remove("widget_latest_refresh_time");
                 editor.remove("onetext_code");
                 editor.commit();
-                FileUtils.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
-                FileUtils.copyAssets(SettingActivity.this, "Feed", getFilesDir().getPath() + "/Feed");
+                FileUtil.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
+                FileUtil.copyAssets(SettingActivity.this, "Feed", getFilesDir().getPath() + "/Feed");
                 initFeed();
             }
         });
@@ -614,13 +638,72 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // The activity is about to become visible.
+        if (sharedPreferences.getBoolean("oauth_logined", false)) {
+            try {
+                final JSONObject jsonObject = new JSONObject(sharedPreferences.getString("oauth_account_information", ""));
+                if (FileUtil.isFile(getFilesDir().getPath() + "/Oauth/Avatar.png")) {
+                    oauth_avatar_imageview.setImageURI(Uri.fromFile(new File(getFilesDir().getPath() + "/Oauth/Avatar.png")));
+                }/*else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DownloadUtil.get().download(jsonObject.optString("avatar_url"), getFilesDir().getPath() + "/Oauth/", "Avatar.png", new DownloadUtil.OnDownloadListener() {
+                                @Override
+                                public void onDownloadSuccess(File file) {
+                                    oauth_avatar_imageview.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            oauth_avatar_imageview.setImageURI(Uri.fromFile(new File(getFilesDir().getPath() + "/Oauth/Avatar.png")));
+
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onDownloading(int progress) {
+
+                                }
+
+                                @Override
+                                public void onDownloadFailed(Exception e) {
+                                }
+                            });
+                        }
+                    }).start();
+                }*/
+                oauth_name_textview.setText(jsonObject.optString("name"));
+                oauth_bio_textview.setText(jsonObject.optString("bio"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         initFeed();
         if (sharedPreferences.getBoolean("widget_enabled", false)) {
             widget_enable_textview.setText(R.string.widget_enable_text);
         } else {
             widget_enable_textview.setText(R.string.widget_disenable_text);
         }
+        oauth_linearlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!sharedPreferences.getBoolean("oauth_logined", false)) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/login/oauth/authorize/?client_id=a2cecb404f9d11e7abbe")));
+                } else {
+                    Snackbar.make(v, R.string.oauth_logout_text, Snackbar.LENGTH_LONG).setAction(R.string.oauth_logout_button, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            editor.remove("oauth_access_token");
+                            editor.remove("oauth_account_information");
+                            editor.remove("oauth_logined");
+                            editor.apply();
+                            FileUtil.deleteFile(getFilesDir().getPath() + "/Oauth/Avatar.png");
+                            finish();
+                            startActivity(getIntent());
+                        }
+                    }).show();
+                }
+            }
+        });
     }
 
     private void updateFontStatus() {
@@ -647,7 +730,7 @@ public class SettingActivity extends BaseActivity {
         feed_recyclerview.setAdapter(feedAdapter);
         int selectedInt = sharedPreferences.getInt("feed_code", 0);
         try {
-            JSONArray jsonArray = new JSONArray(FileUtils.readTextFromFile(getFilesDir().getPath() + "/Feed/Feed.json"));
+            JSONArray jsonArray = new JSONArray(FileUtil.readTextFromFile(getFilesDir().getPath() + "/Feed/Feed.json"));
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = new JSONObject(jsonArray.optString(i));
                 String feedType = jsonObject.optString("feed_type");

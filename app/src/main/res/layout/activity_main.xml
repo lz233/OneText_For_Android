@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp"
-        android:fitsSystemWindows="true">
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -19,7 +19,18 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorWhite"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:titleTextColor="@color/colorText2" />
+            app:titleTextColor="@color/colorText2">
+
+            <com.lz233.onetext.view.NiceImageView
+                android:id="@+id/avatar_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_settings"
+                app:is_circle="true" />
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

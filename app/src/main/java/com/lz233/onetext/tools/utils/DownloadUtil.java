@@ -1,4 +1,4 @@
-package com.lz233.onetext.tools;
+package com.lz233.onetext.tools.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;

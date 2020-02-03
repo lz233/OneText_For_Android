@@ -1,9 +1,8 @@
-package com.lz233.onetext;
+package com.lz233.onetext.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -22,9 +21,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.lz233.onetext.tools.FileUtils;
-import com.lz233.onetext.tools.OneTextUtils;
-import com.lz233.onetext.tools.SaveBitmap;
+import com.lz233.onetext.R;
+import com.lz233.onetext.tools.utils.AppUtil;
+import com.lz233.onetext.tools.utils.FileUtil;
+import com.lz233.onetext.tools.utils.OneTextUtil;
+import com.lz233.onetext.tools.utils.SaveBitmapUtil;
+import com.lz233.onetext.view.NiceImageView;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
@@ -42,10 +44,11 @@ import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static com.lz233.onetext.tools.utils.AppUtil.px2sp;
+
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
     private int onetext_code;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
+    private NiceImageView avatar_imageview;
     private SwipeRefreshLayout onetext_swiperefreshlayout;
     private ProgressBar progressBar;
     private LinearLayout pic_layout;
@@ -70,20 +73,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private IndicatorSeekBar onetext_from_size_seekbar;
     private AppCompatButton onetext_from_size_button;
 
-    public static int px2sp(Context context, float pxValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (pxValue / fontScale + 0.5f);
-    }
-
     /*static {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //sp
-        sharedPreferences = getSharedPreferences("setting", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
         setContentView(R.layout.activity_main);
         /*if(sharedPreferences.getString("interface_style","md2").equals("default")){
             setContentView(R.layout.activity_main);
@@ -95,6 +90,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //曲 线 救 国
         fuckNav(findViewById(R.id.last_layout));
         //fb
+        avatar_imageview = findViewById(R.id.avatar_imageview);
         onetext_swiperefreshlayout = findViewById(R.id.onetext_swiperefreshlayout);
         pic_layout = findViewById(R.id.pic_layout);
         progressBar = findViewById(R.id.progressBar);
@@ -147,12 +143,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //Analytics.trackEvent("My custom event");
         //Crashes.generateTestCrash();
         //装载feed
-        if (!FileUtils.isDirectory(getFilesDir().getPath() + "/Feed/")) {
+        if (!FileUtil.isDirectory(getFilesDir().getPath() + "/Feed/")) {
             File file = new File(getFilesDir().getPath() + "/Feed/");
             file.mkdirs();
         }
-        if (!FileUtils.isFile(getFilesDir().getPath() + "/Feed/Feed.json")) {
-            FileUtils.copyAssets(this, "Feed", getFilesDir().getPath() + "/Feed");
+        if (!FileUtil.isFile(getFilesDir().getPath() + "/Feed/Feed.json")) {
+            FileUtil.copyAssets(this, "Feed", getFilesDir().getPath() + "/Feed");
         }
         switch (sharedPreferences.getInt("interface_daynight", 0)) {
             case 0:
@@ -187,6 +183,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_time_size_seekbar.setProgress(sharedPreferences.getInt("onetext_time_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         onetext_from_size_seekbar.setProgress(sharedPreferences.getInt("onetext_from_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         //监听器
+        avatar_imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class));
+            }
+        });
         onetext_swiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -200,18 +202,18 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
                     final String pic_file_name = "OneText " + System.currentTimeMillis() + ".jpg";
                     final String pic_file_path = Environment.getExternalStorageDirectory() + "/Pictures/OneText/";
-                    if (!FileUtils.isDirectory(pic_file_path)) {
+                    if (!FileUtil.isDirectory(pic_file_path)) {
                         File file = new File(pic_file_path);
                         file.mkdirs();
                     }
-                    Boolean isSuccess = SaveBitmap.saveBitmapToSdCard(MainActivity.this, SaveBitmap.getCacheBitmapFromView(pic_layout), pic_file_path + pic_file_name);
+                    Boolean isSuccess = SaveBitmapUtil.saveBitmapToSdCard(MainActivity.this, SaveBitmapUtil.getCacheBitmapFromView(pic_layout), pic_file_path + pic_file_name);
                     if (isSuccess) {
                         Snackbar.make(view, getString(R.string.save_succeed) + " " + pic_file_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent();
                                 intent.setAction(Intent.ACTION_SEND);
-                                intent.putExtra(Intent.EXTRA_STREAM, FileUtils.getUriFromFile(new File(pic_file_path + pic_file_name), MainActivity.this));
+                                intent.putExtra(Intent.EXTRA_STREAM, FileUtil.getUriFromFile(new File(pic_file_path + pic_file_name), MainActivity.this));
                                 intent.setType("image/*");
                                 startActivity(Intent.createChooser(intent, getString(R.string.share_text)));
                             }
@@ -365,6 +367,17 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onStart() {
         super.onStart();
         // The activity is about to become visible.
+        if (!sharedPreferences.getBoolean("oauth_hide", false)) {
+            if (sharedPreferences.getBoolean("oauth_logined", false)) {
+                if (FileUtil.isFile(getFilesDir().getPath() + "/Oauth/Avatar.png")) {
+                    Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) avatar_imageview.getLayoutParams();
+                    layoutParams.width = AppUtil.dp2px(this, 30);
+                    layoutParams.height = AppUtil.dp2px(this, 30);
+                    avatar_imageview.setLayoutParams(layoutParams);
+                    avatar_imageview.setImageURI(Uri.fromFile(new File(getFilesDir().getPath() + "/Oauth/Avatar.png")));
+                }
+            }
+        }
         initRun(false);
         //Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
     }
@@ -374,19 +387,19 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             @Override
             public void run() {
                 try {
-                    final OneTextUtils oneTextUtils = new OneTextUtils(MainActivity.this);
-                    if (!FileUtils.isFile(getFilesDir().getPath() + "/OneText/OneText-Library.json")) {
+                    final OneTextUtil oneTextUtil = new OneTextUtil(MainActivity.this);
+                    if (!FileUtil.isFile(getFilesDir().getPath() + "/OneText/OneText-Library.json")) {
                         progressBar.post(new Runnable() {
                             @Override
                             public void run() {
                                 progressBar.setVisibility(View.VISIBLE);
                             }
                         });
-                        oneTextUtils.updateRemoteFeed(true, new OneTextUtils.OnUpdateFeedListener() {
+                        oneTextUtil.updateRemoteFeed(true, new OneTextUtil.OnUpdateFeedListener() {
                             @Override
                             public void noNeedRequired(boolean noNeed) {
                                 try {
-                                    showOneText(oneTextUtils, forcedRefresh);
+                                    showOneText(oneTextUtil, forcedRefresh);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -395,7 +408,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             @Override
                             public void updateCompleted(boolean complete) {
                                 try {
-                                    showOneText(oneTextUtils, forcedRefresh);
+                                    showOneText(oneTextUtil, forcedRefresh);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -403,7 +416,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
                             @Override
                             public void updateFailed(Exception e) {
-                                FileUtils.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
+                                FileUtil.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
                                 Snackbar.make(rootview, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.refresh_onetext_button, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -414,9 +427,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             }
                         });
                     } else {
-                        showOneText(oneTextUtils, forcedRefresh);
+                        showOneText(oneTextUtil, forcedRefresh);
                     }
-                    runOneTextUpdate(oneTextUtils);
+                    runOneTextUpdate(oneTextUtil);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -424,9 +437,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         }).start();
     }
 
-    private void showOneText(OneTextUtils oneTextUtils, Boolean forcedRefresh) throws JSONException {
-        onetext_code = oneTextUtils.getOneTextCode(forcedRefresh, false);
-        String[] oneText = oneTextUtils.readOneText(onetext_code);
+    private void showOneText(OneTextUtil oneTextUtil, Boolean forcedRefresh) throws JSONException {
+        onetext_code = oneTextUtil.getOneTextCode(forcedRefresh, false);
+        String[] oneText = oneTextUtil.readOneText(onetext_code);
         final String final_text = oneText[0];
         final String final_by = oneText[1];
         final String final_from = oneText[2];
@@ -457,7 +470,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         MainActivity.this.sendBroadcast(intent);
     }
 
-    private void runOneTextUpdate(final OneTextUtils oneTextUtils) {
+    private void runOneTextUpdate(final OneTextUtil oneTextUtil) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -467,7 +480,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         progressBar.setVisibility(View.VISIBLE);
                     }
                 });
-                oneTextUtils.updateRemoteFeed(false, new OneTextUtils.OnUpdateFeedListener() {
+                oneTextUtil.updateRemoteFeed(false, new OneTextUtil.OnUpdateFeedListener() {
                     @Override
                     public void noNeedRequired(boolean noNeed) {
                         progressBar.post(new Runnable() {
@@ -490,7 +503,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
                     @Override
                     public void updateFailed(Exception e) {
-                        FileUtils.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
+                        FileUtil.deleteFile(getFilesDir().getPath() + "/OneText/OneText-Library.json");
                         progressBar.post(new Runnable() {
                             @Override
                             public void run() {
@@ -512,7 +525,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
 
     }

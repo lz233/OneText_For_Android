@@ -1,4 +1,4 @@
-package com.lz233.onetext;
+package com.lz233.onetext.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,7 +20,8 @@ import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.lz233.onetext.tools.FeedUtils;
+import com.lz233.onetext.R;
+import com.lz233.onetext.tools.utils.FeedUtil;
 
 import org.json.JSONException;
 
@@ -29,7 +30,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class SetFeedActivity extends BaseActivity {
     private int currentFeedCode;
     private boolean isAddFeed;
-    private FeedUtils feedUtils;
+    private FeedUtil feedUtil;
     private String[] feedInf;
     private EditText setfeed_name_edittext;
     private EditText setfeed_type_edittext;
@@ -53,14 +54,14 @@ public class SetFeedActivity extends BaseActivity {
         Intent intent = getIntent();
         currentFeedCode = intent.getIntExtra("feed_int", -1);
         //Toast.makeText(SetFeedActivity.this,String.valueOf(currentFeedCode), Toast.LENGTH_LONG).show();
-        feedUtils = new FeedUtils(this);
+        feedUtil = new FeedUtil(this);
         if (currentFeedCode == -1) {
             isAddFeed = true;
             //Toast.makeText(SetFeedActivity.this,String.valueOf(isAddFeed), Toast.LENGTH_LONG).show();
             setfeed_path_textinputlayout.setVisibility(View.GONE);
             setfeed_url_textinputlayout.setVisibility(View.GONE);
         } else {
-            feedInf = feedUtils.getFeedInf(currentFeedCode);
+            feedInf = feedUtil.getFeedInf(currentFeedCode);
             setfeed_name_edittext.setText(feedInf[0]);
             String feedType = feedInf[1];
             setfeed_type_edittext.setText(feedType);
@@ -114,9 +115,9 @@ public class SetFeedActivity extends BaseActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
             try {
                 if (isAddFeed) {
-                    feedUtils.addFeed(setfeed_name_edittext.getText().toString(), setfeed_type_edittext.getText().toString(), setfeed_url_edittext.getText().toString(), setfeed_path_edittext.getText().toString());
+                    feedUtil.addFeed(setfeed_name_edittext.getText().toString(), setfeed_type_edittext.getText().toString(), setfeed_url_edittext.getText().toString(), setfeed_path_edittext.getText().toString());
                 } else {
-                    feedUtils.alterFeed(currentFeedCode, setfeed_name_edittext.getText().toString(), setfeed_type_edittext.getText().toString(), setfeed_url_edittext.getText().toString(), setfeed_path_edittext.getText().toString());
+                    feedUtil.alterFeed(currentFeedCode, setfeed_name_edittext.getText().toString(), setfeed_type_edittext.getText().toString(), setfeed_url_edittext.getText().toString(), setfeed_path_edittext.getText().toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

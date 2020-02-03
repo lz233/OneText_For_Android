@@ -9,7 +9,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName '1.52'
+        versionName '1.53'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -32,6 +32,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.3.1'
     implementation 'io.noties.markwon:core:4.2.0'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+    //implementation 'com.github.SheHuan:NiceImageView:1.0.5'
+    //implementation 'de.hdodenhof:circleimageview:3.1.0'
     //implementation 'com.yanzhenjie:permission:2.0.3'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'io.github.inflationx:calligraphy3:3.1.1'

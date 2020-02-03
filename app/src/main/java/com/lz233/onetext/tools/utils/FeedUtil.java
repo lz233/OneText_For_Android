@@ -1,4 +1,4 @@
-package com.lz233.onetext.tools;
+package com.lz233.onetext.tools.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FeedUtils {
+public class FeedUtil {
     private long currentTimeMillis = System.currentTimeMillis();
     private Context context;
     private JSONArray jsonArray;
@@ -17,12 +17,12 @@ public class FeedUtils {
     private SharedPreferences.Editor editor;
     private String[] feedInf = new String[4];
 
-    public FeedUtils(Context context) {
+    public FeedUtil(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences("setting", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         try {
-            jsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath() + "/Feed/Feed.json"));
+            jsonArray = new JSONArray(FileUtil.readTextFromFile(context.getFilesDir().getPath() + "/Feed/Feed.json"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -53,8 +53,8 @@ public class FeedUtils {
         JSONObject mJsonObject = new JSONObject().put("feed_name", feedName).put("feed_type", feedType).put("feed_url", feedURL).put("feed_path", feedPath);
         mJsonArray.put(mJsonObject);
         jsonArray = mJsonArray;
-        FileUtils.deleteFile(context.getFilesDir().getPath() + "/Feed/Feed.json");
-        FileUtils.writeTextToFile(mJsonArray.toString(), context.getFilesDir().getPath() + "/Feed/", "Feed.json");
+        FileUtil.deleteFile(context.getFilesDir().getPath() + "/Feed/Feed.json");
+        FileUtil.writeTextToFile(mJsonArray.toString(), context.getFilesDir().getPath() + "/Feed/", "Feed.json");
     }
 
     public void deleteFeed(int position) {
@@ -63,7 +63,7 @@ public class FeedUtils {
             editor.putInt("feed_code", sharedPreferences.getInt("feed_code", 0) - 1);
         } else if (feedInt == position) {
             if (getFeedInf(feedInt)[1].equals("remote")) {
-                FileUtils.deleteFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json");
+                FileUtil.deleteFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json");
             }
             editor.remove("feed_code");
             editor.remove("feed_latest_refresh_time");
@@ -79,8 +79,8 @@ public class FeedUtils {
             }
         }
         jsonArray = mJsonArray;
-        FileUtils.deleteFile(context.getFilesDir().getPath() + "/Feed/Feed.json");
-        FileUtils.writeTextToFile(mJsonArray.toString(), context.getFilesDir().getPath() + "/Feed/", "Feed.json");
+        FileUtil.deleteFile(context.getFilesDir().getPath() + "/Feed/Feed.json");
+        FileUtil.writeTextToFile(mJsonArray.toString(), context.getFilesDir().getPath() + "/Feed/", "Feed.json");
     }
 
     public void alterFeed(int position, String feedName, String feedType, String feedURL, String feedPath) throws JSONException {
@@ -99,10 +99,10 @@ public class FeedUtils {
         }
         jsonArray = mJsonArray;
         if (getFeedInf(feedInt)[1].equals("remote")) {
-            FileUtils.deleteFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json");
+            FileUtil.deleteFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json");
         }
-        FileUtils.deleteFile(context.getFilesDir().getPath() + "/Feed/Feed.json");
-        FileUtils.writeTextToFile(mJsonArray.toString(), context.getFilesDir().getPath() + "/Feed/", "Feed.json");
+        FileUtil.deleteFile(context.getFilesDir().getPath() + "/Feed/Feed.json");
+        FileUtil.writeTextToFile(mJsonArray.toString(), context.getFilesDir().getPath() + "/Feed/", "Feed.json");
         if (feedInt == position) {
             editor.remove("feed_latest_refresh_time");
             editor.remove("widget_latest_refresh_time");

@@ -1,4 +1,4 @@
-package com.lz233.onetext.tools;
+package com.lz233.onetext.tools.utils;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 
-public class FileUtils {
+public class FileUtil {
 
     public static File createFile(String FilePath) {
         return new File(FilePath);

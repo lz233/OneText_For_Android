@@ -38,7 +38,7 @@
 \n\n
 本項目的開發離不開以下項目：
 \n
-[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python)
+[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView)
 \n\n
 本應用的主頁：[點我](https://github.com/lz233/OneText_For_Android)
 \n\n
@@ -83,4 +83,11 @@
     <string name="setfeed_path_text">路徑 [長按選擇文件]</string>
     <string name="feed_cannot_delete_text">不允許刪除最後一個源。</string>
     <string name="widget_shadow">陰影</string>
+    <string name="onetext_refresh_faild_text">更新失敗</string>
+    <string name="onetext_refresh_faild_button">重試</string>
+    <string name="oauth_login_text">通過 GitHub 登錄</string>
+    <string name="oauth_failed_text">失敗，請返回並重試。</string>
+    <string name="oauth_logout_text">確認退出？</string>
+    <string name="oauth_logout_button">確認</string>
+    <string name="oauth_hide_text">隱藏 Oauth 認證</string>
 </resources>

@@ -1,10 +1,13 @@
-package com.lz233.onetext.tools;
+package com.lz233.onetext.tools.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.lz233.onetext.R;
+import com.lz233.onetext.tools.utils.DownloadUtil;
+import com.lz233.onetext.tools.utils.FeedUtil;
+import com.lz233.onetext.tools.utils.FileUtil;
 import com.zqc.opencc.android.lib.ChineseConverter;
 
 import org.json.JSONArray;
@@ -20,7 +23,7 @@ import static com.zqc.opencc.android.lib.ConversionType.S2HK;
 import static com.zqc.opencc.android.lib.ConversionType.S2T;
 import static com.zqc.opencc.android.lib.ConversionType.S2TWP;
 
-public class OneTextUtils {
+public class OneTextUtil {
     private long currentTimeMillis = System.currentTimeMillis();
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -28,12 +31,12 @@ public class OneTextUtils {
     private String[] feedInf = new String[4];
 
     @SuppressLint("CommitPrefEdits")
-    public OneTextUtils(Context context) {
+    public OneTextUtil(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences("setting", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        FeedUtils feedUtils = new FeedUtils(context);
-        feedInf = feedUtils.getFeedInf(feedUtils.getFeedCode());
+        FeedUtil feedUtil = new FeedUtil(context);
+        feedInf = feedUtil.getFeedInf(feedUtil.getFeedCode());
     }
 
     public String[] readOneText(int OneTextCode) throws JSONException {
@@ -148,10 +151,10 @@ public class OneTextUtils {
     private JSONArray readOneTextJSONArray() throws JSONException {
         JSONArray mjsonArray = null;
         if (feedInf[1].equals("remote")) {
-            mjsonArray = new JSONArray(FileUtils.readTextFromFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json"));
+            mjsonArray = new JSONArray(FileUtil.readTextFromFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json"));
         }
         if (feedInf[1].equals("local")) {
-            mjsonArray = new JSONArray(FileUtils.readTextFromFile(feedInf[3]));
+            mjsonArray = new JSONArray(FileUtil.readTextFromFile(feedInf[3]));
         }
         return mjsonArray;
     }

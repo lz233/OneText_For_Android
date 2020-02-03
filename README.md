@@ -13,7 +13,7 @@ In the development process, we are especially grateful:
 
 The development of this project is inseparable from the following projects:
 
-[Markwon](https://github.com/noties/Markwon) [MicrosoftAppCenter](https://appcenter.ms) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [proguard-elder-dictionary](https://github.com/heruoxin/proguard-elder-dictionary)
+[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView)
 
 The home page of this app: [Click me](https://github.com/lz233/OneText_For_Android)
 

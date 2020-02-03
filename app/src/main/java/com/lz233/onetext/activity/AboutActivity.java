@@ -1,4 +1,4 @@
-package com.lz233.onetext;
+package com.lz233.onetext.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -7,7 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lz233.onetext.tools.App;
+import com.lz233.onetext.R;
+import com.lz233.onetext.tools.utils.AppUtil;
 
 import io.noties.markwon.Markwon;
 
@@ -65,7 +66,7 @@ public class AboutActivity extends BaseActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://to-do.microsoft.com/sharing?InvitationToken=WI9tpCxeg9ktR5mg-AI-qwPXapdT_kGucjpSBCP6fwLE9bN5Uz2vS61gY9X8RTaC0")));
             }
         });
-        ver_textview.setText(App.getAppVersionName(AboutActivity.this) + " (" + String.valueOf(App.getAppVersionCode(AboutActivity.this) + ")"));
+        ver_textview.setText(AppUtil.getAppVersionName(AboutActivity.this) + " (" + String.valueOf(AppUtil.getAppVersionCode(AboutActivity.this) + ")"));
         final Markwon markwon = Markwon.create(getApplicationContext());
         markwon.setMarkdown(about_textview, getString(R.string.about_page_introduction));
 

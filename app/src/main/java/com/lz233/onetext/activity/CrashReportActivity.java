@@ -1,4 +1,4 @@
-package com.lz233.onetext;
+package com.lz233.onetext.activity;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.lz233.onetext.R;
+import com.lz233.onetext.activity.BaseActivity;
 import com.microsoft.appcenter.crashes.Crashes;
 import com.microsoft.appcenter.crashes.model.ErrorReport;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;

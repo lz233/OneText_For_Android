@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.lz233.onetext.R;
-import com.lz233.onetext.SetFeedActivity;
-import com.lz233.onetext.tools.FeedUtils;
-import com.lz233.onetext.tools.FileUtils;
+import com.lz233.onetext.activity.SetFeedActivity;
+import com.lz233.onetext.tools.utils.FeedUtil;
+import com.lz233.onetext.tools.utils.FileUtil;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 editor.remove("onetext_code");
                 editor.apply();
                 if (feed.getFeedTypeImageID() == R.drawable.ic_cloud) {
-                    FileUtils.deleteFile(feed.getContext().getFilesDir().getPath() + "/OneText/OneText-Library.json");
+                    FileUtil.deleteFile(feed.getContext().getFilesDir().getPath() + "/OneText/OneText-Library.json");
                 }
                 Intent intent = new Intent("com.lz233.onetext.updatefeedlist");
                 intent.setPackage(feed.getContext().getPackageName());
@@ -86,8 +86,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     /*Intent intent3 = new Intent("com.lz233.onetext.issettingupdated");
                     intent3.setPackage(feed.getContext().getPackageName());
                     feed.getContext().sendBroadcast(intent3);*/
-                    FeedUtils feedUtils = new FeedUtils(view.getContext());
-                    feedUtils.deleteFeed(position);
+                    FeedUtil feedUtil = new FeedUtil(view.getContext());
+                    feedUtil.deleteFeed(position);
                     Intent intent = new Intent("com.lz233.onetext.updatefeedlist");
                     intent.setPackage(feed.getContext().getPackageName());
                     feed.getContext().sendBroadcast(intent);

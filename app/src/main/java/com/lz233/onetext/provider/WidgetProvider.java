@@ -1,4 +1,4 @@
-package com.lz233.onetext;
+package com.lz233.onetext.provider;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -17,8 +17,10 @@ import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
-import com.lz233.onetext.tools.FileUtils;
-import com.lz233.onetext.tools.OneTextUtils;
+import com.lz233.onetext.R;
+import com.lz233.onetext.activity.MainActivity;
+import com.lz233.onetext.tools.utils.FileUtil;
+import com.lz233.onetext.tools.utils.OneTextUtil;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -93,9 +95,9 @@ public class WidgetProvider extends AppWidgetProvider {
                 //TextView view =viewParent.findViewById(R.id.onetext_widget_center_text_textview);
                 //view.setTextColor(Color.RED);
             }
-            if ((FileUtils.isFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json")) | (FileUtils.isFile(sharedPreferences.getString("feed_local_path", null)))) {
-                OneTextUtils oneTextUtils = new OneTextUtils(context);
-                String[] oneText = oneTextUtils.readOneText(oneTextUtils.getOneTextCode(false, true));
+            if ((FileUtil.isFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json")) | (FileUtil.isFile(sharedPreferences.getString("feed_local_path", null)))) {
+                OneTextUtil oneTextUtil = new OneTextUtil(context);
+                String[] oneText = oneTextUtil.readOneText(oneTextUtil.getOneTextCode(false, true));
                 String originalText = oneText[0];
                 String text = originalText.replace("\n", " ");
                 String by = oneText[1];

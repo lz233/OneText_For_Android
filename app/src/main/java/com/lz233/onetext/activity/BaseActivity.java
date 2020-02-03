@@ -1,4 +1,4 @@
-package com.lz233.onetext;
+package com.lz233.onetext.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,6 +17,8 @@ import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.lz233.onetext.R;
+
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
@@ -24,11 +26,14 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected ViewGroup rootview;
+    protected SharedPreferences sharedPreferences;
+    protected SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        SharedPreferences sharedPreferences = getSharedPreferences("setting", MODE_PRIVATE);
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences("setting", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         //Q导航栏沉浸
         rootview = findViewById(android.R.id.content);
 

@@ -1,4 +1,4 @@
-package com.lz233.onetext.tools;
+package com.lz233.onetext.tools.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SaveBitmap {
+public class SaveBitmapUtil {
 
     /**
      * 将 Bitmap 保存到SD卡
