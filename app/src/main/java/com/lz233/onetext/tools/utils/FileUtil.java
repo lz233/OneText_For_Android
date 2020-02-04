@@ -47,6 +47,35 @@ public class FileUtil {
         }
     }
 
+    public static boolean deleteDir(File dir) {
+        Boolean isSucceed = true;
+        if (dir.exists()) {
+            File[] files = dir.listFiles();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    if (isSucceed){
+                        isSucceed = deleteDir(file);
+                    }else {
+                        deleteDir(file);
+                    }
+                } else {
+                    if (isSucceed){
+                        isSucceed = file.delete();
+                    }else {
+                        file.delete();
+                    }
+                }
+            }
+            if (isSucceed){
+                isSucceed = dir.delete();
+            }else {
+                dir.delete();
+            }
+
+        }
+        return isSucceed;
+    }
+
     public static void copyFile(final String From, final String To, final Boolean move, Boolean isBlocking) {
         final Boolean[] isFinish = new Boolean[1];
         new Thread(new Runnable() {

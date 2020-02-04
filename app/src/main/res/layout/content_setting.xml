@@ -273,6 +273,7 @@
                             android:textColor="@color/colorText3"
                             android:textSize="@dimen/small_text_size" />
                     </LinearLayout>
+
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/oauth_hide_switch"
                         android:layout_width="match_parent"
@@ -383,7 +384,7 @@
                             android:layout_gravity="center"
                             android:layout_marginRight="@dimen/content_margin"
                             android:layout_weight="0"
-                            android:src="@drawable/ic_replay" />
+                            android:src="@drawable/ic_settings_restore" />
 
                         <ImageView
                             android:id="@+id/feed_add_imageview"

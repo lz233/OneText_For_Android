@@ -90,4 +90,5 @@
     <string name="oauth_logout_text">确认退出？</string>
     <string name="oauth_logout_button">确认</string>
     <string name="oauth_hide_text">隐藏 Oauth 认证</string>
+    <string name="delete_succeed">删除成功</string>
 </resources>

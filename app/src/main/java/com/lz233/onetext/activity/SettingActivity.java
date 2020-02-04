@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -79,6 +80,7 @@ public class SettingActivity extends BaseActivity {
     private ImageView feed_reset_imageview;
     private ImageView feed_add_imageview;
     private RecyclerView feed_recyclerview;
+    private FeedAdapter feedAdapter;
     private List<Feed> feedList = new ArrayList<>();
     private IndicatorSeekBar feed_refresh_seekbar;
     private ImageView feed_refresh_imageview;
@@ -726,7 +728,7 @@ public class SettingActivity extends BaseActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         feed_recyclerview.setLayoutManager(linearLayoutManager);
-        FeedAdapter feedAdapter = new FeedAdapter(feedList);
+        feedAdapter = new FeedAdapter(feedList);
         feed_recyclerview.setAdapter(feedAdapter);
         int selectedInt = sharedPreferences.getInt("feed_code", 0);
         try {

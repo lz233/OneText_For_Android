@@ -90,4 +90,5 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="oauth_logout_text">Confirm logout?</string>
     <string name="oauth_logout_button">Confirm</string>
     <string name="oauth_hide_text">Hide Oauth</string>
+    <string name="delete_succeed">Delete Successfully</string>
 </resources>

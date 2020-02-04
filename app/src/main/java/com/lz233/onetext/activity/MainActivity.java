@@ -226,6 +226,17 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 }
             }
         });
+        save_button.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(EasyPermissions.hasPermissions(MainActivity.this,permissions)){
+                    if(FileUtil.deleteDir(new File(Environment.getExternalStorageDirectory() + "/Pictures/OneText/"))){
+                        Snackbar.make(v, getString(R.string.succeed), Snackbar.LENGTH_SHORT).show();
+                    }
+                }
+                return true;
+            }
+        });
         refresh_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -367,7 +378,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onStart() {
         super.onStart();
         // The activity is about to become visible.
-        if (!sharedPreferences.getBoolean("oauth_hide", false)) {
+        if (sharedPreferences.getBoolean("oauth_hide", false)) {
+            Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) avatar_imageview.getLayoutParams();
+            layoutParams.width = AppUtil.dp2px(this, 24);
+            layoutParams.height = AppUtil.dp2px(this, 24);
+            avatar_imageview.setLayoutParams(layoutParams);
+            avatar_imageview.setImageDrawable(getDrawable(R.drawable.ic_settings));
+        }else {
             if (sharedPreferences.getBoolean("oauth_logined", false)) {
                 if (FileUtil.isFile(getFilesDir().getPath() + "/Oauth/Avatar.png")) {
                     Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) avatar_imageview.getLayoutParams();
