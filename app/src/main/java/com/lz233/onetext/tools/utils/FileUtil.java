@@ -53,22 +53,22 @@ public class FileUtil {
             File[] files = dir.listFiles();
             for (File file : files) {
                 if (file.isDirectory()) {
-                    if (isSucceed){
+                    if (isSucceed) {
                         isSucceed = deleteDir(file);
-                    }else {
+                    } else {
                         deleteDir(file);
                     }
                 } else {
-                    if (isSucceed){
+                    if (isSucceed) {
                         isSucceed = file.delete();
-                    }else {
+                    } else {
                         file.delete();
                     }
                 }
             }
-            if (isSucceed){
+            if (isSucceed) {
                 isSucceed = dir.delete();
-            }else {
+            } else {
                 dir.delete();
             }
 
@@ -112,12 +112,13 @@ public class FileUtil {
         }
     }
 
-    public static void copyAssets(Context context, String assetDir, String dir) {
+    public static boolean copyAssets(Context context, String assetDir, String dir) {
         String[] files;
+        boolean ifSucceed = true;
         try {
             files = context.getResources().getAssets().list(assetDir);
         } catch (IOException e1) {
-            return;
+            return false;
         }
         File mWorkingPath = new File(dir);
         // if this directory does not exists, make one.
@@ -156,10 +157,13 @@ public class FileUtil {
                 out.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+                ifSucceed = false;
             } catch (IOException e) {
                 e.printStackTrace();
+                ifSucceed = false;
             }
         }
+        return ifSucceed;
     }
 
     public static String readTextFromFile(String FilePath) {

@@ -21,17 +21,18 @@ import android.widget.EditText;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.lz233.onetext.R;
-import com.lz233.onetext.tools.utils.FeedUtil;
+import com.lz233.onetext.tools.utils.CoreUtil;
 
 import org.json.JSONException;
+
+import java.util.HashMap;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class SetFeedActivity extends BaseActivity {
     private int currentFeedCode;
     private boolean isAddFeed;
-    private FeedUtil feedUtil;
-    private String[] feedInf;
+    private CoreUtil coreUtil;
     private EditText setfeed_name_edittext;
     private EditText setfeed_type_edittext;
     private TextInputLayout setfeed_url_textinputlayout;
@@ -54,19 +55,19 @@ public class SetFeedActivity extends BaseActivity {
         Intent intent = getIntent();
         currentFeedCode = intent.getIntExtra("feed_int", -1);
         //Toast.makeText(SetFeedActivity.this,String.valueOf(currentFeedCode), Toast.LENGTH_LONG).show();
-        feedUtil = new FeedUtil(this);
+        coreUtil = new CoreUtil(SetFeedActivity.this);
         if (currentFeedCode == -1) {
             isAddFeed = true;
             //Toast.makeText(SetFeedActivity.this,String.valueOf(isAddFeed), Toast.LENGTH_LONG).show();
             setfeed_path_textinputlayout.setVisibility(View.GONE);
             setfeed_url_textinputlayout.setVisibility(View.GONE);
         } else {
-            feedInf = feedUtil.getFeedInf(currentFeedCode);
-            setfeed_name_edittext.setText(feedInf[0]);
-            String feedType = feedInf[1];
+            HashMap hashMap = coreUtil.getFeedInformation(currentFeedCode);
+            setfeed_name_edittext.setText((String) hashMap.get("feed_name"));
+            String feedType = (String) hashMap.get("feed_type");
             setfeed_type_edittext.setText(feedType);
-            setfeed_url_edittext.setText(feedInf[2]);
-            setfeed_path_edittext.setText(feedInf[3]);
+            setfeed_url_edittext.setText((String) hashMap.get("feed_url"));
+            setfeed_path_edittext.setText((String) hashMap.get("feed_path"));
             if (feedType.equals("remote")) {
                 setfeed_path_textinputlayout.setVisibility(View.GONE);
             } else if (feedType.equals("local")) {
@@ -115,9 +116,9 @@ public class SetFeedActivity extends BaseActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
             try {
                 if (isAddFeed) {
-                    feedUtil.addFeed(setfeed_name_edittext.getText().toString(), setfeed_type_edittext.getText().toString(), setfeed_url_edittext.getText().toString(), setfeed_path_edittext.getText().toString());
+                    coreUtil.addFeed(setfeed_name_edittext.getText().toString(), setfeed_type_edittext.getText().toString(), setfeed_url_edittext.getText().toString(), setfeed_path_edittext.getText().toString());
                 } else {
-                    feedUtil.alterFeed(currentFeedCode, setfeed_name_edittext.getText().toString(), setfeed_type_edittext.getText().toString(), setfeed_url_edittext.getText().toString(), setfeed_path_edittext.getText().toString());
+                    coreUtil.alterFeed(currentFeedCode, setfeed_name_edittext.getText().toString(), setfeed_type_edittext.getText().toString(), setfeed_url_edittext.getText().toString(), setfeed_path_edittext.getText().toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

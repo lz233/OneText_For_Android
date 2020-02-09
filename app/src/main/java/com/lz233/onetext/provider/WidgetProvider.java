@@ -19,13 +19,13 @@ import androidx.core.app.NotificationCompat;
 
 import com.lz233.onetext.R;
 import com.lz233.onetext.activity.MainActivity;
-import com.lz233.onetext.tools.utils.FileUtil;
-import com.lz233.onetext.tools.utils.OneTextUtil;
+import com.lz233.onetext.tools.utils.CoreUtil;
+
+import java.util.HashMap;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WidgetProvider extends AppWidgetProvider {
-    private int onetext_code;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -95,93 +95,102 @@ public class WidgetProvider extends AppWidgetProvider {
                 //TextView view =viewParent.findViewById(R.id.onetext_widget_center_text_textview);
                 //view.setTextColor(Color.RED);
             }
-            if ((FileUtil.isFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json")) | (FileUtil.isFile(sharedPreferences.getString("feed_local_path", null)))) {
-                OneTextUtil oneTextUtil = new OneTextUtil(context);
+                /*OneTextUtil oneTextUtil = new OneTextUtil(context);
                 String[] oneText = oneTextUtil.readOneText(oneTextUtil.getOneTextCode(false, true));
                 String originalText = oneText[0];
                 String text = originalText.replace("\n", " ");
-                String by = oneText[1];
-                if (sharedPreferences.getBoolean("widget_center", false)) {
-                    if (sharedPreferences.getBoolean("widget_shadow", false)) {
-                        views.setTextViewText(R.id.onetext_widget_center_text_textview_shadow, text);
-                        views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.VISIBLE);
-                        views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
+                String by = oneText[1];*/
+            CoreUtil coreUtil = new CoreUtil(context);
+            HashMap hashMap = coreUtil.getOneText(false, true);
+            String originalText = (String) hashMap.get("text");
+            if (originalText == null) {
+                originalText = "";
+            }
+            String text = originalText.replace("\n", " ");
+            String by = (String) hashMap.get("by");
+            if (by == null) {
+                by = "";
+            }
+            if (sharedPreferences.getBoolean("widget_center", false)) {
+                if (sharedPreferences.getBoolean("widget_shadow", false)) {
+                    views.setTextViewText(R.id.onetext_widget_center_text_textview_shadow, text);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.VISIBLE);
+                    views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
+                } else {
+                    views.setTextViewText(R.id.onetext_widget_center_text_textview, text);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.VISIBLE);
+                    views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
+                }
+            } else {
+                if (sharedPreferences.getBoolean("widget_shadow", false)) {
+                    views.setTextViewText(R.id.onetext_widget_text_textview_shadow, text);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.VISIBLE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
+                    if (!by.equals("")) {
+                        views.setTextViewText(R.id.onetext_widget_by_textview_shadow, "—— " + by);
+                        views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.VISIBLE);
                         views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
                     } else {
-                        views.setTextViewText(R.id.onetext_widget_center_text_textview, text);
-                        views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
                         views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.VISIBLE);
                         views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
                     }
                 } else {
-                    if (sharedPreferences.getBoolean("widget_shadow", false)) {
-                        views.setTextViewText(R.id.onetext_widget_text_textview_shadow, text);
-                        views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.VISIBLE);
-                        views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
-                        if (!by.equals("")) {
-                            views.setTextViewText(R.id.onetext_widget_by_textview_shadow, "—— " + by);
-                            views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.VISIBLE);
-                            views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
-                        } else {
-                            views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
-                            views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
-                        }
-                    } else {
-                        views.setTextViewText(R.id.onetext_widget_text_textview, text);
-                        views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
-                        views.setViewVisibility(R.id.onetext_widget_text_textview, View.VISIBLE);
-                        views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
-                        if (!by.equals("")) {
-                            views.setTextViewText(R.id.onetext_widget_by_textview, "—— " + by);
-                            views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
-                            views.setViewVisibility(R.id.onetext_widget_by_textview, View.VISIBLE);
-                        } else {
-                            views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
-                            views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
-                        }
-                    }
-                }
-                if (sharedPreferences.getBoolean("widget_notification_enabled", false)) {
-                    RemoteViews notificationViewsLarge = new RemoteViews(context.getPackageName(), R.layout.notification_layout_large);
-                    notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_text_textview, originalText);
+                    views.setTextViewText(R.id.onetext_widget_text_textview, text);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
+                    views.setViewVisibility(R.id.onetext_widget_text_textview, View.VISIBLE);
+                    views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
                     if (!by.equals("")) {
-                        notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview, View.VISIBLE);
-                        notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_by_textview, "—— " + by);
+                        views.setTextViewText(R.id.onetext_widget_by_textview, "—— " + by);
+                        views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_by_textview, View.VISIBLE);
                     } else {
-                        notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                        views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
                     }
-                    Intent openIntent = new Intent(context, MainActivity.class);
-                    openIntent.setPackage(context.getPackageName());
-                    PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, 0);
-                    notificationViewsLarge.setOnClickPendingIntent(R.id.onetext_notification_large_layout, openPendingIntent);
-                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                            .setContentIntent(openPendingIntent)
-                            //.setCustomContentView(notificationViewsSmall)
-                            .setCustomBigContentView(notificationViewsLarge)
-                            //.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                            .setSmallIcon(R.drawable.ic_notification)
-                            .setColor(context.getColor(R.color.colorText2))
-                            .setContentTitle("“" + text + "”")
-                            .setContentText(context.getText(R.string.widget_notification_tip_text))
-                            .setWhen(System.currentTimeMillis())
-                            .setSound(null)
-                            .setVibrate(new long[]{0});
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        builder.setChannelId("widget_onetext");
-                    }
-                    Notification notification = builder.build();
-                    notificationManager.notify(1, notification);
                 }
+            }
+            if (sharedPreferences.getBoolean("widget_notification_enabled", false)) {
+                RemoteViews notificationViewsLarge = new RemoteViews(context.getPackageName(), R.layout.notification_layout_large);
+                notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_text_textview, originalText);
+                if (!by.equals("")) {
+                    notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview, View.VISIBLE);
+                    notificationViewsLarge.setTextViewText(R.id.onetext_notification_large_by_textview, "—— " + by);
+                } else {
+                    notificationViewsLarge.setViewVisibility(R.id.onetext_notification_large_by_textview, View.GONE);
+                }
+                Intent openIntent = new Intent(context, MainActivity.class);
+                openIntent.setPackage(context.getPackageName());
+                PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, 0);
+                notificationViewsLarge.setOnClickPendingIntent(R.id.onetext_notification_large_layout, openPendingIntent);
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                        .setContentIntent(openPendingIntent)
+                        //.setCustomContentView(notificationViewsSmall)
+                        .setCustomBigContentView(notificationViewsLarge)
+                        //.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setColor(context.getColor(R.color.colorText2))
+                        .setContentTitle("“" + text + "”")
+                        .setContentText(context.getText(R.string.widget_notification_tip_text))
+                        .setWhen(System.currentTimeMillis())
+                        .setSound(null)
+                        .setVibrate(new long[]{0});
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    builder.setChannelId("widget_onetext");
+                }
+                Notification notification = builder.build();
+                notificationManager.notify(1, notification);
             }
         } catch (Exception e) {
             e.printStackTrace();

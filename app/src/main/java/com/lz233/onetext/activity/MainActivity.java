@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
@@ -23,8 +24,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.lz233.onetext.R;
 import com.lz233.onetext.tools.utils.AppUtil;
+import com.lz233.onetext.tools.utils.CoreUtil;
 import com.lz233.onetext.tools.utils.FileUtil;
-import com.lz233.onetext.tools.utils.OneTextUtil;
 import com.lz233.onetext.tools.utils.SaveBitmapUtil;
 import com.lz233.onetext.view.NiceImageView;
 import com.microsoft.appcenter.AppCenter;
@@ -40,6 +41,7 @@ import com.warkiz.widget.SeekParams;
 import org.json.JSONException;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -47,7 +49,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 import static com.lz233.onetext.tools.utils.AppUtil.px2sp;
 
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
-    private int onetext_code;
+    private CoreUtil coreUtil;
     private NiceImageView avatar_imageview;
     private SwipeRefreshLayout onetext_swiperefreshlayout;
     private ProgressBar progressBar;
@@ -90,6 +92,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //曲 线 救 国
         fuckNav(findViewById(R.id.last_layout));
         //fb
+        coreUtil = new CoreUtil(MainActivity.this);
         avatar_imageview = findViewById(R.id.avatar_imageview);
         onetext_swiperefreshlayout = findViewById(R.id.onetext_swiperefreshlayout);
         pic_layout = findViewById(R.id.pic_layout);
@@ -143,13 +146,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //Analytics.trackEvent("My custom event");
         //Crashes.generateTestCrash();
         //装载feed
-        if (!FileUtil.isDirectory(getFilesDir().getPath() + "/Feed/")) {
-            File file = new File(getFilesDir().getPath() + "/Feed/");
-            file.mkdirs();
-        }
-        if (!FileUtil.isFile(getFilesDir().getPath() + "/Feed/Feed.json")) {
-            FileUtil.copyAssets(this, "Feed", getFilesDir().getPath() + "/Feed");
-        }
+        coreUtil.initFeedFile();
         switch (sharedPreferences.getInt("interface_daynight", 0)) {
             case 0:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
@@ -229,8 +226,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         save_button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(EasyPermissions.hasPermissions(MainActivity.this,permissions)){
-                    if(FileUtil.deleteDir(new File(Environment.getExternalStorageDirectory() + "/Pictures/OneText/"))){
+                if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
+                    if (FileUtil.deleteDir(new File(Environment.getExternalStorageDirectory() + "/Pictures/OneText/"))) {
                         Snackbar.make(v, getString(R.string.succeed), Snackbar.LENGTH_SHORT).show();
                     }
                 }
@@ -384,7 +381,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             layoutParams.height = AppUtil.dp2px(this, 24);
             avatar_imageview.setLayoutParams(layoutParams);
             avatar_imageview.setImageDrawable(getDrawable(R.drawable.ic_settings));
-        }else {
+        } else {
             if (sharedPreferences.getBoolean("oauth_logined", false)) {
                 if (FileUtil.isFile(getFilesDir().getPath() + "/Oauth/Avatar.png")) {
                     Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) avatar_imageview.getLayoutParams();
@@ -399,6 +396,118 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
     }
 
+    private void initRun(final Boolean forcedRefresh) {
+        progressBar.setVisibility(View.VISIBLE);
+        coreUtil.initOneText(new CoreUtil.OnOneTextInitListener() {
+            @Override
+            public void onSuccess(File file) {
+                try {
+                    final HashMap hashMap = coreUtil.getOneText(forcedRefresh, false);
+                    final String text = (String) hashMap.get("text");
+                    final String by = (String) hashMap.get("by");
+                    final String time = (String) hashMap.get("time");
+                    final String from = (String) hashMap.get("from");
+                    onetext_text_textview.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (text == null) {
+                                onetext_quote1_textview.setVisibility(View.GONE);
+                                onetext_text_textview.setVisibility(View.GONE);
+                                onetext_quote2_textview.setVisibility(View.GONE);
+                            } else {
+                                onetext_quote1_textview.setVisibility(View.VISIBLE);
+                                onetext_text_textview.setVisibility(View.VISIBLE);
+                                onetext_quote2_textview.setVisibility(View.VISIBLE);
+                                onetext_text_textview.setText((String) hashMap.get("text"));
+                            }
+                            if (by == null) {
+                                onetext_by_textview.setVisibility(View.GONE);
+                            } else {
+                                onetext_by_textview.setVisibility(View.VISIBLE);
+                                onetext_by_textview.setText((String) hashMap.get("by"));
+                            }
+                            if (time == null) {
+                                onetext_time_textview.setVisibility(View.GONE);
+                            } else {
+                                onetext_time_textview.setVisibility(View.VISIBLE);
+                                onetext_time_textview.setText((String) hashMap.get("time"));
+                            }
+                            if (from == null) {
+                                onetext_from_textview.setVisibility(View.GONE);
+                            } else {
+                                onetext_from_textview.setVisibility(View.VISIBLE);
+                                onetext_from_textview.setText((String) hashMap.get("from"));
+                            }
+                        }
+                    });
+                    //更新小部件
+                    Intent intent = new Intent("com.lz233.onetext.widget");
+                    intent.setPackage(getPackageName());
+                    MainActivity.this.sendBroadcast(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                coreUtil.runOneTextUpdate(new CoreUtil.OnOneTextUpdateListener() {
+                    @Override
+                    public void noUpdateRequired() {
+                        progressBar.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onSuccess(File file) {
+                        progressBar.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onDownloading(int progress) {
+
+                    }
+
+                    @Override
+                    public void onFailed(Exception e) {
+                        progressBar.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                        Snackbar.make(rootview, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_refresh_faild_button, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                initRun(false);
+                            }
+                        }).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onDownloading(int progress) {
+
+            }
+
+            @Override
+            public void onFailed(@Nullable Exception e) {
+                Snackbar.make(rootview, getString(R.string.onetext_init_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_init_faild_button, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        initRun(false);
+                    }
+                }).show();
+            }
+        });
+    }
+    /*
     public void initRun(final Boolean forcedRefresh) {
         new Thread(new Runnable() {
             @Override
@@ -537,7 +646,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 });
             }
         }).start();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

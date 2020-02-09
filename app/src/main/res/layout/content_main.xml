@@ -84,7 +84,8 @@
                                         android:layout_marginLeft="@dimen/layout_margin"
                                         android:layout_marginRight="@dimen/layout_margin"
                                         android:textColor="@color/colorText1"
-                                        android:textSize="@dimen/onetext_size" />
+                                        android:textSize="@dimen/onetext_size"
+                                        android:textStyle="bold" />
 
                                     <TextView
                                         android:id="@+id/onetext_quote2_textview"

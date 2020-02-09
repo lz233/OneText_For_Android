@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.lz233.onetext.R;
 import com.lz233.onetext.activity.SetFeedActivity;
-import com.lz233.onetext.tools.utils.FeedUtil;
+import com.lz233.onetext.tools.utils.CoreUtil;
 import com.lz233.onetext.tools.utils.FileUtil;
+
+import org.json.JSONException;
 
 import java.util.List;
 
@@ -68,7 +70,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.feed_edit_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //to-do
                 int position = holder.getAdapterPosition();
                 Intent intent = new Intent(parent.getContext(), SetFeedActivity.class);
                 intent.putExtra("feed_int", position);
@@ -86,8 +87,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     /*Intent intent3 = new Intent("com.lz233.onetext.issettingupdated");
                     intent3.setPackage(feed.getContext().getPackageName());
                     feed.getContext().sendBroadcast(intent3);*/
-                    FeedUtil feedUtil = new FeedUtil(view.getContext());
-                    feedUtil.deleteFeed(position);
+                    try {
+                        CoreUtil coreUtil = new CoreUtil(feed.getContext());
+                        coreUtil.deleteFeed(position);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Intent intent = new Intent("com.lz233.onetext.updatefeedlist");
                     intent.setPackage(feed.getContext().getPackageName());
                     feed.getContext().sendBroadcast(intent);

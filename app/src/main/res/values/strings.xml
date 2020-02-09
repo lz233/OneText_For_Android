@@ -83,7 +83,7 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="setfeed_path_text">Path [Long press to select a file]</string>
     <string name="feed_cannot_delete_text">Not allowed to delete last feed.</string>
     <string name="widget_shadow">With shadow</string>
-    <string name="onetext_refresh_faild_text">Refresh Failed</string>
+    <string name="onetext_refresh_faild_text">Update failed, please check the network.</string>
     <string name="onetext_refresh_faild_button">Retry</string>
     <string name="oauth_login_text">Login With GitHub</string>
     <string name="oauth_failed_text">Failed, please go back and try again.</string>
@@ -91,4 +91,7 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="oauth_logout_button">Confirm</string>
     <string name="oauth_hide_text">Hide Oauth</string>
     <string name="delete_succeed">Delete Successfully</string>
+    <string name="onetext_init_faild_text">Initialization failed, please check the network.</string>
+    <string name="onetext_init_faild_button">Retry</string>
+    <string name="feed_auto_update_text">Auto Update</string>
 </resources>

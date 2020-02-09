@@ -21,7 +21,6 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -82,6 +81,7 @@ public class SettingActivity extends BaseActivity {
     private RecyclerView feed_recyclerview;
     private FeedAdapter feedAdapter;
     private List<Feed> feedList = new ArrayList<>();
+    private SwitchMaterial feed_auto_update_switch;
     private IndicatorSeekBar feed_refresh_seekbar;
     private ImageView feed_refresh_imageview;
     private TextView widget_enable_textview;
@@ -122,6 +122,7 @@ public class SettingActivity extends BaseActivity {
         feed_reset_imageview = findViewById(R.id.feed_reset_imageview);
         feed_add_imageview = findViewById(R.id.feed_add_imageview);
         feed_recyclerview = findViewById(R.id.feed_recyclerview);
+        feed_auto_update_switch = findViewById(R.id.feed_auto_update_switch);
         feed_refresh_seekbar = findViewById(R.id.feed_refresh_seekbar);
         feed_refresh_imageview = findViewById(R.id.feed_refresh_imageview);
         widget_enable_textview = findViewById(R.id.widget_enable_textview);
@@ -151,10 +152,10 @@ public class SettingActivity extends BaseActivity {
                 interface_daynight_spinner.setSelection(2);
                 break;
         }
-        if(sharedPreferences.getBoolean("oauth_hide",false)){
+        if (sharedPreferences.getBoolean("oauth_hide", false)) {
             oauth_linearlayout.setVisibility(View.GONE);
         }
-        oauth_hide_switch.setChecked(sharedPreferences.getBoolean("oauth_hide",false));
+        oauth_hide_switch.setChecked(sharedPreferences.getBoolean("oauth_hide", false));
         switch (sharedPreferences.getInt("chinese_type", 0)) {
             case 0:
                 chinese_type_spinner.setSelection(0);
@@ -171,6 +172,7 @@ public class SettingActivity extends BaseActivity {
                 chinese_type_spinner.setSelection(4);
 
         }
+        feed_auto_update_switch.setChecked(sharedPreferences.getBoolean("feed_auto_update", true));
         feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text) + " ${PROGRESS} " + getString(R.string.hour));
         feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time", 1));
         widget_refresh_seekbar.setIndicatorTextFormat(getString(R.string.widget_refresh_text) + " ${PROGRESS} " + getString(R.string.minute));
@@ -245,91 +247,6 @@ public class SettingActivity extends BaseActivity {
                             });
                         }
                     }).start();
-                    /*DownloadTask task = new DownloadTask.Builder("https://onetext.xyz/1.ttf",new File(getFilesDir().getPath()+"/Fonts/"))
-                            .setFilename("yiqi.ttf")
-                            // the minimal interval millisecond for callback progress
-                            .setMinIntervalMillisCallbackProcess(30)
-                            // do re-download even if the task has already been completed in the past.
-                            .setPassIfAlreadyCompleted(false)
-                            .build();
-                    final Long[] length = new Long[2];
-                    length[0] = Long.valueOf(0);
-                    task.enqueue(new DownloadListener() {
-                        @Override
-                        public void taskStart(@NonNull DownloadTask task) {
-                        }
-                        @Override
-                        public void connectTrialStart(@NonNull DownloadTask task, @NonNull Map<String, List<String>> requestHeaderFields) {
-                        }
-                        @Override
-                        public void connectTrialEnd(@NonNull DownloadTask task, int responseCode, @NonNull Map<String, List<String>> responseHeaderFields) {
-                        }
-                        @Override
-                        public void downloadFromBeginning(@NonNull DownloadTask task, @NonNull BreakpointInfo info, @NonNull ResumeFailedCause cause) {
-                        }
-                        @Override
-                        public void downloadFromBreakpoint(@NonNull DownloadTask task, @NonNull BreakpointInfo info) {
-                        }
-                        @Override
-                        public void connectStart(@NonNull DownloadTask task, int blockIndex, @NonNull Map<String, List<String>> requestHeaderFields) {
-                        }
-                        @Override
-                        public void connectEnd(@NonNull DownloadTask task, int blockIndex, int responseCode, @NonNull Map<String, List<String>> responseHeaderFields) {
-                        }
-                        @Override
-                        public void fetchStart(@NonNull DownloadTask task, int blockIndex, long contentLength) {
-                            length[1] = contentLength;
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
-                                    .setSmallIcon(R.drawable.ic_notification)
-                                    .setColor(getColor(R.color.colorText2))
-                                    .setContentTitle("fetchStart")
-                                    .setContentText(length[1]+" %")
-                                    .setWhen(System.currentTimeMillis())
-                                    .setSound(null)
-                                    .setVibrate(new long[]{0});
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                builder.setChannelId("download_file");
-                            }
-                            Notification notification = builder.build();
-                            notificationManager.notify(3, notification);
-                        }
-                        @Override
-                        public void fetchProgress(@NonNull DownloadTask task, int blockIndex, long increaseBytes) {
-                            length[0] = length[0]+increaseBytes;
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
-                                    .setSmallIcon(R.drawable.ic_notification)
-                                    .setColor(getColor(R.color.colorText2))
-                                    .setContentTitle(getString(R.string.font_notification_title)+getString(R.string.font_yiqi))
-                                    .setContentText((length[0]/length[1])*50+" %")
-                                    .setWhen(System.currentTimeMillis())
-                                    .setSound(null)
-                                    .setVibrate(new long[]{0});
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                builder.setChannelId("download_file");
-                            }
-                            Notification notification = builder.build();
-                            notificationManager.notify(2, notification);
-                        }
-                        @Override
-                        public void fetchEnd(@NonNull DownloadTask task, int blockIndex, long contentLength) {
-                        }
-                        @Override
-                        public void taskEnd(@NonNull DownloadTask task, @NonNull EndCause cause, @Nullable Exception realCause) {
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
-                                    .setSmallIcon(R.drawable.ic_notification)
-                                    .setColor(getColor(R.color.colorText2))
-                                    .setContentTitle(getString(R.string.font_notification_title)+getString(R.string.font_yiqi))
-                                    .setContentText((length[0])+" %\n"+cause)
-                                    .setWhen(System.currentTimeMillis())
-                                    .setSound(null)
-                                    .setVibrate(new long[]{0});
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                builder.setChannelId("download_file");
-                            }
-                            Notification notification = builder.build();
-                            notificationManager.notify(2, notification);
-                        }
-                    });*/
                 } else {
                     Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                     editor.putString("font_path", font_path_yiqi);
@@ -500,6 +417,16 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingActivity.this, SetFeedActivity.class));
+            }
+        });
+        feed_auto_update_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    editor.putBoolean("feed_auto_update", true);
+                } else {
+                    editor.putBoolean("feed_auto_update", false);
+                }
             }
         });
         feed_refresh_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {

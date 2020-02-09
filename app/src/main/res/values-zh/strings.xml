@@ -83,7 +83,7 @@
     <string name="setfeed_path_text">路径 [长按选择文件]</string>
     <string name="feed_cannot_delete_text">不允许删除最后一个源。</string>
     <string name="widget_shadow">阴影</string>
-    <string name="onetext_refresh_faild_text">更新失败</string>
+    <string name="onetext_refresh_faild_text">更新失败，请检查网络。</string>
     <string name="onetext_refresh_faild_button">重试</string>
     <string name="oauth_login_text">通过 GitHub 登录</string>
     <string name="oauth_failed_text">失败，请返回并重试。</string>
@@ -91,4 +91,7 @@
     <string name="oauth_logout_button">确认</string>
     <string name="oauth_hide_text">隐藏 Oauth 认证</string>
     <string name="delete_succeed">删除成功</string>
+    <string name="onetext_init_faild_text">初始化失败，请检查网络。</string>
+    <string name="onetext_init_faild_button">重试</string>
+    <string name="feed_auto_update_text">自动更新</string>
 </resources>
