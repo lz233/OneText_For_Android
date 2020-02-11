@@ -57,7 +57,7 @@ public class CoreUtil {
         if (forceRefresh) {
             return generateNewOneTextCode();
         } else {
-            if ((ifFromWidget) & ((currentTimeMillis - sharedPreferences.getLong("onetext_latest_refresh_time", 0) * 60000) > (sharedPreferences.getLong("onetext_refresh_time", 30) * 60000))) {
+            if ((ifFromWidget) & ((currentTimeMillis - sharedPreferences.getLong("onetext_latest_refresh_time", 0)) >= (sharedPreferences.getLong("onetext_refresh_time", 30) * 60000))) {
                 return generateNewOneTextCode();
             } else {
                 return sharedPreferences.getInt("onetext_code", 0);
