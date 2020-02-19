@@ -147,6 +147,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //Crashes.generateTestCrash();
         //装载feed
         coreUtil.initFeedFile();
+        //welcome
+        if(sharedPreferences.getBoolean("first_run",true)){
+            startActivity(new Intent().setClass(MainActivity.this, WelcomeActivity.class));
+        }
         switch (sharedPreferences.getInt("interface_daynight", 0)) {
             case 0:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
@@ -682,7 +686,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             request_permissions_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.request_permissions_text), 1, permissions);
+                    EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.request_permissions_storage_detail_text), 1, permissions);
                 }
             });
         }

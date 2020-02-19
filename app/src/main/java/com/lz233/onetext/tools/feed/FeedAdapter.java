@@ -34,7 +34,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     @NonNull
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feed_item, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feed, parent, false);
         final FeedAdapter.ViewHolder holder = new ViewHolder(view);
         /*holder.feedView.setOnClickListener(new View.OnClickListener() {
             @Override

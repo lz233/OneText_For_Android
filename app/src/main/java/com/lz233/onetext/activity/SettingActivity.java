@@ -512,7 +512,7 @@ public class SettingActivity extends BaseActivity {
                         final NotificationChannel channel = notificationManager.getNotificationChannel("widget_onetext");
                         if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
                             widget_notification_switch.setChecked(false);
-                            Snackbar.make(rootview, getString(R.string.widget_notification_permissions_text), Snackbar.LENGTH_SHORT).setAction(getString(R.string.request_permissions_button), new View.OnClickListener() {
+                            Snackbar.make(rootview, getString(R.string.widget_notification_permissions_text), Snackbar.LENGTH_SHORT).setAction(getString(R.string.request_permissions_agree_button), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);

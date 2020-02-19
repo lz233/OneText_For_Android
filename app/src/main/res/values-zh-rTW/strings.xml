@@ -16,8 +16,8 @@
     <string name="onetext_text_size_text">一言大小：</string>
     <string name="onetext_time_size_text">時間文字大小：</string>
     <string name="record_time">記錄於</string>
-    <string name="request_permissions_button">同意</string>
-    <string name="request_permissions_text">需要一些許可權</string>
+    <string name="request_permissions_agree_button">同意</string>
+    <string name="request_permissions_text">需要儲存許可權</string>
     <string name="save_button">儲存</string>
     <string name="save_fail">失敗</string>
     <string name="save_succeed">成功，儲存為</string>
@@ -94,4 +94,10 @@
     <string name="onetext_init_faild_text">初始化失敗，請檢查網路。</string>
     <string name="onetext_init_faild_button">重試</string>
     <string name="feed_auto_update_text">自動更新</string>
+    <string name="title_activity_welcome">歡迎！</string>
+    <string name="welcome_start">開始</string>
+    <string name="request_permissions_storage_detail_text">儲存許可權用來儲存一言圖片，以便於分享。\n這些圖片儲存在 %s。</string>
+    <string name="request_permissions_disagree_button">不同意</string>
+    <string name="request_permissions_next_time_text">您也可以稍後同意這些許可權。</string>
+    <string name="welcome_widget_text">小部件</string>
 </resources>

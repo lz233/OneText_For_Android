@@ -2,8 +2,8 @@
     <string name="app_name">OneText</string>
     <string name="record_time">Recorded on</string>
     <string name="created_time">Created on</string>
-    <string name="request_permissions_text">Request Permissions</string>
-    <string name="request_permissions_button">agree</string>
+    <string name="request_permissions_text">Request Storage Permission</string>
+    <string name="request_permissions_agree_button">agree</string>
     <string name="save_text">Save as a picture</string>
     <string name="save_button">save</string>
     <string name="save_succeed">Succeed, save as</string>
@@ -94,4 +94,13 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="onetext_init_faild_text">Initialization failed, please check the network.</string>
     <string name="onetext_init_faild_button">Retry</string>
     <string name="feed_auto_update_text">Auto Update</string>
+    <string name="title_activity_welcome">Welcome!</string>
+    <string name="welcome_start">Start</string>
+    <string name="request_permissions_storage_detail_text">Storage permission are used to save onetext pictures for sharing.\nThese pictures are saved in %s.</string>
+    <string name="request_permissions_disagree_button">Disagree</string>
+    <string name="request_permissions_next_time_text">You also can agree these permissions later.</string>
+    <string name="welcome_widget_text">Widget</string>
+    <string name="welcome_widget_button">Next</string>
+    <string name="welcome_notification_text">Notification</string>
+    <string name="welcome_notification_button">OK</string>
 </resources>

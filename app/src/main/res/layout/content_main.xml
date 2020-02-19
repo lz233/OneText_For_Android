@@ -84,8 +84,7 @@
                                         android:layout_marginLeft="@dimen/layout_margin"
                                         android:layout_marginRight="@dimen/layout_margin"
                                         android:textColor="@color/colorText1"
-                                        android:textSize="@dimen/onetext_size"
-                                        android:textStyle="bold" />
+                                        android:textSize="@dimen/onetext_size" />
 
                                     <TextView
                                         android:id="@+id/onetext_quote2_textview"
@@ -184,7 +183,7 @@
                                         android:background="@drawable/bgstyle_md2"
                                         android:elevation="0dp"
                                         android:foreground="?android:attr/selectableItemBackground"
-                                        android:text="@string/request_permissions_button" />
+                                        android:text="@string/request_permissions_agree_button" />
                                 </androidx.cardview.widget.CardView>
                             </LinearLayout>
 
