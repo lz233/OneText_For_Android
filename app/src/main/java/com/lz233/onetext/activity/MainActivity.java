@@ -1,10 +1,15 @@
 package com.lz233.onetext.activity;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +46,7 @@ import com.warkiz.widget.SeekParams;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -148,7 +154,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //装载feed
         coreUtil.initFeedFile();
         //welcome
-        if(sharedPreferences.getBoolean("first_run",true)){
+        if (sharedPreferences.getBoolean("first_run", true)) {
             startActivity(new Intent().setClass(MainActivity.this, WelcomeActivity.class));
         }
         switch (sharedPreferences.getInt("interface_daynight", 0)) {
@@ -201,8 +207,51 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             @Override
             public void onClick(View view) {
                 if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
-                    final String pic_file_name = "OneText " + System.currentTimeMillis() + ".jpg";
-                    final String pic_file_path = Environment.getExternalStorageDirectory() + "/Pictures/OneText/";
+                    try {
+                        final String pic_file_path;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            pic_file_path = Environment.DIRECTORY_PICTURES + File.separator;
+                        } else {
+                            pic_file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator;
+                        }
+                        final String pic_file_name = "OneText " + System.currentTimeMillis() + ".jpg";
+                        Bitmap bitmap = SaveBitmapUtil.getCacheBitmapFromView(pic_layout);
+                        ContentResolver resolver = getContentResolver();
+                        ContentValues values = new ContentValues();
+                        values.put(MediaStore.MediaColumns.DISPLAY_NAME, pic_file_name);
+                        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+                        values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            values.put(MediaStore.MediaColumns.RELATIVE_PATH, pic_file_path + "OneText");
+                        } else {
+                            File path = new File(pic_file_path + "OneText");
+                            //noinspection ResultOfMethodCallIgnored
+                            path.mkdirs();
+                            values.put(MediaStore.MediaColumns.DATA, path + File.separator + pic_file_name);
+                        }
+                        Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                        if (imageUri != null) {
+                            OutputStream stream = resolver.openOutputStream(imageUri);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            if (stream != null) {
+                                stream.close();
+                            }
+                        }
+                        Snackbar.make(view, getString(R.string.save_succeed) + " " + pic_file_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_SEND);
+                                intent.putExtra(Intent.EXTRA_STREAM, FileUtil.getUriFromFile(new File(pic_file_path + pic_file_name), MainActivity.this));
+                                intent.setType("image/*");
+                                startActivity(Intent.createChooser(intent, getString(R.string.share_text)));
+                            }
+                        }).show();
+                    } catch (Exception e) {
+                        Snackbar.make(view, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
+                    }
+
+                    /*
                     if (!FileUtil.isDirectory(pic_file_path)) {
                         File file = new File(pic_file_path);
                         file.mkdirs();
@@ -221,7 +270,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         }).show();
                     } else {
                         Snackbar.make(view, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
-                    }
+                    }*/
+
                 } else {
                     Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
                 }
@@ -397,6 +447,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             }
         }
         initRun(false);
+        final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (EasyPermissions.hasPermissions(this, permissions)) {
+            request_permissions_layout.setVisibility(View.GONE);
+        }
         //Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
     }
 
