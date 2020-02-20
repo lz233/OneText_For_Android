@@ -2,6 +2,7 @@ package com.lz233.onetext.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -59,7 +60,9 @@ public class WelcomeFragment2 extends Fragment implements EasyPermissions.Permis
                 if (EasyPermissions.hasPermissions(activity, permissions)) {
                     viewPager2.setCurrentItem(2);
                 }else {
-                    EasyPermissions.requestPermissions(activity, getString(R.string.request_permissions_storage_detail_text), 1, permissions);
+                    Intent intent = new Intent("com.lz233.onetext.requestpermission");
+                    intent.setPackage(getContext().getPackageName());
+                    getContext().sendBroadcast(intent);
                 }
             }
         });
@@ -69,7 +72,7 @@ public class WelcomeFragment2 extends Fragment implements EasyPermissions.Permis
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //把申请权限的回调交由EasyPermissions处理
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, activity);
     }
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {

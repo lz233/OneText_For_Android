@@ -2,6 +2,7 @@ package com.lz233.onetext.tools.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 
 import androidx.annotation.Nullable;
 
@@ -120,27 +121,32 @@ public class CoreUtil {
     public HashMap getOneText(boolean forceRefresh, boolean ifFromWidget) throws JSONException {
         JSONObject jsonObject = new JSONArray(getOneTextArray()).optJSONObject(getOneTextCode(forceRefresh, ifFromWidget));
         HashMap hashMap = new HashMap();
-        int chinese_type = sharedPreferences.getInt("chinese_type", 0);
-        String language = Locale.getDefault().getLanguage();
-        String country = Locale.getDefault().getCountry();
-        if (chinese_type == 0) {
-            if (language.equals("zh") & country.equals("HK")) {
-                oneTextViaS2HK(jsonObject, hashMap);
-            } else if (language.equals("zh") & country.equals("MO")) {
-                oneTextViaS2T(jsonObject, hashMap);
-            } else if (language.equals("zh") & country.equals("TW")) {
-                oneTextViaS2TWP(jsonObject, hashMap);
-            } else {
+        //to-do
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            int chinese_type = sharedPreferences.getInt("chinese_type", 0);
+            String language = Locale.getDefault().getLanguage();
+            String country = Locale.getDefault().getCountry();
+            if (chinese_type == 0) {
+                if (language.equals("zh") & country.equals("HK")) {
+                    oneTextViaS2HK(jsonObject, hashMap);
+                } else if (language.equals("zh") & country.equals("MO")) {
+                    oneTextViaS2T(jsonObject, hashMap);
+                } else if (language.equals("zh") & country.equals("TW")) {
+                    oneTextViaS2TWP(jsonObject, hashMap);
+                } else {
+                    oneTextViaOriginal(jsonObject, hashMap);
+                }
+            } else if (chinese_type == 1) {
                 oneTextViaOriginal(jsonObject, hashMap);
+            } else if (chinese_type == 2) {
+                oneTextViaS2T(jsonObject, hashMap);
+            } else if (chinese_type == 3) {
+                oneTextViaS2HK(jsonObject, hashMap);
+            } else if (chinese_type == 4) {
+                oneTextViaS2TWP(jsonObject, hashMap);
             }
-        } else if (chinese_type == 1) {
+        }else {
             oneTextViaOriginal(jsonObject, hashMap);
-        } else if (chinese_type == 2) {
-            oneTextViaS2T(jsonObject, hashMap);
-        } else if (chinese_type == 3) {
-            oneTextViaS2HK(jsonObject, hashMap);
-        } else if (chinese_type == 4) {
-            oneTextViaS2TWP(jsonObject, hashMap);
         }
         JSONArray timeJsonArray = new JSONArray(jsonObject.optString("time"));
         final String timeOfRecord = timeJsonArray.optString(0);

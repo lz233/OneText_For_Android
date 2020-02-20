@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 'android-R'
     buildToolsVersion "29.0.0"
     defaultConfig {
         Date date = new Date()
         applicationId "com.lz233.onetext"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
         versionName '1.59'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

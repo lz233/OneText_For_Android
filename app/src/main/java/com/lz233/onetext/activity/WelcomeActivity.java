@@ -1,5 +1,11 @@
 package com.lz233.onetext.activity;
 
+import android.Manifest;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +22,12 @@ import com.lz233.onetext.fragment.WelcomeFragment2;
 import com.lz233.onetext.fragment.WelcomeFragment3;
 import com.lz233.onetext.fragment.WelcomeFragment4;
 
-public class WelcomeActivity extends BaseActivity {
+import java.util.List;
+
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class WelcomeActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks{
+    private Receiver receiver;
     private static final int NUM_PAGES = 5;
     private String[] danmu = {"即使这些回忆使我感到悲伤，我也必须前进，相信未来。",
             "即使是在我感到了我的孤单，即将失去所有的希望，这份回忆，也使我更加坚强。",
@@ -45,6 +56,11 @@ public class WelcomeActivity extends BaseActivity {
         //fb
         barrageview = findViewById(R.id.barrageview);
         viewpager2 = findViewById(R.id.viewpager2);
+        //懒
+        receiver = new Receiver();
+        registerReceiver(receiver, new IntentFilter("com.lz233.onetext.requestpermission"));
+        Intent intent = new Intent(this, Service.class);
+        startService(intent);
         for(int i=0;i<danmu.length;i++){
             barrageview.addBarrage(new Barrage(danmu[i],R.color.colorText4));
         }
@@ -66,7 +82,30 @@ public class WelcomeActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //把申请权限的回调交由EasyPermissions处理
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        viewpager2.setCurrentItem(2);
+    }
 
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+
+    }
+    class Receiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("com.lz233.onetext.requestpermission")) {
+                final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                EasyPermissions.requestPermissions(WelcomeActivity.this, getString(R.string.request_permissions_storage_detail_text), 1, permissions);
+            }
+        }
+    }
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
         ScreenSlidePagerAdapter(FragmentActivity fa) {
             super(fa);
