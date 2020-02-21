@@ -200,7 +200,7 @@ public class SettingActivity extends BaseActivity {
                         @Override
                         public void run() {
                             final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                            DownloadUtil.get().download("https://onetext.xyz/1.ttf", getFilesDir().getPath() + "/Fonts/", "yiqi.ttf", new DownloadUtil.OnDownloadListener() {
+                            DownloadUtil.get().download("https://ttf.onetext.xyz/2.ttf", getFilesDir().getPath() + "/Fonts/", "yiqi.ttf", new DownloadUtil.OnDownloadListener() {
                                 @Override
                                 public void onDownloadSuccess(File file) {
                                     editor.putString("font_path", font_path_yiqi);
@@ -273,7 +273,7 @@ public class SettingActivity extends BaseActivity {
                         @Override
                         public void run() {
                             final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                            DownloadUtil.get().download("https://onetext.xyz/2.ttf", getFilesDir().getPath() + "/Fonts/", "canger.ttf", new DownloadUtil.OnDownloadListener() {
+                            DownloadUtil.get().download("https://ttf.onetext.xyz/1.ttf", getFilesDir().getPath() + "/Fonts/", "canger.ttf", new DownloadUtil.OnDownloadListener() {
                                 @Override
                                 public void onDownloadSuccess(File file) {
                                     editor.putString("font_path", font_path_canger);
