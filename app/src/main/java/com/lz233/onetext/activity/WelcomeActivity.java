@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Environment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -102,7 +103,7 @@ public class WelcomeActivity extends BaseActivity implements EasyPermissions.Per
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals("com.lz233.onetext.requestpermission")) {
                 final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                EasyPermissions.requestPermissions(WelcomeActivity.this, getString(R.string.request_permissions_storage_detail_text), 1, permissions);
+                EasyPermissions.requestPermissions(WelcomeActivity.this, getString(R.string.request_permissions_storage_detail_text).replace("%s", Environment.getExternalStorageDirectory() + "/Pictures/OneText/"), 1, permissions);
             }
         }
     }

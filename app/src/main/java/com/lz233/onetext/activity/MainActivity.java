@@ -210,9 +210,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     try {
                         final String pic_file_path;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            pic_file_path = Environment.DIRECTORY_PICTURES + File.separator;
+                            pic_file_path = Environment.DIRECTORY_PICTURES + File.separator + "OneText" + File.separator;
                         } else {
-                            pic_file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator;
+                            pic_file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "OneText" + File.separator;
                         }
                         final String pic_file_name = "OneText " + System.currentTimeMillis() + ".jpg";
                         Bitmap bitmap = SaveBitmapUtil.getCacheBitmapFromView(pic_layout);
@@ -222,14 +222,14 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
                         values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            values.put(MediaStore.MediaColumns.RELATIVE_PATH, pic_file_path + "OneText");
+                            values.put(MediaStore.MediaColumns.RELATIVE_PATH, pic_file_path);
                         } else {
-                            File path = new File(pic_file_path + "OneText");
+                            File path = new File(pic_file_path);
                             //noinspection ResultOfMethodCallIgnored
                             path.mkdirs();
                             values.put(MediaStore.MediaColumns.DATA, path + File.separator + pic_file_name);
                         }
-                        Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                        final Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                         if (imageUri != null) {
                             OutputStream stream = resolver.openOutputStream(imageUri);
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -242,7 +242,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             public void onClick(View view) {
                                 Intent intent = new Intent();
                                 intent.setAction(Intent.ACTION_SEND);
-                                intent.putExtra(Intent.EXTRA_STREAM, FileUtil.getUriFromFile(new File(pic_file_path + pic_file_name), MainActivity.this));
+                                intent.putExtra(Intent.EXTRA_STREAM, imageUri);
                                 intent.setType("image/*");
                                 startActivity(Intent.createChooser(intent, getString(R.string.share_text)));
                             }
@@ -282,8 +282,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             public boolean onLongClick(View v) {
                 if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
                     if (FileUtil.deleteDir(new File(Environment.getExternalStorageDirectory() + "/Pictures/OneText/"))) {
-                        Snackbar.make(v, getString(R.string.succeed), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(v, getString(R.string.delete_succeed), Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(v, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show();
                     }
+                } else {
+                    Snackbar.make(v, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -740,7 +744,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             request_permissions_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.request_permissions_storage_detail_text), 1, permissions);
+                    EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.request_permissions_storage_detail_text).replace("%s", Environment.getExternalStorageDirectory() + "/Pictures/OneText/"), 1, permissions);
                 }
             });
         }

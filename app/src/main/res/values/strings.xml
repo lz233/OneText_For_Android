@@ -5,9 +5,9 @@
     <string name="request_permissions_text">Request Storage Permission</string>
     <string name="request_permissions_agree_button">agree</string>
     <string name="save_text">Save as a picture</string>
-    <string name="save_button">save</string>
-    <string name="save_succeed">Succeed, save as</string>
-    <string name="save_fail">Fail</string>
+    <string name="save_button">Save</string>
+    <string name="save_succeed">Successfully, save as</string>
+    <string name="save_fail">Failed</string>
     <string name="refresh_onetext_text">Show a new sentence</string>
     <string name="refresh_onetext_button">Refresh</string>
     <string name="seal_text">Show a moe miku</string>
@@ -53,7 +53,7 @@ In the development process, we are especially grateful:
 \n\n
 The development of this project is inseparable from the following projects:
 \n
-[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView)
+[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView) [EasyBarrage](https://github.com/shiweibsw/EasyBarrage)
 \n\n
 The home page of this app: [Click me](https://github.com/lz233/OneText_For_Android)
 \n\n
@@ -103,4 +103,5 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="welcome_widget_button">Next</string>
     <string name="welcome_notification_text">Notification</string>
     <string name="welcome_notification_button">OK</string>
+    <string name="delete_failed">Delete Failed</string>
 </resources>

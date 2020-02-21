@@ -122,7 +122,7 @@ public class CoreUtil {
         JSONObject jsonObject = new JSONArray(getOneTextArray()).optJSONObject(getOneTextCode(forceRefresh, ifFromWidget));
         HashMap hashMap = new HashMap();
         //to-do
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT < 30) {
             int chinese_type = sharedPreferences.getInt("chinese_type", 0);
             String language = Locale.getDefault().getLanguage();
             String country = Locale.getDefault().getCountry();
