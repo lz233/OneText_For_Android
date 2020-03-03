@@ -59,7 +59,7 @@
                     android:layout_marginEnd="@dimen/layout_margin"
                     android:layout_marginBottom="@dimen/layout_margin"
                     android:gravity="center"
-                    android:singleLine="true"
+                    android:text="@string/oauth_login_detail"
                     android:textColor="@color/colorText2"
                     android:textSize="@dimen/small_text_size" />
             </LinearLayout>
@@ -401,6 +401,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginBottom="@dimen/content_margin"
                         android:overScrollMode="never" />
+
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/feed_auto_update_switch"
                         android:layout_width="match_parent"
@@ -412,6 +413,7 @@
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/small_text_size"
                         app:thumbTint="@color/colorText3" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

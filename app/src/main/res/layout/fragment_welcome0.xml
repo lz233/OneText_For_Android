@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:id="@+id/welcome1_linearlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/layout_margin"
+            android:layout_marginEnd="@dimen/layout_margin"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/welcome1_icon_imageview"
+                android:layout_width="230dp"
+                android:layout_height="230dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="300dp"
+                android:layout_weight="0"
+                android:src="@drawable/ic_icon"
+                android:tint="@color/colorText2" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                app:cardCornerRadius="@dimen/cardview_radius"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/welcome_start_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0"
+                    android:background="@drawable/bgstyle_md2"
+                    android:elevation="0dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="@string/welcome_start" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

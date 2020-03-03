@@ -111,8 +111,8 @@ public class WidgetProvider extends AppWidgetProvider {
             if (by == null) {
                 by = "";
             }
-            if (sharedPreferences.getBoolean("widget_center", false)) {
-                if (sharedPreferences.getBoolean("widget_shadow", false)) {
+            if (sharedPreferences.getBoolean("widget_center", true)) {
+                if (sharedPreferences.getBoolean("widget_shadow", true)) {
                     views.setTextViewText(R.id.onetext_widget_center_text_textview_shadow, text);
                     views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
                     views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.VISIBLE);
@@ -130,7 +130,7 @@ public class WidgetProvider extends AppWidgetProvider {
                     views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
                 }
             } else {
-                if (sharedPreferences.getBoolean("widget_shadow", false)) {
+                if (sharedPreferences.getBoolean("widget_shadow", true)) {
                     views.setTextViewText(R.id.onetext_widget_text_textview_shadow, text);
                     views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.VISIBLE);
                     views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);

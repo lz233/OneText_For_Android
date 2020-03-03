@@ -104,4 +104,10 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="welcome_notification_text">Notification</string>
     <string name="welcome_notification_button">OK</string>
     <string name="delete_failed">Delete Failed</string>
+    <string name="welcome_demo_text">Death is not the opposite of life, but forever as part of life.</string>
+    <string name="welcome_demo_by">—— Haruki Murakami</string>
+    <string name="font_start_download">Downloading, please check the notification bar.</string>
+    <string name="oauth_login_detail">Account authentication currently has no practical effect, just for the better interface</string>
+    <string name="oauth_cancel_button">Cancel</string>
+    <string name="oauth_continue_button">Continue</string>
 </resources>

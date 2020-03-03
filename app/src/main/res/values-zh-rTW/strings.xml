@@ -34,11 +34,11 @@
 \n\n
 在開發過程中，我們特別感謝：
 \n
-[lz差不多是條鹹魚了](https://github.com/lz233) [小萌新x](https://github.com/xbl233) [亢龍有悔](https://github.com/kanglyh)
+[lz差不多是條鹹魚了](https://github.com/lz233) [小萌新x](https://github.com/xbl233) [亢龍有悔](https://github.com/kanglyh) [貓耳逆變器](https://github.com/NekoInverter)
 \n\n
 本專案的開發離不開以下專案：
 \n
-[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView)
+[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView) [EasyBarrage](https://github.com/shiweibsw/EasyBarrage)
 \n\n
 本應用的主頁：[點我](https://github.com/lz233/OneText_For_Android)
 \n\n
@@ -100,4 +100,14 @@
     <string name="request_permissions_disagree_button">不同意</string>
     <string name="request_permissions_next_time_text">您也可以稍後同意這些許可權。</string>
     <string name="welcome_widget_text">小部件</string>
+    <string name="welcome_widget_button">下一個</string>
+    <string name="welcome_notification_text">通知</string>
+    <string name="welcome_notification_button">完成</string>
+    <string name="delete_failed">刪除失敗</string>
+    <string name="welcome_demo_text">死並非生的對立面，而作為生的一部分永存。</string>
+    <string name="welcome_demo_by">—— 村上春樹</string>
+    <string name="font_start_download">正在下載，請查閱通知欄。</string>
+    <string name="oauth_login_detail">賬戶認證當前沒有實際作用，僅僅為了介面美觀</string>
+    <string name="oauth_cancel_button">取消</string>
+    <string name="oauth_continue_button">繼續</string>
 </resources>

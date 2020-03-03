@@ -1,5 +1,10 @@
 [
   {
+    "feed_name": "OneText Library In China",
+    "feed_type": "remote",
+    "feed_url": "https://gitee.com/shisheng233/OneText-Library/raw/master/OneText-Library.json"
+  },
+  {
     "feed_name": "OneText Library",
     "feed_type": "remote",
     "feed_url": "https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json"

@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.kd.easybarrage.Barrage;
 import com.kd.easybarrage.BarrageView;
 import com.lz233.onetext.R;
+import com.lz233.onetext.fragment.WelcomeFragment0;
 import com.lz233.onetext.fragment.WelcomeFragment1;
 import com.lz233.onetext.fragment.WelcomeFragment2;
 import com.lz233.onetext.fragment.WelcomeFragment3;
@@ -91,7 +92,7 @@ public class WelcomeActivity extends BaseActivity implements EasyPermissions.Per
     }
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        viewpager2.setCurrentItem(2);
+        viewpager2.setCurrentItem(viewpager2.getCurrentItem()+1);
     }
 
     @Override
@@ -117,14 +118,15 @@ public class WelcomeActivity extends BaseActivity implements EasyPermissions.Per
         public Fragment createFragment(int position) {
             switch (position){
                 default:
-                    return new WelcomeFragment1(viewpager2);
+                    return new WelcomeFragment0(viewpager2);
                 case 1:
-                    return new WelcomeFragment2(WelcomeActivity.this,viewpager2);
+                    return new WelcomeFragment1(WelcomeActivity.this,viewpager2);
                 case 2:
-                    return new WelcomeFragment3(viewpager2);
+                    return new WelcomeFragment2(WelcomeActivity.this,viewpager2);
                 case 3:
+                    return new WelcomeFragment3(viewpager2);
+                case 4:
                     return new WelcomeFragment4(WelcomeActivity.this,viewpager2);
-
             }
         }
 

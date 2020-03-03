@@ -178,8 +178,8 @@ public class SettingActivity extends BaseActivity {
         widget_refresh_seekbar.setIndicatorTextFormat(getString(R.string.widget_refresh_text) + " ${PROGRESS} " + getString(R.string.minute));
         widget_refresh_seekbar.setProgress(sharedPreferences.getLong("widget_refresh_time", 30));
         widget_dark_switch.setChecked(sharedPreferences.getBoolean("widget_dark", false));
-        widget_shadow_switch.setChecked(sharedPreferences.getBoolean("widget_shadow", false));
-        widget_center_switch.setChecked(sharedPreferences.getBoolean("widget_center", false));
+        widget_shadow_switch.setChecked(sharedPreferences.getBoolean("widget_shadow", true));
+        widget_center_switch.setChecked(sharedPreferences.getBoolean("widget_center", true));
         widget_notification_switch.setChecked(sharedPreferences.getBoolean("widget_notification_enabled", false));
         // 监听器
         font_yiqi_layout.setOnClickListener(new View.OnClickListener() {
@@ -196,6 +196,7 @@ public class SettingActivity extends BaseActivity {
                         notificationManager.createNotificationChannel(channel);
                     }
                     //新建下载任务
+                    Snackbar.make(view, getString(R.string.font_start_download), Snackbar.LENGTH_SHORT).show();
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -269,6 +270,7 @@ public class SettingActivity extends BaseActivity {
                         notificationManager.createNotificationChannel(channel);
                     }
                     //新建下载任务
+                    Snackbar.make(view, getString(R.string.font_start_download), Snackbar.LENGTH_SHORT).show();
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -572,34 +574,7 @@ public class SettingActivity extends BaseActivity {
                 final JSONObject jsonObject = new JSONObject(sharedPreferences.getString("oauth_account_information", ""));
                 if (FileUtil.isFile(getFilesDir().getPath() + "/Oauth/Avatar.png")) {
                     oauth_avatar_imageview.setImageURI(Uri.fromFile(new File(getFilesDir().getPath() + "/Oauth/Avatar.png")));
-                }/*else {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            DownloadUtil.get().download(jsonObject.optString("avatar_url"), getFilesDir().getPath() + "/Oauth/", "Avatar.png", new DownloadUtil.OnDownloadListener() {
-                                @Override
-                                public void onDownloadSuccess(File file) {
-                                    oauth_avatar_imageview.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            oauth_avatar_imageview.setImageURI(Uri.fromFile(new File(getFilesDir().getPath() + "/Oauth/Avatar.png")));
-
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void onDownloading(int progress) {
-
-                                }
-
-                                @Override
-                                public void onDownloadFailed(Exception e) {
-                                }
-                            });
-                        }
-                    }).start();
-                }*/
+                }
                 oauth_name_textview.setText(jsonObject.optString("name"));
                 oauth_bio_textview.setText(jsonObject.optString("bio"));
             } catch (JSONException e) {

@@ -104,4 +104,10 @@
     <string name="welcome_notification_text">通知</string>
     <string name="welcome_notification_button">完成</string>
     <string name="delete_failed">删除失败</string>
+    <string name="welcome_demo_text">死并非生的对立面，而作为生的一部分永存。</string>
+    <string name="welcome_demo_by">—— 村上春树</string>
+    <string name="font_start_download">正在下载，请查阅通知栏。</string>
+    <string name="oauth_login_detail">账户认证当前没有实际作用，仅仅为了界面美观</string>
+    <string name="oauth_cancel_button">取消</string>
+    <string name="oauth_continue_button">继续</string>
 </resources>

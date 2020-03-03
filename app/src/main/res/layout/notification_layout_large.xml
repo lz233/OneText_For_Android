@@ -47,7 +47,6 @@
             android:gravity="end"
             android:text="—— "
             android:textColor="@color/colorText2"
-            android:textSize="@dimen/text_size"
-            tools:ignore="HardcodedText" />
+            android:textSize="@dimen/text_size" />
     </LinearLayout>
 </LinearLayout>
