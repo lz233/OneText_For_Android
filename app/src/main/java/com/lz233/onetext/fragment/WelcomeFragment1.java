@@ -3,6 +3,7 @@ package com.lz233.onetext.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -43,6 +44,9 @@ public class WelcomeFragment1 extends Fragment implements EasyPermissions.Permis
         welcome_permissions_agree_button = rootView.findViewById(R.id.welcome_permissions_agree_button);
         //懒得写
         final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
+        }
         welcome_permissions_detail_text.setText(getString(R.string.request_permissions_storage_detail_text).replace("%s", Environment.getExternalStorageDirectory() + "/Pictures/OneText/"));
         //懒得写
         welcome_permissions_disagree_button.setOnClickListener(new View.OnClickListener() {

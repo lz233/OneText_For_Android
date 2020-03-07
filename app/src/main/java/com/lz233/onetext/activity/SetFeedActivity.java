@@ -99,14 +99,14 @@ public class SetFeedActivity extends BaseActivity {
         setfeed_path_edittext.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (EasyPermissions.hasPermissions(SetFeedActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                //if (EasyPermissions.hasPermissions(SetFeedActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     startActivityForResult(intent, 3);
-                } else {
-                    Snackbar.make(v, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
-                }
+                //} else {
+                //    Snackbar.make(v, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
+                //}
                 return false;
             }
         });

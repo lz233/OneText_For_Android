@@ -3,7 +3,9 @@
     package="com.lz233.onetext">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="25" />
 
     <application
         android:allowBackup="true"
@@ -15,8 +17,8 @@
         <activity
             android:name=".activity.WelcomeActivity"
             android:label="@string/title_activity_welcome"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.OauthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -29,7 +31,9 @@
                     android:scheme="onetext" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SetFeedActivity" />
+        <activity
+            android:name=".activity.SetFeedActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
             android:name=".activity.CrashReportActivity"
             android:label="@string/title_activity_crash_report"
