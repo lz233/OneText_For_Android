@@ -209,8 +209,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    /*try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    shotOneTextViaMediaStore();
+                } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    try {
                         Uri uri = Uri.parse(sharedPreferences.getString("pic_uri_tree", "content://com.android.externalstorage.documents/tree/primary%3APictures"));
                         final int takeFlags = getIntent().getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                         getContentResolver().takePersistableUriPermission(uri, takeFlags);
@@ -220,9 +222,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                         intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.parse("content://com.android.externalstorage.documents/document/primary:Pictures"));
                         startActivityForResult(intent, 233);
-                    }*/
-                    shotOneTextViaMediaStore();
-                } else if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
+                    }
+                }else if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
                     shotOneTextViaMediaStore();
                 } else {
                     Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
@@ -594,15 +595,15 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             Snackbar.make(rootview, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
         }
     }
-    private void shotOneTextViaMediaStore(){
+
+    private void shotOneTextViaMediaStore() {
         try {
             final String pic_file_path;
-                            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                                pic_file_path = Environment.DIRECTORY_PICTURES + File.separator + "OneText" + File.separator;
-                            } else {
-                                pic_file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "OneText" + File.separator;
-                            }*/
-            pic_file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "OneText" + File.separator;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                pic_file_path = Environment.DIRECTORY_PICTURES + File.separator + "OneText" + File.separator;
+            } else {
+                pic_file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "OneText" + File.separator;
+            }
             final String pic_file_name = "OneText " + System.currentTimeMillis() + ".jpg";
             Bitmap bitmap = SaveBitmapUtil.getCacheBitmapFromView(pic_layout);
             ContentResolver resolver = getContentResolver();
@@ -610,16 +611,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             values.put(MediaStore.MediaColumns.DISPLAY_NAME, pic_file_name);
             values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
             values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-                            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                                values.put(MediaStore.MediaColumns.RELATIVE_PATH, pic_file_path);
-                            } else {
-                                File path = new File(pic_file_path);
-                                path.mkdirs();
-                                values.put(MediaStore.MediaColumns.DATA, path + File.separator + pic_file_name);
-                            }*/
-            File path = new File(pic_file_path);
-            path.mkdirs();
-            values.put(MediaStore.MediaColumns.DATA, path + File.separator + pic_file_name);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, pic_file_path);
+            } else {
+                File path = new File(pic_file_path);
+                path.mkdirs();
+                values.put(MediaStore.MediaColumns.DATA, path + File.separator + pic_file_name);
+            }
             final Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             if (imageUri != null) {
                 OutputStream stream = resolver.openOutputStream(imageUri);
@@ -642,9 +640,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             Snackbar.make(rootview, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
         }
     }
+
     public void requestPermissions(final String[] permissions) {
         //申请权限
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             request_permissions_layout.setVisibility(View.GONE);
         } else {
             if (EasyPermissions.hasPermissions(this, permissions)) {
