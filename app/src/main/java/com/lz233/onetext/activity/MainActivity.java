@@ -615,6 +615,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 values.put(MediaStore.MediaColumns.RELATIVE_PATH, pic_file_path);
             } else {
                 File path = new File(pic_file_path);
+                //noinspection ResultOfMethodCallIgnored
                 path.mkdirs();
                 values.put(MediaStore.MediaColumns.DATA, path + File.separator + pic_file_name);
             }

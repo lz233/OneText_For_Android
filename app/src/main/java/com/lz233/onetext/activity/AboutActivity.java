@@ -13,6 +13,7 @@ import com.lz233.onetext.tools.utils.AppUtil;
 import io.noties.markwon.Markwon;
 
 public class AboutActivity extends BaseActivity {
+    private ImageView green_android_imageview;
     private ImageView coolapk_imageview;
     private ImageView msappcenter_imageview;
     private ImageView github_imageview;
@@ -28,6 +29,7 @@ public class AboutActivity extends BaseActivity {
         //曲 线 救 国
         fuckNav(findViewById(R.id.about_textview));
         //fb
+        green_android_imageview = findViewById(R.id.green_android_imageview);
         coolapk_imageview = findViewById(R.id.coolapk_imageview);
         msappcenter_imageview = findViewById(R.id.msappcenter_imageview);
         github_imageview = findViewById(R.id.github_imageview);
@@ -36,6 +38,12 @@ public class AboutActivity extends BaseActivity {
         ver_textview = findViewById(R.id.ver_textview);
         about_textview = findViewById(R.id.about_textview);
         //初始化
+        green_android_imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://green-android.org")));
+            }
+        });
         coolapk_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

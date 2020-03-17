@@ -27,7 +27,12 @@
                 android:layout_marginTop="60dp"
                 android:layout_weight="0"
                 app:srcCompat="@drawable/ic_icon" />
-
+            <ImageView
+                android:layout_width="300dp"
+                android:id="@+id/green_android_imageview"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_green_android"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,6 +43,7 @@
                     android:id="@+id/coolapk_imageview"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_margin="@dimen/content_margin"
                     app:srcCompat="@drawable/ic_coolapk" />
 
@@ -46,12 +52,14 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="@dimen/content_margin"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_msappcenter" />
 
                 <ImageView
                     android:id="@+id/github_imageview"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_margin="@dimen/content_margin"
                     app:srcCompat="@drawable/ic_github" />
 
@@ -60,6 +68,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="@dimen/content_margin"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_telegram" />
 
                 <ImageView
@@ -67,6 +76,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="@dimen/content_margin"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_mstodo" />
             </LinearLayout>
 
