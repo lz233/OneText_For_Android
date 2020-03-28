@@ -1,7 +1,7 @@
 package com.lz233.onetext.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -51,10 +51,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class SettingActivity extends BaseActivity {
     private Boolean isSettingUpdated = false;
@@ -343,13 +344,20 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //if (EasyPermissions.hasPermissions(SettingActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    startActivityForResult(intent, 1);
+                //    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                //    intent.setType("*/*");
+                //    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                //    startActivityForResult(intent, 1);
                 //} else {
                 //    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
                 //}
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                //intent.setType("font/ttf");
+                //intent.setType("font/ttc");
+                //intent.setType("")
+                startActivityForResult(intent, 1);
             }
         });
         /*SpinnerAdapter adapter = SpinnerAdapter.createFromResource(SettingActivity.this,R.array.daynight,android.R.layout.simple_spinner_item);
@@ -668,23 +676,39 @@ public class SettingActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @SuppressLint("MissingSuperCall")
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
-                Uri uri = data.getData();
-                try {
-                    String file_path = getPath(this, uri);
-                    Snackbar.make(view, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
-                    editor.putString("font_path", file_path);
-                    editor.apply();
-                    //finishActivity(requestCode);
-                    updateFontStatus();
-                    //Toast.makeText(this, "文件路径："+uri.getPath().toString(), Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            final Uri uri = resultData.getData();
+            if (uri != null) {
+                final int takeFlags = getIntent().getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                // 创建所选目录的DocumentFile，可以使用它进行文件操作
+                //DocumentFile root = DocumentFile.fromSingleUri(this, uri);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputStream inputStream = null;
+                        OutputStream outputStream = null;
+                        try {
+                            inputStream = getContentResolver().openInputStream(uri);
+                            outputStream = new FileOutputStream(getFilesDir().getPath() + "/Fonts/customFont.ttf");
+                            byte[] buff = new byte[1024];
+                            int len;
+                            while ((len = inputStream.read(buff)) != -1) {
+                                outputStream.write(buff, 0, len);
+                            }
+                            inputStream.close();
+                            outputStream.close();
+                            editor.putString("font_path", getFilesDir().getPath() + "/Fonts/customFont.ttf");
+                            editor.apply();
+                            updateFontStatus();
+                            Snackbar.make(rootview, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         }
     }

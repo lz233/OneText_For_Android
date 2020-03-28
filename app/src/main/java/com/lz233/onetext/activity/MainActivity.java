@@ -431,9 +431,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         if (requestCode == 233 && resultCode == Activity.RESULT_OK) {
             Uri uriTree = resultData.getData();
             if (uriTree != null) {
-                final int takeFlags = getIntent().getFlags()
-                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                final int takeFlags = getIntent().getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 getContentResolver().takePersistableUriPermission(uriTree, takeFlags);
                 editor.putString("pic_uri_tree", uriTree.toString());
                 editor.apply();
