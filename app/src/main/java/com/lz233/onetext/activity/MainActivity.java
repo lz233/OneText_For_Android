@@ -34,6 +34,7 @@ import com.lz233.onetext.R;
 import com.lz233.onetext.tools.utils.AppUtil;
 import com.lz233.onetext.tools.utils.CoreUtil;
 import com.lz233.onetext.tools.utils.FileUtil;
+import com.lz233.onetext.tools.utils.GetUtil;
 import com.lz233.onetext.tools.utils.SaveBitmapUtil;
 import com.lz233.onetext.view.NiceImageView;
 import com.microsoft.appcenter.AppCenter;
@@ -47,6 +48,7 @@ import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -211,7 +213,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     shotOneTextViaMediaStore();
-                } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     try {
                         Uri uri = Uri.parse(sharedPreferences.getString("pic_uri_tree", "content://com.android.externalstorage.documents/tree/primary%3APictures"));
                         final int takeFlags = getIntent().getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -223,7 +225,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.parse("content://com.android.externalstorage.documents/document/primary:Pictures"));
                         startActivityForResult(intent, 233);
                     }
-                }else if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
+                } else if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
                     shotOneTextViaMediaStore();
                 } else {
                     Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
@@ -446,114 +448,154 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
     private void initRun(final Boolean forcedRefresh) {
         progressBar.setVisibility(View.VISIBLE);
-        coreUtil.initOneText(new CoreUtil.OnOneTextInitListener() {
-            @Override
-            public void onSuccess(File file) {
-                try {
-                    final HashMap hashMap = coreUtil.getOneText(forcedRefresh, false);
-                    final String text = (String) hashMap.get("text");
-                    final String by = (String) hashMap.get("by");
-                    final String time = (String) hashMap.get("time");
-                    final String from = (String) hashMap.get("from");
+        final HashMap feedMap = coreUtil.getFeedInformation(sharedPreferences.getInt("feed_code", 0));
+        if (feedMap.get("feed_type").equals("internet")) {
+            if (sharedPreferences.getString("api_string", "").equals("") | coreUtil.ifOneTextShouldUpdate(false) | forcedRefresh) {
+                new GetUtil().sendGet((String) feedMap.get("api_url"), new GetUtil.GetCallback() {
+                    @Override
+                    public void onGetDone(final String result) {
+                        onetext_text_textview.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    showOneText(coreUtil.convertOneText(new JSONObject(result), feedMap));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        progressBar.setVisibility(View.GONE);
+                        editor.putString("api_string", result);
+                        editor.apply();
+                    }
+                });
+                coreUtil.refreshLatestRefreshTime();
+            } else {
+                onetext_text_textview.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            showOneText(coreUtil.convertOneText(new JSONObject(sharedPreferences.getString("api_string", "")), feedMap));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                progressBar.setVisibility(View.GONE);
+            }
+        } else {
+            coreUtil.initOneText(new CoreUtil.OnOneTextInitListener() {
+                @Override
+                public void onSuccess(File file) {
                     onetext_text_textview.post(new Runnable() {
                         @Override
                         public void run() {
-                            if (text == null) {
-                                onetext_quote1_textview.setVisibility(View.GONE);
-                                onetext_text_textview.setVisibility(View.GONE);
-                                onetext_quote2_textview.setVisibility(View.GONE);
-                            } else {
-                                onetext_quote1_textview.setVisibility(View.VISIBLE);
-                                onetext_text_textview.setVisibility(View.VISIBLE);
-                                onetext_quote2_textview.setVisibility(View.VISIBLE);
-                                onetext_text_textview.setText((String) hashMap.get("text"));
-                            }
-                            if (by == null) {
-                                onetext_by_textview.setVisibility(View.GONE);
-                            } else {
-                                onetext_by_textview.setVisibility(View.VISIBLE);
-                                onetext_by_textview.setText((String) hashMap.get("by"));
-                            }
-                            if (time == null) {
-                                onetext_time_textview.setVisibility(View.GONE);
-                            } else {
-                                onetext_time_textview.setVisibility(View.VISIBLE);
-                                onetext_time_textview.setText((String) hashMap.get("time"));
-                            }
-                            if (from == null) {
-                                onetext_from_textview.setVisibility(View.GONE);
-                            } else {
-                                onetext_from_textview.setVisibility(View.VISIBLE);
-                                onetext_from_textview.setText((String) hashMap.get("from"));
+                            try {
+                                showOneText(coreUtil.getOneText(forcedRefresh, false));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
                     });
-                    //更新小部件
-                    Intent intent = new Intent("com.lz233.onetext.widget");
-                    intent.setPackage(getPackageName());
-                    MainActivity.this.sendBroadcast(intent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    coreUtil.runOneTextUpdate(new CoreUtil.OnOneTextUpdateListener() {
+                        @Override
+                        public void noUpdateRequired() {
+                            progressBar.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onSuccess(File file) {
+                            progressBar.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onDownloading(int progress) {
+
+                        }
+
+                        @Override
+                        public void onFailed(Exception e) {
+                            progressBar.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
+                            Snackbar.make(rootview, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_refresh_faild_button, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    initRun(false);
+                                }
+                            }).show();
+                        }
+                    });
                 }
-                coreUtil.runOneTextUpdate(new CoreUtil.OnOneTextUpdateListener() {
-                    @Override
-                    public void noUpdateRequired() {
-                        progressBar.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
-                    }
 
-                    @Override
-                    public void onSuccess(File file) {
-                        progressBar.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
-                    }
+                @Override
+                public void onDownloading(int progress) {
 
-                    @Override
-                    public void onDownloading(int progress) {
+                }
 
-                    }
+                @Override
+                public void onFailed(@Nullable Exception e) {
+                    Snackbar.make(rootview, getString(R.string.onetext_init_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_init_faild_button, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initRun(false);
+                        }
+                    }).show();
+                }
+            });
+        }
+    }
 
-                    @Override
-                    public void onFailed(Exception e) {
-                        progressBar.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
-                        Snackbar.make(rootview, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_refresh_faild_button, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                initRun(false);
-                            }
-                        }).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onDownloading(int progress) {
-
-            }
-
-            @Override
-            public void onFailed(@Nullable Exception e) {
-                Snackbar.make(rootview, getString(R.string.onetext_init_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_init_faild_button, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initRun(false);
-                    }
-                }).show();
-            }
-        });
+    private void showOneText(HashMap hashMap) {
+        final String text = (String) hashMap.get("text");
+        final String by = (String) hashMap.get("by");
+        final String time = (String) hashMap.get("time");
+        final String from = (String) hashMap.get("from");
+        if (text == null) {
+            onetext_quote1_textview.setVisibility(View.GONE);
+            onetext_text_textview.setVisibility(View.GONE);
+            onetext_quote2_textview.setVisibility(View.GONE);
+        } else {
+            onetext_quote1_textview.setVisibility(View.VISIBLE);
+            onetext_text_textview.setVisibility(View.VISIBLE);
+            onetext_quote2_textview.setVisibility(View.VISIBLE);
+            onetext_text_textview.setText((String) hashMap.get("text"));
+        }
+        if (by == null) {
+            onetext_by_textview.setVisibility(View.GONE);
+        } else {
+            onetext_by_textview.setVisibility(View.VISIBLE);
+            onetext_by_textview.setText((String) hashMap.get("by"));
+        }
+        if (time == null) {
+            onetext_time_textview.setVisibility(View.GONE);
+        } else {
+            onetext_time_textview.setVisibility(View.VISIBLE);
+            onetext_time_textview.setText((String) hashMap.get("time"));
+        }
+        if (from == null) {
+            onetext_from_textview.setVisibility(View.GONE);
+        } else {
+            onetext_from_textview.setVisibility(View.VISIBLE);
+            onetext_from_textview.setText((String) hashMap.get("from"));
+        }
+        //更新小部件
+        Intent intent = new Intent("com.lz233.onetext.widget");
+        intent.setPackage(getPackageName());
+        MainActivity.this.sendBroadcast(intent);
     }
 
     private void shotOneTextViaSAF(DocumentFile root) {
