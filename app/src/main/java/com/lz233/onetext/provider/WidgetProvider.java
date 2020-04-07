@@ -61,7 +61,6 @@ public class WidgetProvider extends AppWidgetProvider {
             PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, 0);
             views.setOnClickPendingIntent(R.id.onetext_widget_layout, openPendingIntent);
             run(context, views,appWidgetManager);
-            Toast.makeText(context,"update",Toast.LENGTH_SHORT).show();
             //views.setOnClickPendingIntent(R.id.onetext_widget_layout,getPendingIntent(context,R.id.onetext_widget_layout));
             // 更新小部件
             appWidgetManager.updateAppWidget(appWidgetId, views);
