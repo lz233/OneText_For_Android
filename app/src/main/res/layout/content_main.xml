@@ -84,6 +84,7 @@
                                         android:layout_marginLeft="@dimen/layout_margin"
                                         android:layout_marginRight="@dimen/layout_margin"
                                         android:textColor="@color/colorText1"
+                                        android:textIsSelectable="true"
                                         android:textSize="@dimen/onetext_size" />
 
                                     <TextView
@@ -104,6 +105,7 @@
                                         android:gravity="end"
                                         android:text="—— "
                                         android:textColor="@color/colorText2"
+                                        android:textIsSelectable="true"
                                         android:textSize="@dimen/text_size"
                                         tools:ignore="HardcodedText" />
 
@@ -116,6 +118,7 @@
                                         android:gravity="end"
                                         android:text=" "
                                         android:textColor="@color/colorText2"
+                                        android:textIsSelectable="true"
                                         android:textSize="@dimen/small_text_size" />
 
                                     <TextView
@@ -125,6 +128,7 @@
                                         android:layout_marginTop="@dimen/layout_margin"
                                         android:layout_marginEnd="@dimen/content_margin"
                                         android:textColor="@color/colorText3"
+                                        android:textIsSelectable="true"
                                         android:textSize="@dimen/small_text_size" />
                                 </LinearLayout>
                             </RelativeLayout>

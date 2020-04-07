@@ -110,4 +110,5 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="oauth_login_detail">Account authentication currently has no practical effect, just for the better interface</string>
     <string name="oauth_cancel_button">Cancel</string>
     <string name="oauth_continue_button">Continue</string>
+    <string name="copied">Copied</string>
 </resources>

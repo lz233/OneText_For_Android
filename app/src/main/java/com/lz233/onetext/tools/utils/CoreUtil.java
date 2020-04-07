@@ -6,6 +6,7 @@ import android.os.Build;
 
 import androidx.annotation.Nullable;
 
+import com.lz233.onetext.BuildConfig;
 import com.lz233.onetext.R;
 import com.zqc.opencc.android.lib.ChineseConverter;
 
@@ -227,8 +228,12 @@ public class CoreUtil {
             File file = new File(context.getFilesDir().getPath() + "/Feed/");
             ifsucceed = file.mkdirs();
         }
-        if (!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json")) {
+        if ((!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json"))| ((BuildConfig.VERSION_CODE-sharedPreferences.getInt("version_code",0))>0)) {
             ifsucceed = FileUtil.copyAssets(context, "Feed", context.getFilesDir().getPath() + "/Feed");
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("version_code",BuildConfig.VERSION_CODE);
+            editor.remove("feed_code");
+            editor.apply();
         }
         return ifsucceed;
     }
@@ -256,6 +261,7 @@ public class CoreUtil {
             hashMap.put("feed_path", jsonObject.optString("feed_path"));
             hashMap.put("text_key",jsonObject.optString("text_key"));
             hashMap.put("by_key",jsonObject.optString("by_key"));
+            hashMap.put("time_key",jsonObject.optString("time_key"));
             hashMap.put("from_key",jsonObject.optString("from_key"));
             hashMap.put("api_method",jsonObject.optString("api_method"));
             hashMap.put("api_url",jsonObject.optString("api_url"));

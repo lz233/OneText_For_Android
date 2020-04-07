@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lz233.onetext.BuildConfig;
 import com.lz233.onetext.R;
 import com.lz233.onetext.tools.utils.AppUtil;
 
@@ -74,7 +75,8 @@ public class AboutActivity extends BaseActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://to-do.microsoft.com/sharing?InvitationToken=WI9tpCxeg9ktR5mg-AI-qwPXapdT_kGucjpSBCP6fwLE9bN5Uz2vS61gY9X8RTaC0")));
             }
         });
-        ver_textview.setText(AppUtil.getAppVersionName(AboutActivity.this) + " (" + String.valueOf(AppUtil.getAppVersionCode(AboutActivity.this) + ")"));
+        //ver_textview.setText(AppUtil.getAppVersionName(AboutActivity.this) + " (" + String.valueOf(AppUtil.getAppVersionCode(AboutActivity.this) + ")"));
+        ver_textview.setText(BuildConfig.VERSION_NAME+"\n"+BuildConfig.VERSION_CODE);
         final Markwon markwon = Markwon.create(getApplicationContext());
         markwon.setMarkdown(about_textview, getString(R.string.about_page_introduction));
 

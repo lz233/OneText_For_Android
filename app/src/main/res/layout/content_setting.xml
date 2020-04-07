@@ -88,7 +88,8 @@
                         android:layout_marginBottom="@dimen/layout_margin"
                         android:text="@string/interface_text"
                         android:textColor="@color/colorText2"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
 
                     <HorizontalScrollView
                         android:layout_width="match_parent"
@@ -311,7 +312,8 @@
                         android:layout_marginBottom="@dimen/content_margin"
                         android:text="@string/behavior_text"
                         android:textColor="@color/colorText2"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -375,7 +377,8 @@
                             android:layout_weight="1"
                             android:text="@string/feed_text"
                             android:textColor="@color/colorText2"
-                            android:textSize="@dimen/text_size" />
+                            android:textSize="@dimen/text_size"
+                            android:textStyle="bold" />
 
                         <ImageView
                             android:id="@+id/feed_reset_imageview"
@@ -383,8 +386,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginRight="@dimen/content_margin"
-                            android:background="?attr/selectableItemBackgroundBorderless"
                             android:layout_weight="0"
+                            android:background="?attr/selectableItemBackgroundBorderless"
                             android:src="@drawable/ic_settings_restore" />
 
                         <ImageView
@@ -474,7 +477,8 @@
                         android:layout_marginBottom="@dimen/content_margin"
                         android:text="@string/widget_text"
                         android:textColor="@color/colorText2"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/widget_enable_textview"
@@ -592,7 +596,8 @@
                         android:layout_marginEnd="@dimen/layout_margin"
                         android:text="@string/about_text"
                         android:textColor="@color/colorText2"
-                        android:textSize="@dimen/text_size" />
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/about_page_textview"

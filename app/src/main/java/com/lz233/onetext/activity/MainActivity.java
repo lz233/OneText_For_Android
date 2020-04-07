@@ -2,8 +2,11 @@ package com.lz233.onetext.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -154,8 +157,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 }
             }
         });
-        //Analytics.trackEvent("My custom event");
-        //Crashes.generateTestCrash();
+        //剪贴板
+        final ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         //装载feed
         coreUtil.initFeedFile();
         //welcome
@@ -206,6 +209,38 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             public void onRefresh() {
                 initRun(true);
                 onetext_swiperefreshlayout.setRefreshing(false);
+            }
+        });
+        onetext_text_textview.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("onetext",onetext_text_textview.getText()));
+                Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        onetext_by_textview.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("by",onetext_by_textview.getText()));
+                Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        onetext_time_textview.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("time",onetext_time_textview.getText()));
+                Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        onetext_from_textview.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("from",onetext_from_textview.getText()));
+                Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
+                return true;
             }
         });
         save_button.setOnClickListener(new View.OnClickListener() {

@@ -110,4 +110,5 @@
     <string name="oauth_login_detail">賬戶認證當前沒有實際作用，僅僅為了介面美觀</string>
     <string name="oauth_cancel_button">取消</string>
     <string name="oauth_continue_button">繼續</string>
+    <string name="copied">已複製</string>
 </resources>

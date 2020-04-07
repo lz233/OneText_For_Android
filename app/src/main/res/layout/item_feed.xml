@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/content_margin"
                 android:text="@string/feed_edit_text"
+                android:visibility="invisible"
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/small_text_size" />
 
@@ -49,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/content_margin"
                 android:text="@string/feed_delete_text"
+                android:visibility="invisible"
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/small_text_size" />
         </LinearLayout>
