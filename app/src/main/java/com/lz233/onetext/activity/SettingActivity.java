@@ -93,6 +93,7 @@ public class SettingActivity extends BaseActivity {
     private IndicatorSeekBar widget_refresh_seekbar;
     private ImageView widget_refresh_imageview;
     private TextView about_page_textview;
+    private TextView privacy_policy_page_textview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +135,7 @@ public class SettingActivity extends BaseActivity {
         widget_refresh_seekbar = findViewById(R.id.widget_refresh_seekbar);
         widget_refresh_imageview = findViewById(R.id.widget_refresh_imageview);
         about_page_textview = findViewById(R.id.about_page_textview);
+        privacy_policy_page_textview = findViewById(R.id.privacy_policy_page_textview);
         //初始化
         updateFontStatus();
         //接收广播
@@ -570,6 +572,12 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent().setClass(SettingActivity.this, AboutActivity.class));
+            }
+        });
+        privacy_policy_page_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent().setClass(SettingActivity.this, PrivacyPolicyActivity.class));
             }
         });
     }

@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activity.PrivacyPolicyActivity"
+            android:label="@string/title_activity_privacy_policy"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".activity.WelcomeActivity"
             android:label="@string/title_activity_welcome"
             android:screenOrientation="portrait"
@@ -33,7 +37,7 @@
         </activity>
         <activity
             android:name=".activity.SetFeedActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.CrashReportActivity"
             android:label="@string/title_activity_crash_report"

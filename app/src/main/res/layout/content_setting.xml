@@ -604,9 +604,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
-                        android:layout_marginTop="@dimen/content_margin"
+                        android:layout_marginTop="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
                         android:text="@string/about_page_text"
+                        android:textColor="@color/colorText3"
+                        android:textSize="@dimen/small_text_size" />
+                    <TextView
+                        android:id="@+id/privacy_policy_page_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:text="@string/title_activity_privacy_policy"
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/small_text_size" />
                 </LinearLayout>
