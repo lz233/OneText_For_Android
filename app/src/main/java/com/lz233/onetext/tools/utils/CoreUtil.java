@@ -227,7 +227,7 @@ public class CoreUtil {
             File file = new File(context.getFilesDir().getPath() + "/Feed/");
             ifsucceed = file.mkdirs();
         }
-        if ((!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json"))| (((BuildConfig.VERSION_CODE-sharedPreferences.getInt("version_code",0)-20200407)<0))) {
+        if ((!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json"))|((sharedPreferences.getInt("version_code",0)-20200407)<0)) {
             ifsucceed = FileUtil.copyAssets(context, "Feed", context.getFilesDir().getPath() + "/Feed");
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("version_code",BuildConfig.VERSION_CODE);
