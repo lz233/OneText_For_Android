@@ -10,7 +10,7 @@ android {
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
         //versionName = "1.6-あ"
-        versionName = "1.6"
+        versionName = '1.6-あ'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -30,7 +30,7 @@ dependencies {
     //implementation 'com.takisoft.fix:preference-v7-simplemenu:28.0.0.0'
     //implementation 'com.liulishuo.okdownload:okdownload:1.0.7'
     //implementation 'com.liulishuo.okdownload:okhttp:1.0.7'
-    implementation 'com.squareup.okhttp3:okhttp:4.4.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.5.0'
     implementation 'com.kd.easybarrage:library:0.0.1'
     implementation 'io.noties.markwon:core:4.3.1'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
