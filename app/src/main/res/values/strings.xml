@@ -205,6 +205,9 @@ I may update our Terms and Conditions from time to time. Thus, you are advised t
 **Contact Us**
 \n\n
 If you have any questions or suggestions about my Terms and Conditions, do not hesitate to contact me at lz23333333@gmail.com.</string>
+    <string name="welcome_privacy_policy_title">Need to agree to the privacy policy</string>
+    <string name="welcome_privacy_policy_detail_text">[Read the privacy policy](onetext://privacy_policy)</string>
+    <string name="welcome_privacy_policy_disagree_button">If you do not agree, you will not be able to use this app.</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

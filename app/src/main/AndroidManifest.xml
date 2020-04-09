@@ -17,11 +17,22 @@
         <activity
             android:name=".activity.PrivacyPolicyActivity"
             android:label="@string/title_activity_privacy_policy"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="privacy_policy"
+                    android:scheme="onetext" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.WelcomeActivity"
             android:label="@string/title_activity_welcome"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.OauthActivity">
             <intent-filter>

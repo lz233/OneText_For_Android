@@ -22,7 +22,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/layout_margin"
-                android:src="@drawable/ic_widgets"
+                android:src="@drawable/ic_notification"
                 android:tint="@color/colorText2" />
 
             <TextView
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/welcome_widget_text"
+                android:text="@string/welcome_notification_text"
                 android:layout_marginBottom="100dp"
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/title_size"
@@ -49,41 +49,56 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:shadowColor="#B0000000"
-                    android:shadowRadius="8"
+                    android:text="“"
+                    android:textColor="@color/colorText1"
+                    android:textSize="@dimen/onetext_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/layout_margin"
+                    android:layout_marginRight="@dimen/layout_margin"
                     android:text="@string/welcome_demo_text"
                     android:textColor="@color/colorText1"
-                    android:textSize="@dimen/small_text_size" />
+                    android:textSize="@dimen/onetext_size" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:text="”"
+                    android:textColor="@color/colorText1"
+                    android:textSize="@dimen/onetext_size" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="@dimen/content_margin"
                     android:gravity="end"
-                    android:shadowColor="#B0000000"
-                    android:shadowRadius="8"
                     android:text="@string/welcome_demo_by"
                     android:textColor="@color/colorText2"
-                    android:textSize="@dimen/small_text_size" />
+                    android:textSize="@dimen/text_size" />
             </LinearLayout>
-                <androidx.cardview.widget.CardView
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:cardCornerRadius="@dimen/cardview_radius"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/welcome_notification_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    app:cardCornerRadius="@dimen/cardview_radius"
-                    app:cardElevation="0dp"
-                    app:cardMaxElevation="0dp">
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/welcome_widget_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0"
-                        android:background="@drawable/bgstyle_md2"
-                        android:elevation="0dp"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:text="@string/welcome_widget_button" />
-                </androidx.cardview.widget.CardView>
+                    android:layout_weight="0"
+                    android:background="@drawable/bgstyle_md2"
+                    android:elevation="0dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="@string/welcome_notification_button" />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

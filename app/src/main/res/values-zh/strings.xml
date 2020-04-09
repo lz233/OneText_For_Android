@@ -205,4 +205,6 @@ lz差不多是条咸鱼了致力于确保本应用尽可能的有用和高效。
 **联系我们**
 \n\n
 如果您对我的条款和条件有任何疑问或建议，请随时联系我，邮箱：lz23333333@gmail.com。</string>
+    <string name="welcome_privacy_policy_title">c</string>
+    <string name="welcome_privacy_policy_disagree_button">如不同意，则将无法使用此应用。</string>
 </resources>

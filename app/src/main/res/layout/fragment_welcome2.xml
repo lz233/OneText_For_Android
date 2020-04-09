@@ -18,29 +18,31 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/welcome_permissions_imageview"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="100dp"
-                android:src="@drawable/ic_account"
+                android:src="@drawable/ic_file"
                 android:tint="@color/colorText2" />
 
             <TextView
+                android:id="@+id/welcome_permissions_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/oauth_login_text"
+                android:text="@string/request_permissions_text"
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/title_size"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/welcome_permissions_detail_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="200dp"
-                android:text="@string/oauth_login_detail"
                 android:gravity="center"
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/text_size" />
@@ -62,7 +64,7 @@
                     app:cardMaxElevation="0dp">
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/welcome_oauth_cancel_button"
+                        android:id="@+id/welcome_permissions_disagree_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -70,7 +72,7 @@
                         android:background="@drawable/bgstyle_md2"
                         android:elevation="0dp"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:text="@string/oauth_cancel_button" />
+                        android:text="@string/request_permissions_disagree_button" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -84,7 +86,7 @@
                     app:cardMaxElevation="0dp">
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/welcome_oauth_continue_button"
+                        android:id="@+id/welcome_permissions_agree_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -92,7 +94,7 @@
                         android:background="@drawable/bgstyle_md2"
                         android:elevation="0dp"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:text="@string/oauth_continue_button" />
+                        android:text="@string/request_permissions_agree_button" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>

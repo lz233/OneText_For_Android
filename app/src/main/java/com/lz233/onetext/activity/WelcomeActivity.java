@@ -23,6 +23,7 @@ import com.lz233.onetext.fragment.WelcomeFragment1;
 import com.lz233.onetext.fragment.WelcomeFragment2;
 import com.lz233.onetext.fragment.WelcomeFragment3;
 import com.lz233.onetext.fragment.WelcomeFragment4;
+import com.lz233.onetext.fragment.WelcomeFragment5;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class WelcomeActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks{
     private Receiver receiver;
-    private static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 6;
     private String[] danmu = {"即使这些回忆使我感到悲伤，我也必须前进，相信未来。",
             "即使是在我感到了我的孤单，即将失去所有的希望，这份回忆，也使我更加坚强。",
             "梦如同黎明的泡沫一样渐渐消失。",
@@ -124,9 +125,11 @@ public class WelcomeActivity extends BaseActivity implements EasyPermissions.Per
                 case 2:
                     return new WelcomeFragment2(WelcomeActivity.this,viewpager2);
                 case 3:
-                    return new WelcomeFragment3(viewpager2);
+                    return new WelcomeFragment3(WelcomeActivity.this,viewpager2);
                 case 4:
-                    return new WelcomeFragment4(WelcomeActivity.this,viewpager2);
+                    return new WelcomeFragment4(viewpager2);
+                case 5:
+                    return new WelcomeFragment5(WelcomeActivity.this,viewpager2);
             }
         }
 

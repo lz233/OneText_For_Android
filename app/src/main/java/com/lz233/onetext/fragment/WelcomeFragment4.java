@@ -1,8 +1,5 @@
 package com.lz233.onetext.fragment;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,31 +12,23 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.lz233.onetext.R;
 
 public class WelcomeFragment4 extends Fragment {
-    private Activity activity;
     private ViewPager2 viewPager2;
-    private AppCompatButton welcome_notification_button;
-
-    public WelcomeFragment4(Activity activity, ViewPager2 viewPager2) {
-        this.activity = activity;
+    private AppCompatButton welcome_widget_button;
+    public WelcomeFragment4(ViewPager2 viewPager2){
         this.viewPager2 = viewPager2;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_welcome4, container, false);
         //fb
-        welcome_notification_button = rootView.findViewById(R.id.welcome_notification_button);
+        welcome_widget_button = rootView.findViewById(R.id.welcome_widget_button);
         //懒得写
 
         //懒得写
-        welcome_notification_button.setOnClickListener(new View.OnClickListener() {
+        welcome_widget_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //viewPager2.setCurrentItem(4);
-                SharedPreferences.Editor editor = activity.getSharedPreferences("setting", Context.MODE_PRIVATE).edit();
-                editor.putBoolean("first_run",false);
-                editor.apply();
-                activity.finish();
+                viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
             }
         });
         return rootView;

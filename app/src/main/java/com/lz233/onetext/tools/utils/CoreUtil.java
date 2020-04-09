@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
 
-import static com.lz233.onetext.tools.utils.GoogleTranslateUtil.streamToString;
 import static com.zqc.opencc.android.lib.ConversionType.S2HK;
 import static com.zqc.opencc.android.lib.ConversionType.S2T;
 import static com.zqc.opencc.android.lib.ConversionType.S2TWP;
@@ -228,7 +227,7 @@ public class CoreUtil {
             File file = new File(context.getFilesDir().getPath() + "/Feed/");
             ifsucceed = file.mkdirs();
         }
-        if ((!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json"))| ((BuildConfig.VERSION_CODE-sharedPreferences.getInt("version_code",0))>0)) {
+        if ((!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json"))| (((BuildConfig.VERSION_CODE-sharedPreferences.getInt("version_code",0)-20200407)<0))) {
             ifsucceed = FileUtil.copyAssets(context, "Feed", context.getFilesDir().getPath() + "/Feed");
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("version_code",BuildConfig.VERSION_CODE);

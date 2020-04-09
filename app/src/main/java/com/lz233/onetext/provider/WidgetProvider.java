@@ -22,7 +22,6 @@ import com.lz233.onetext.R;
 import com.lz233.onetext.activity.MainActivity;
 import com.lz233.onetext.tools.utils.CoreUtil;
 import com.lz233.onetext.tools.utils.GetUtil;
-import com.lz233.onetext.tools.utils.GoogleTranslateUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;

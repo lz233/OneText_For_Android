@@ -1,26 +1,34 @@
 package com.lz233.onetext.fragment;
 
+import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.lz233.onetext.R;
 
-public class WelcomeFragment2 extends Fragment {
+import java.util.List;
+
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class WelcomeFragment2 extends Fragment implements EasyPermissions.PermissionCallbacks {
     private Activity activity;
     private ViewPager2 viewPager2;
-    private AppCompatButton welcome_oauth_cancel_button;
-    private AppCompatButton welcome_oauth_continue_button;
+    private TextView welcome_permissions_detail_text;
+    private AppCompatButton welcome_permissions_disagree_button;
+    private AppCompatButton welcome_permissions_agree_button;
 
     public WelcomeFragment2(Activity activity, ViewPager2 viewPager2) {
         this.activity = activity;
@@ -31,30 +39,52 @@ public class WelcomeFragment2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_welcome2, container, false);
         //fb
-        welcome_oauth_cancel_button = rootView.findViewById(R.id.welcome_oauth_cancel_button);
-        welcome_oauth_continue_button = rootView.findViewById(R.id.welcome_oauth_continue_button);
+        welcome_permissions_detail_text = rootView.findViewById(R.id.welcome_permissions_detail_text);
+        welcome_permissions_disagree_button = rootView.findViewById(R.id.welcome_permissions_disagree_button);
+        welcome_permissions_agree_button = rootView.findViewById(R.id.welcome_permissions_agree_button);
         //懒得写
-
+        final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
+        }
+        welcome_permissions_detail_text.setText(getString(R.string.request_permissions_storage_detail_text).replace("%s", Environment.getExternalStorageDirectory() + "/Pictures/OneText/"));
         //懒得写
-        welcome_oauth_cancel_button.setOnClickListener(new View.OnClickListener() {
+        welcome_permissions_disagree_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
+                if (!EasyPermissions.hasPermissions(activity, permissions)) {
+                    Snackbar.make(v, getString(R.string.request_permissions_next_time_text), Snackbar.LENGTH_SHORT).show();
+                }
+                viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
             }
         });
-        welcome_oauth_continue_button.setOnClickListener(new View.OnClickListener() {
+        welcome_permissions_agree_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/login/oauth/authorize/?client_id=a2cecb404f9d11e7abbe")));
+                if (EasyPermissions.hasPermissions(activity, permissions)|(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)) {
+                    viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
+                }else {
+                    Intent intent = new Intent("com.lz233.onetext.requestpermission");
+                    intent.setPackage(getContext().getPackageName());
+                    getContext().sendBroadcast(intent);
+                }
             }
         });
         return rootView;
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //把申请权限的回调交由EasyPermissions处理
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, activity);
+    }
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
+    }
 
-    public void onStart() {
-        if(getContext().getSharedPreferences("setting", Context.MODE_PRIVATE).getBoolean("oauth_logined",false)){
-            viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
-        }
-        super.onStart();
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+
     }
 }
