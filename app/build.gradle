@@ -13,11 +13,20 @@ android {
         versionName = '1.6-あ'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file('lz233_key.jks')
+            storePassword "${storePassword}"
+            keyAlias "${keyAlias}"
+            keyPassword "${keyPassword}"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
