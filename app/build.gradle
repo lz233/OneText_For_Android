@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    compileOptions.encoding= 'UTF-8'
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
     defaultConfig {
@@ -10,7 +11,7 @@ android {
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
         //versionName = "1.6-あ"
-        versionName = '1.6-あ'
+        versionName = '1.6-\u3042'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     /*signingConfigs {
