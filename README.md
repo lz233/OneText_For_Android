@@ -9,7 +9,7 @@ OneText follows the LGPL license, and on this basis you can modify it.
 
 In the development process, we are especially grateful:
 
-[lz233](https://github.com/lz233) [xbl233](https://github.com/xbl233) [Kanglyh](https://github.com/kanglyh)
+[lz233](https://github.com/lz233) [xbl233](https://github.com/XiaoMengXinX) [Kanglyh](https://github.com/kanglyh)
 
 The development of this project is inseparable from the following projects:
 
