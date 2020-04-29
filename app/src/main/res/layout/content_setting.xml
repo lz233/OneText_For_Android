@@ -391,6 +391,7 @@
                             android:src="@drawable/ic_settings_restore" />
 
                         <ImageView
+                            android:visibility="gone"
                             android:id="@+id/feed_add_imageview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
