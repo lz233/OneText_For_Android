@@ -15,6 +15,7 @@ import io.noties.markwon.Markwon;
 
 public class AboutActivity extends BaseActivity {
     private ImageView green_android_imageview;
+    private ImageView storage_isolation_imageview;
     private ImageView coolapk_imageview;
     private ImageView msappcenter_imageview;
     private ImageView github_imageview;
@@ -31,6 +32,7 @@ public class AboutActivity extends BaseActivity {
         fuckNav(findViewById(R.id.about_textview));
         //fb
         green_android_imageview = findViewById(R.id.green_android_imageview);
+        storage_isolation_imageview = findViewById(R.id.storage_isolation_imageview);
         coolapk_imageview = findViewById(R.id.coolapk_imageview);
         msappcenter_imageview = findViewById(R.id.msappcenter_imageview);
         github_imageview = findViewById(R.id.github_imageview);
@@ -43,6 +45,12 @@ public class AboutActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://green-android.org")));
+            }
+        });
+        storage_isolation_imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RikkaApps/StorageRedirect-assets/blob/master/app_rule/apps/com.lz233.onetext.json")));
             }
         });
         coolapk_imageview.setOnClickListener(new View.OnClickListener() {

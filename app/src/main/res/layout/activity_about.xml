@@ -31,6 +31,7 @@
                 android:layout_width="300dp"
                 android:id="@+id/green_android_imageview"
                 android:layout_gravity="center"
+                android:layout_marginBottom="-10dp"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/green_android"/>
             <ImageView
