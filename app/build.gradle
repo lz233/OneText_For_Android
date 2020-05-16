@@ -10,7 +10,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = "1.6-え"
+        versionName = '1.61-え'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     /*signingConfigs {
