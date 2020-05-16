@@ -32,7 +32,13 @@
                 android:id="@+id/green_android_imageview"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_green_android"/>
+                app:srcCompat="@drawable/green_android"/>
+            <ImageView
+                android:layout_width="300dp"
+                android:id="@+id/storage_isolation_imageview"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/storage_isolation"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
