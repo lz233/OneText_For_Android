@@ -281,6 +281,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_marginBottom="-10dp"
                         android:text="@string/oauth_hide_text"
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/small_text_size"
