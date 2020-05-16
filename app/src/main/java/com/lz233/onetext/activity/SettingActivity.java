@@ -42,6 +42,8 @@ import com.lz233.onetext.tools.feed.FeedAdapter;
 import com.lz233.onetext.tools.utils.DownloadUtil;
 import com.lz233.onetext.tools.utils.FileUtil;
 import com.lz233.onetext.view.NiceImageView;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -77,6 +79,8 @@ public class SettingActivity extends BaseActivity {
     private AppCompatSpinner interface_daynight_spinner;
     private SwitchMaterial oauth_hide_switch;
     private AppCompatSpinner chinese_type_spinner;
+    private SwitchMaterial disable_appcenter_analytics_switch;
+    private SwitchMaterial disable_appcenter_crashes_switch;
     private ImageView feed_reset_imageview;
     private ImageView feed_add_imageview;
     private RecyclerView feed_recyclerview;
@@ -121,6 +125,8 @@ public class SettingActivity extends BaseActivity {
         interface_daynight_spinner = findViewById(R.id.interface_daynight_spinner);
         oauth_hide_switch = findViewById(R.id.oauth_hide_switch);
         chinese_type_spinner = findViewById(R.id.chinese_type_spinner);
+        disable_appcenter_analytics_switch = findViewById(R.id.disable_appcenter_analytics_switch);
+        disable_appcenter_crashes_switch = findViewById(R.id.disable_appcenter_crashes_switch);
         feed_reset_imageview = findViewById(R.id.feed_reset_imageview);
         feed_add_imageview = findViewById(R.id.feed_add_imageview);
         feed_recyclerview = findViewById(R.id.feed_recyclerview);
@@ -175,6 +181,8 @@ public class SettingActivity extends BaseActivity {
                 chinese_type_spinner.setSelection(4);
 
         }
+        disable_appcenter_analytics_switch.setChecked(sharedPreferences.getBoolean("disable_appcenter_analytics",false));
+        disable_appcenter_crashes_switch.setChecked(sharedPreferences.getBoolean("disable_appcenter_crashes",false));
         feed_auto_update_switch.setChecked(sharedPreferences.getBoolean("feed_auto_update", true));
         feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text) + " ${PROGRESS} " + getString(R.string.hour));
         feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time", 1));
@@ -410,6 +418,32 @@ public class SettingActivity extends BaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+        disable_appcenter_analytics_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    editor.putBoolean("disable_appcenter_analytics",true);
+                    Analytics.setEnabled(false);
+                }else {
+                    editor.putBoolean("disable_appcenter_analytics",false);
+                    Analytics.setEnabled(true);
+                }
+                editor.apply();
+            }
+        });
+        disable_appcenter_crashes_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    editor.putBoolean("disable_appcenter_crashes",true);
+                    Crashes.setEnabled(false);
+                }else {
+                    editor.putBoolean("disable_appcenter_crashes",false);
+                    Crashes.setEnabled(true);
+                }
+                editor.apply();
             }
         });
         feed_reset_imageview.setOnClickListener(new View.OnClickListener() {

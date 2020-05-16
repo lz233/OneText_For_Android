@@ -119,6 +119,7 @@ public class WidgetProvider extends AppWidgetProvider {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            coreUtil.refreshLatestRefreshTime();
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("api_string",result);
                             editor.apply();

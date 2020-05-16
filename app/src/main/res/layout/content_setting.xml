@@ -342,6 +342,28 @@
                             android:textColor="@color/colorText3"
                             android:textSize="@dimen/small_text_size" />
                     </LinearLayout>
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/disable_appcenter_analytics_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_marginBottom="-10dp"
+                        android:text="@string/disable_appcenter_analytics"
+                        android:textColor="@color/colorText3"
+                        android:textSize="@dimen/small_text_size"
+                        app:thumbTint="@color/colorText3" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/disable_appcenter_crashes_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginBottom="-10dp"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:text="@string/disable_appcenter_crashes"
+                        android:textColor="@color/colorText3"
+                        android:textSize="@dimen/small_text_size"
+                        app:thumbTint="@color/colorText3" />
                 </LinearLayout>
             </LinearLayout>
 

@@ -136,6 +136,16 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         requestPermissions(permissions);
         //初始化
         AppCenter.start(getApplication(), "2bd0575c-79d2-45d9-97f3-95e6a81e34e0", Analytics.class, Crashes.class);
+        if (sharedPreferences.getBoolean("disable_appcenter_analytics", false)) {
+            Analytics.setEnabled(false);
+        } else {
+            Analytics.setEnabled(true);
+        }
+        if (sharedPreferences.getBoolean("disable_appcenter_crashes", false)) {
+            Crashes.setEnabled(false);
+        } else {
+            Crashes.setEnabled(true);
+        }
         AppCenterFuture<Boolean> hasCrashedInLastSession = Crashes.hasCrashedInLastSession();
         hasCrashedInLastSession.thenAccept(new AppCenterConsumer<Boolean>() {
             @Override
@@ -165,6 +175,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         if (sharedPreferences.getBoolean("first_run", true)) {
             startActivity(new Intent().setClass(MainActivity.this, WelcomeActivity.class));
         }
+        //daynight
         switch (sharedPreferences.getInt("interface_daynight", 0)) {
             case 0:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
@@ -214,28 +225,28 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_text_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("onetext",onetext_text_textview.getText()));
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("onetext", onetext_text_textview.getText()));
                 Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
             }
         });
         onetext_by_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("by",onetext_by_textview.getText()));
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("by", onetext_by_textview.getText()));
                 Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
             }
         });
         onetext_time_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("time",onetext_time_textview.getText()));
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("time", onetext_time_textview.getText()));
                 Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
             }
         });
         onetext_from_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("from",onetext_from_textview.getText()));
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("from", onetext_from_textview.getText()));
                 Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
             }
         });
@@ -495,6 +506,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                 }
                             }
                         });
+                        coreUtil.refreshLatestRefreshTime();
                         progressBar.setVisibility(View.GONE);
                         editor.putString("api_string", result);
                         editor.apply();

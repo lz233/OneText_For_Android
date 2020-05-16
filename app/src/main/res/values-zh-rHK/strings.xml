@@ -208,4 +208,6 @@ lz差不多是條鹹魚了致力於確保本應用儘可能的有用和高效。
     <string name="welcome_privacy_policy_title">需要同意隱私政策</string>
     <string name="welcome_privacy_policy_disagree_button">如不同意，則將無法使用此應用。</string>
     <string name="welcome_privacy_policy_detail_text">[閲讀隱私政策與條款](onetext://privacy_policy)</string>
+    <string name="disable_appcenter_analytics">關閉 Appcenter Analyties</string>
+    <string name="disable_appcenter_crashes">關閉 Appcenter Crashes</string>
 </resources>
