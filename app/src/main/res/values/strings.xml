@@ -208,7 +208,7 @@ If you have any questions or suggestions about my Terms and Conditions, do not h
     <string name="welcome_privacy_policy_title">Need to agree to the privacy policy</string>
     <string name="welcome_privacy_policy_detail_text">[Read the privacy policy and terms](onetext://privacy_policy)</string>
     <string name="welcome_privacy_policy_disagree_button">If you do not agree, you will not be able to use this app.</string>
-    <string name="disable_appcenter_analytics">Disable AppCenter Analyties</string>
+    <string name="disable_appcenter_analytics">Disable AppCenter Analytics</string>
     <string name="disable_appcenter_crashes">Disable AppCenter Crashes</string>
     <!-- Strings used for fragments for navigation -->
 
