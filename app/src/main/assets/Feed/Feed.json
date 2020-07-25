@@ -1,17 +1,8 @@
 [
   {
-    "feed_name": "OneText Library In China",
-    "feed_type": "remote",
-    "feed_url": "https://gitee.com/shisheng233/OneText-Library/raw/master/OneText-Library.json",
-    "text_key": "text",
-    "by_key": "by",
-    "time_key": "time",
-    "from_key": "from"
-  },
-  {
     "feed_name": "OneText Library",
     "feed_type": "remote",
-    "feed_url": "https://github.com/lz233/OneText-Library/raw/master/OneText-Library.json",
+    "feed_url": "https://cdn.jsdelivr.net/gh/lz233/OneText-Library/OneText-Library.json",
     "text_key": "text",
     "by_key": "by",
     "time_key": "time",
