@@ -7,7 +7,7 @@
     android:background="@color/colorWhite"
     tools:context=".activity.AboutActivity">
 
-    <ScrollView
+    <ch.deletescape.lawnchair.views.SpringNestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">
@@ -108,5 +108,5 @@
                 android:textColor="@color/colorText2"
                 android:textSize="@dimen/text_size" />
         </LinearLayout>
-    </ScrollView>
+    </ch.deletescape.lawnchair.views.SpringNestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

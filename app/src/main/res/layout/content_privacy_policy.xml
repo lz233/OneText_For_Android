@@ -6,7 +6,7 @@
     android:background="@color/colorWhite"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ScrollView
+    <ch.deletescape.lawnchair.views.SpringNestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">
@@ -23,5 +23,5 @@
                 android:textColor="@color/colorText2"
                 android:textSize="@dimen/text_size"/>
         </LinearLayout>
-    </ScrollView>
+    </ch.deletescape.lawnchair.views.SpringNestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

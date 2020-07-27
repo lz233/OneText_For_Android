@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin:'kotlin-android'
+apply plugin:'kotlin-android-extensions'
 
 android {
     compileOptions.encoding= 'UTF-8'
@@ -10,7 +12,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.61-く'
+        versionName = '1.62-け'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //multiDexEnabled true
     }
@@ -34,7 +36,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':lawnchair')
+    //implementation project(':lawnchair')
     implementation 'com.microsoft.appcenter:appcenter-analytics:3.2.2'
     implementation 'com.microsoft.appcenter:appcenter-crashes:3.2.2'
     implementation 'com.zqc.opencc.android.lib:lib-opencc-android:1.1.0'

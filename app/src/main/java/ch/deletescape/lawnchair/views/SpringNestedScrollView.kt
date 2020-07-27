@@ -23,10 +23,10 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView.EdgeEffectFactory.DIRECTION_BOTTOM
-import ch.deletescape.lawnchair.R
 import ch.deletescape.lawnchair.getColorAccent
 import ch.deletescape.lawnchair.getColorAttr
 import ch.deletescape.lawnchair.util.getField
+import com.lz233.onetext.R
 
 open class SpringNestedScrollView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

@@ -1,6 +1,7 @@
 package com.lz233.onetext.activity;
 
 import android.Manifest;
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -66,6 +67,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private CoreUtil coreUtil;
     private NiceImageView avatar_imageview;
     private SwipeRefreshLayout onetext_swiperefreshlayout;
+    private LinearLayout main_linearlayout;
     private ProgressBar progressBar;
     private LinearLayout pic_layout;
     private TextView onetext_quote1_textview;
@@ -109,6 +111,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         coreUtil = new CoreUtil(MainActivity.this);
         avatar_imageview = findViewById(R.id.avatar_imageview);
         onetext_swiperefreshlayout = findViewById(R.id.onetext_swiperefreshlayout);
+        main_linearlayout = findViewById(R.id.main_linearlayout);
         pic_layout = findViewById(R.id.pic_layout);
         progressBar = findViewById(R.id.progressBar);
         onetext_quote1_textview = findViewById(R.id.onetext_quote1_textview);
@@ -187,6 +190,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
         }
+        main_linearlayout.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         onetext_quote1_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
         onetext_text_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
         onetext_quote2_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));

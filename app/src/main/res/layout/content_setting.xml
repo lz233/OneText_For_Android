@@ -9,7 +9,7 @@
     tools:context=".activity.SettingActivity"
     tools:showIn="@layout/activity_setting">
 
-    <ScrollView
+    <ch.deletescape.lawnchair.views.SpringNestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">
@@ -646,5 +646,5 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </ch.deletescape.lawnchair.views.SpringNestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
