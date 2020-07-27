@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ScrollView
+            <ch.deletescape.lawnchair.views.SpringNestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never">
@@ -477,7 +477,7 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </ScrollView>
+            </ch.deletescape.lawnchair.views.SpringNestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,6 @@ package com.lz233.onetext.tools.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 
 import androidx.annotation.Nullable;
 
@@ -15,8 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
@@ -68,6 +65,7 @@ public class CoreUtil {
             }
         }
     }
+
     private int generateNewOneTextCode() {
         Random random = new Random();
         int code = 0;
@@ -81,16 +79,19 @@ public class CoreUtil {
         editor.apply();
         return code;
     }
-    public boolean ifOneTextShouldUpdate(boolean ifFromWidget){
-        if(ifFromWidget|(!sharedPreferences.getBoolean("widget_enabled",false))){
+
+    public boolean ifOneTextShouldUpdate(boolean ifFromWidget) {
+        if (ifFromWidget | (!sharedPreferences.getBoolean("widget_enabled", false))) {
             return (ifFromWidget) & ((currentTimeMillis - sharedPreferences.getLong("onetext_latest_refresh_time", 0)) >= (sharedPreferences.getLong("onetext_refresh_time", 30) * 60000));
         }
         return false;
     }
-    public void refreshLatestRefreshTime(){
-        editor.putLong("onetext_latest_refresh_time",currentTimeMillis);
+
+    public void refreshLatestRefreshTime() {
+        editor.putLong("onetext_latest_refresh_time", currentTimeMillis);
         editor.apply();
     }
+
     public void initOneText(final OnOneTextInitListener onOneTextInitListener) {
         final HashMap hashMap = getFeedInformation(sharedPreferences.getInt("feed_code", 0));
         if (hashMap.get("feed_type").equals("remote")) {
@@ -128,7 +129,8 @@ public class CoreUtil {
         }
 
     }
-    private JSONObject getOneTextObject(boolean forceRefresh, boolean ifFromWidget,HashMap feedMap) throws JSONException {
+
+    private JSONObject getOneTextObject(boolean forceRefresh, boolean ifFromWidget, HashMap feedMap) throws JSONException {
         /*JSONObject jsonObject = null;
         if (feedMap.get("feed_type").equals("internet")) {
             final String[] mResult = new String[]{null};
@@ -145,39 +147,36 @@ public class CoreUtil {
         }*/
         return new JSONArray(getOneTextArray()).optJSONObject(getOneTextCode(forceRefresh, ifFromWidget));
     }
+
     public HashMap getOneText(boolean forceRefresh, boolean ifFromWidget) throws JSONException {
         HashMap feedMap = getFeedInformation(sharedPreferences.getInt("feed_code", 0));
-        JSONObject jsonObject = getOneTextObject(forceRefresh,ifFromWidget,feedMap);
-        return convertOneText(jsonObject,feedMap);
+        JSONObject jsonObject = getOneTextObject(forceRefresh, ifFromWidget, feedMap);
+        return convertOneText(jsonObject, feedMap);
     }
-    public HashMap convertOneText(JSONObject jsonObject,HashMap feedMap) throws JSONException {
+
+    public HashMap convertOneText(JSONObject jsonObject, HashMap feedMap) {
         HashMap hashMap = new HashMap();
-        //to-do
-        if (Build.VERSION.SDK_INT < 30) {
-            int chinese_type = sharedPreferences.getInt("chinese_type", 0);
-            String language = Locale.getDefault().getLanguage();
-            String country = Locale.getDefault().getCountry();
-            if (chinese_type == 0) {
-                if (language.equals("zh") & country.equals("HK")) {
-                    oneTextViaS2HK(feedMap,jsonObject, hashMap);
-                } else if (language.equals("zh") & country.equals("MO")) {
-                    oneTextViaS2T(feedMap,jsonObject, hashMap);
-                } else if (language.equals("zh") & country.equals("TW")) {
-                    oneTextViaS2TWP(feedMap,jsonObject, hashMap);
-                } else {
-                    oneTextViaOriginal(feedMap,jsonObject, hashMap);
-                }
-            } else if (chinese_type == 1) {
-                oneTextViaOriginal(feedMap,jsonObject, hashMap);
-            } else if (chinese_type == 2) {
-                oneTextViaS2T(feedMap,jsonObject, hashMap);
-            } else if (chinese_type == 3) {
-                oneTextViaS2HK(feedMap,jsonObject, hashMap);
-            } else if (chinese_type == 4) {
-                oneTextViaS2TWP(feedMap,jsonObject, hashMap);
+        int chinese_type = sharedPreferences.getInt("chinese_type", 0);
+        String language = Locale.getDefault().getLanguage();
+        String country = Locale.getDefault().getCountry();
+        if (chinese_type == 0) {
+            if (language.equals("zh") & country.equals("HK")) {
+                oneTextViaS2HK(feedMap, jsonObject, hashMap);
+            } else if (language.equals("zh") & country.equals("MO")) {
+                oneTextViaS2T(feedMap, jsonObject, hashMap);
+            } else if (language.equals("zh") & country.equals("TW")) {
+                oneTextViaS2TWP(feedMap, jsonObject, hashMap);
+            } else {
+                oneTextViaOriginal(feedMap, jsonObject, hashMap);
             }
-        } else {
-            oneTextViaOriginal(feedMap,jsonObject, hashMap);
+        } else if (chinese_type == 1) {
+            oneTextViaOriginal(feedMap, jsonObject, hashMap);
+        } else if (chinese_type == 2) {
+            oneTextViaS2T(feedMap, jsonObject, hashMap);
+        } else if (chinese_type == 3) {
+            oneTextViaS2HK(feedMap, jsonObject, hashMap);
+        } else if (chinese_type == 4) {
+            oneTextViaS2TWP(feedMap, jsonObject, hashMap);
         }
         try {
             JSONArray timeJsonArray = new JSONArray(jsonObject.optString((String) feedMap.get("time_key")));
@@ -188,33 +187,34 @@ public class CoreUtil {
             } else {
                 hashMap.put("time", context.getString(R.string.record_time) + "：" + timeOfRecord);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return hashMap;
     }
-    private HashMap oneTextViaS2HK(HashMap feedMap,JSONObject jsonObject, HashMap hashMap) {
+
+    private HashMap oneTextViaS2HK(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
         hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2HK, context));
         hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2HK, context));
         hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2HK, context));
         return hashMap;
     }
 
-    private HashMap oneTextViaS2T(HashMap feedMap,JSONObject jsonObject, HashMap hashMap) {
+    private HashMap oneTextViaS2T(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
         hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2T, context));
         hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2T, context));
         hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2T, context));
         return hashMap;
     }
 
-    private HashMap oneTextViaS2TWP(HashMap feedMap,JSONObject jsonObject, HashMap hashMap) {
-            hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2TWP, context));
-            hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2TWP, context));
-            hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2TWP, context));
+    private HashMap oneTextViaS2TWP(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
+        hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2TWP, context));
+        hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2TWP, context));
+        hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2TWP, context));
         return hashMap;
     }
 
-    private HashMap oneTextViaOriginal(HashMap feedMap,JSONObject jsonObject, HashMap hashMap) {
+    private HashMap oneTextViaOriginal(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
         hashMap.put("text", jsonObject.optString((String) feedMap.get("text_key")));
         hashMap.put("by", jsonObject.optString((String) feedMap.get("by_key")));
         hashMap.put("from", jsonObject.optString((String) feedMap.get("from_key")));
@@ -227,10 +227,10 @@ public class CoreUtil {
             File file = new File(context.getFilesDir().getPath() + "/Feed/");
             ifsucceed = file.mkdirs();
         }
-        if ((!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json"))|((sharedPreferences.getInt("version_code",0)-20200407)<0)) {
+        if ((!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json")) | ((sharedPreferences.getInt("version_code", 0) - 20200407) < 0)) {
             ifsucceed = FileUtil.copyAssets(context, "Feed", context.getFilesDir().getPath() + "/Feed");
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("version_code",BuildConfig.VERSION_CODE);
+            editor.putInt("version_code", BuildConfig.VERSION_CODE);
             editor.remove("feed_code");
             editor.apply();
         }
@@ -258,13 +258,13 @@ public class CoreUtil {
             hashMap.put("feed_type", jsonObject.optString("feed_type"));
             hashMap.put("feed_url", jsonObject.optString("feed_url"));
             hashMap.put("feed_path", jsonObject.optString("feed_path"));
-            hashMap.put("text_key",jsonObject.optString("text_key"));
-            hashMap.put("by_key",jsonObject.optString("by_key"));
-            hashMap.put("time_key",jsonObject.optString("time_key"));
-            hashMap.put("from_key",jsonObject.optString("from_key"));
-            hashMap.put("api_method",jsonObject.optString("api_method"));
-            hashMap.put("api_url",jsonObject.optString("api_url"));
-            hashMap.put("object_key",jsonObject.optString("object_key"));
+            hashMap.put("text_key", jsonObject.optString("text_key"));
+            hashMap.put("by_key", jsonObject.optString("by_key"));
+            hashMap.put("time_key", jsonObject.optString("time_key"));
+            hashMap.put("from_key", jsonObject.optString("from_key"));
+            hashMap.put("api_method", jsonObject.optString("api_method"));
+            hashMap.put("api_url", jsonObject.optString("api_url"));
+            hashMap.put("object_key", jsonObject.optString("object_key"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

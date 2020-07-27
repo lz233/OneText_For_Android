@@ -1,40 +1,29 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
-    compileOptions.encoding= 'UTF-8'
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
+
     defaultConfig {
-        Date date = new Date()
-        applicationId "com.lz233.onetext"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 30
-        versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.61-か'
+        versionCode 1
+        versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        //multiDexEnabled true
+        consumerProguardFiles "consumer-rules.pro"
     }
-    /*signingConfigs {
-        release {
-            storeFile file('lz233_key.jks')
-            storePassword "${storePassword}"
-            keyAlias "${keyAlias}"
-            keyPassword "${keyPassword}"
-        }
-    }*/
+
     buildTypes {
         release {
-            minifyEnabled true
-            zipAlignEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.release
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':lawnchair')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'com.microsoft.appcenter:appcenter-analytics:3.2.2'
     implementation 'com.microsoft.appcenter:appcenter-crashes:3.2.2'
     implementation 'com.zqc.opencc.android.lib:lib-opencc-android:1.1.0'
@@ -62,4 +51,5 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.documentfile:documentfile:1.0.1'
+
 }

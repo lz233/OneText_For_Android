@@ -1,1 +1,2 @@
+include ':lawnchair'
 include ':app'
