@@ -20,7 +20,6 @@
     <string name="current_font_text">Current font: </string>
     <string name="font_system_text">Restore system font</string>
     <string name="interface_text">Interface</string>
-    <string name="interface_md2">Material Design 2 Style</string>
     <string name="feed_text">Feed</string>
     <string name="feed_refresh_text">Feed Refresh Time:</string>
     <string name="setting_succeed_text">Succeed, effective at next startup</string>
@@ -211,6 +210,7 @@ If you have any questions or suggestions about my Terms and Conditions, do not h
     <string name="welcome_privacy_policy_disagree_button">If you do not agree, you will not be able to use this app.</string>
     <string name="disable_appcenter_analytics">Disable AppCenter Analytics</string>
     <string name="disable_appcenter_crashes">Disable AppCenter Crashes</string>
+    <string name="disable_push">Disable Push</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

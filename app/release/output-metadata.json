@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "properties": [],
-      "versionCode": 20200727,
-      "versionName": "1.61-か",
+      "versionCode": 20200728,
+      "versionName": "1.62-け",
       "enabled": true,
       "outputFile": "app-release.apk"
     }

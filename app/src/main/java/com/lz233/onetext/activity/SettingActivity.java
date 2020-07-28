@@ -79,6 +79,7 @@ public class SettingActivity extends BaseActivity {
     private AppCompatSpinner interface_daynight_spinner;
     private SwitchMaterial oauth_hide_switch;
     private AppCompatSpinner chinese_type_spinner;
+    private SwitchMaterial disable_push_switch;
     private SwitchMaterial disable_appcenter_analytics_switch;
     private SwitchMaterial disable_appcenter_crashes_switch;
     private ImageView feed_reset_imageview;
@@ -125,6 +126,7 @@ public class SettingActivity extends BaseActivity {
         interface_daynight_spinner = findViewById(R.id.interface_daynight_spinner);
         oauth_hide_switch = findViewById(R.id.oauth_hide_switch);
         chinese_type_spinner = findViewById(R.id.chinese_type_spinner);
+        disable_push_switch = findViewById(R.id.disable_push_switch);
         disable_appcenter_analytics_switch = findViewById(R.id.disable_appcenter_analytics_switch);
         disable_appcenter_crashes_switch = findViewById(R.id.disable_appcenter_crashes_switch);
         feed_reset_imageview = findViewById(R.id.feed_reset_imageview);
@@ -181,8 +183,9 @@ public class SettingActivity extends BaseActivity {
                 chinese_type_spinner.setSelection(4);
 
         }
-        disable_appcenter_analytics_switch.setChecked(sharedPreferences.getBoolean("disable_appcenter_analytics",false));
-        disable_appcenter_crashes_switch.setChecked(sharedPreferences.getBoolean("disable_appcenter_crashes",false));
+        disable_push_switch.setChecked(sharedPreferences.getBoolean("disable_push", false));
+        disable_appcenter_analytics_switch.setChecked(sharedPreferences.getBoolean("disable_appcenter_analytics", false));
+        disable_appcenter_crashes_switch.setChecked(sharedPreferences.getBoolean("disable_appcenter_crashes", false));
         feed_auto_update_switch.setChecked(sharedPreferences.getBoolean("feed_auto_update", true));
         feed_refresh_seekbar.setIndicatorTextFormat(getString(R.string.feed_refresh_text) + " ${PROGRESS} " + getString(R.string.hour));
         feed_refresh_seekbar.setProgress(sharedPreferences.getLong("feed_refresh_time", 1));
@@ -420,14 +423,25 @@ public class SettingActivity extends BaseActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+        disable_push_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    editor.putBoolean("disable_push", true);
+                } else {
+                    editor.putBoolean("disable_push", false);
+                }
+                editor.apply();
+            }
+        });
         disable_appcenter_analytics_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    editor.putBoolean("disable_appcenter_analytics",true);
+                if (isChecked) {
+                    editor.putBoolean("disable_appcenter_analytics", true);
                     Analytics.setEnabled(false);
-                }else {
-                    editor.putBoolean("disable_appcenter_analytics",false);
+                } else {
+                    editor.putBoolean("disable_appcenter_analytics", false);
                     Analytics.setEnabled(true);
                 }
                 editor.apply();
@@ -436,11 +450,11 @@ public class SettingActivity extends BaseActivity {
         disable_appcenter_crashes_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    editor.putBoolean("disable_appcenter_crashes",true);
+                if (isChecked) {
+                    editor.putBoolean("disable_appcenter_crashes", true);
                     Crashes.setEnabled(false);
-                }else {
-                    editor.putBoolean("disable_appcenter_crashes",false);
+                } else {
+                    editor.putBoolean("disable_appcenter_crashes", false);
                     Crashes.setEnabled(true);
                 }
                 editor.apply();

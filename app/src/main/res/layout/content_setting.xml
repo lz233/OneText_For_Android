@@ -17,6 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:orientation="vertical">
 
             <LinearLayout
@@ -343,6 +344,19 @@
                             android:textColor="@color/colorText3"
                             android:textSize="@dimen/small_text_size" />
                     </LinearLayout>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/disable_push_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_marginBottom="-10dp"
+                        android:text="@string/disable_push"
+                        android:textColor="@color/colorText3"
+                        android:textSize="@dimen/small_text_size"
+                        app:thumbTint="@color/colorText3" />
+
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/disable_appcenter_analytics_switch"
                         android:layout_width="match_parent"
@@ -354,13 +368,14 @@
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/small_text_size"
                         app:thumbTint="@color/colorText3" />
+
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/disable_appcenter_crashes_switch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
-                        android:layout_marginBottom="-10dp"
                         android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_marginBottom="-10dp"
                         android:text="@string/disable_appcenter_crashes"
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/small_text_size"
@@ -414,14 +429,14 @@
                             android:src="@drawable/ic_settings_restore" />
 
                         <ImageView
-                            android:visibility="gone"
                             android:id="@+id/feed_add_imageview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            android:src="@drawable/ic_library_add" />
+                            android:src="@drawable/ic_library_add"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -633,6 +648,7 @@
                         android:text="@string/about_page_text"
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/small_text_size" />
+
                     <TextView
                         android:id="@+id/privacy_policy_page_textview"
                         android:layout_width="match_parent"

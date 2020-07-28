@@ -52,7 +52,6 @@
     <string name="widget_can_download">允许小部件更新源</string>
     <string name="hour">时</string>
     <string name="widget_refresh_text">小部件刷新时间：</string>
-    <string name="interface_md2">Material Design 2 风格</string>
     <string name="interface_text">界面</string>
     <string name="refresh_onetext_button">刷新</string>
     <string name="refresh_onetext_text">来个新句子</string>
@@ -208,6 +207,7 @@ lz差不多是条咸鱼了致力于确保本应用尽可能的有用和高效。
     <string name="welcome_privacy_policy_title">需要同意隐私政策</string>
     <string name="welcome_privacy_policy_disagree_button">如不同意，则将无法使用此应用。</string>
     <string name="welcome_privacy_policy_detail_text">[阅读隐私政策与条款](onetext://privacy_policy)</string>
-    <string name="disable_appcenter_analytics">关闭 Appcenter Analyties</string>
-    <string name="disable_appcenter_crashes">关闭 Appcenter Crashes</string>
+    <string name="disable_appcenter_analytics">禁用 Appcenter Analyties</string>
+    <string name="disable_appcenter_crashes">禁用 Appcenter Crashes</string>
+    <string name="disable_push">禁用推送</string>
 </resources>
