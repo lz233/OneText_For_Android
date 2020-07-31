@@ -18,15 +18,18 @@ android {
     }
     signingConfigs {
         releaseSigningConfig {
-            v2SigningEnabled true
+            storeFile rootProject.file("app/lz233_key.jks")
+            storePassword System.getProperty("KEYSTORE_PASSWORD")
+            keyAlias System.getProperty("KEY_ALIAS")
+            keyPassword System.getProperty("KEY_PASSWORD")
         }
     }
     buildTypes {
         release {
             minifyEnabled true
             zipAlignEnabled true
+            signingConfig signingConfigs.releaseSigningConfig
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.release
         }
     }
 }
