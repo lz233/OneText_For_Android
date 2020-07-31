@@ -12,18 +12,15 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.63-こ'
+        versionName = '1.63-さ'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //multiDexEnabled true
     }
-    /*signingConfigs {
-        release {
-            storeFile file('lz233_key.jks')
-            storePassword "${storePassword}"
-            keyAlias "${keyAlias}"
-            keyPassword "${keyPassword}"
+    signingConfigs {
+        releaseSigningConfig {
+            v2SigningEnabled true
         }
-    }*/
+    }
     buildTypes {
         release {
             minifyEnabled true

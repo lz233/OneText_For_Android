@@ -167,7 +167,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     getLastSessionCrashReport.thenAccept(new AppCenterConsumer<ErrorReport>() {
                         @Override
                         public void accept(ErrorReport errorReport) {
-                            ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content);
+                            ViewGroup rootView = findViewById(android.R.id.content);
                             Snackbar.make(rootView, R.string.report_text, Snackbar.LENGTH_LONG).setAction(R.string.report_button, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
