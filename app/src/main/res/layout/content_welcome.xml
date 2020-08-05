@@ -11,22 +11,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.kd.easybarrage.BarrageView
-            android:id="@+id/barrageview"
-            android:fitsSystemWindows="true"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:allow_repeat="true"
-            app:border_color="@null"
-            app:line_height="20dp"
-            app:max_text_size="20"
-            app:min_text_size="14"
-            app:random_color="false"
-            app:size="200"/>
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager2"
             android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
