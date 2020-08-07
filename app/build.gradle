@@ -32,6 +32,12 @@ android {
             signingConfig signingConfigs.releaseSigningConfig
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        GooglePlay {
+            minifyEnabled true
+            zipAlignEnabled true
+            signingConfig signingConfigs.releaseSigningConfig
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
 }
 
