@@ -77,11 +77,6 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="widget_center">Center</string>
     <string name="feed_edit_text">Edit</string>
     <string name="feed_delete_text">Delete</string>
-    <string name="setfeed_name_text">Name</string>
-    <string name="setfeed_type_text">Type [remote/local]</string>
-    <string name="setfeed_url_text">URL</string>
-    <string name="setfeed_path_text">Path [Long press to select a file]</string>
-    <string name="feed_cannot_delete_text">Not allowed to delete last feed.</string>
     <string name="widget_shadow">With shadow</string>
     <string name="onetext_refresh_faild_text">Update failed, please check the network.</string>
     <string name="onetext_refresh_faild_button">Retry</string>
@@ -211,6 +206,7 @@ If you have any questions or suggestions about my Terms and Conditions, do not h
     <string name="disable_appcenter_analytics">Disable AppCenter Analytics</string>
     <string name="disable_appcenter_crashes">Disable AppCenter Crashes</string>
     <string name="disable_push">Disable Push</string>
-    <!-- Strings used for fragments for navigation -->
-
+    <string name="title_activity_edit_feed">Edit Feed</string>
+    <string name="edit_feed_illegal">Illegal format</string>
+    <string name="edit_feed_empty">Not allowed to be empty</string>
 </resources>

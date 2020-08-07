@@ -19,6 +19,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activity.EditFeedActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/title_activity_edit_feed"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".activity.PrivacyPolicyActivity"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/title_activity_privacy_policy"
@@ -58,19 +66,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.SetFeedActivity"
-            android:icon="@mipmap/ic_launcher"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
             android:name=".activity.CrashReportActivity"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/title_activity_crash_report"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.AboutActivity" />
+        <activity
+            android:name=".activity.AboutActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/about_page_text"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingActivity"
             android:icon="@mipmap/ic_launcher"

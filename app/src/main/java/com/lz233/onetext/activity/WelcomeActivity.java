@@ -64,8 +64,8 @@ public class WelcomeActivity extends BaseActivity implements EasyPermissions.Per
         registerReceiver(receiver, new IntentFilter("com.lz233.onetext.requestpermission"));
         Intent intent = new Intent(this, Service.class);
         startService(intent);
-        for (int i = 0; i < danmu.length; i++) {
-            barrageview.addBarrage(new Barrage(danmu[i], R.color.colorText4));
+        for (String s : danmu) {
+            barrageview.addBarrage(new Barrage(s, R.color.colorText4));
         }
         //barrageview.addBarrage(new Barrage("233", R.color.colorText4));
         pagerAdapter = new ScreenSlidePagerAdapter(this);

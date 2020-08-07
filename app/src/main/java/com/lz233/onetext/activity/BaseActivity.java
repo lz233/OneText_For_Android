@@ -50,12 +50,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         }
         rootview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        ViewCompat.setOnApplyWindowInsetsListener(rootview, new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                rootview.setPadding(insets.getSystemWindowInsetLeft(), 0, insets.getSystemWindowInsetRight(), 0);
-                return insets;
-            }
+        ViewCompat.setOnApplyWindowInsetsListener(rootview, (v, insets) -> {
+            rootview.setPadding(insets.getSystemWindowInsetLeft(), 0, insets.getSystemWindowInsetRight(), 0);
+            return insets;
         });
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             //rootView.setFitsSystemWindows(true);

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.lz233.onetext.R;
-import com.lz233.onetext.activity.SetFeedActivity;
 import com.lz233.onetext.tools.utils.CoreUtil;
 import com.lz233.onetext.tools.utils.FileUtil;
 
@@ -44,30 +43,48 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 Toast.makeText(v.getContext(), "you clicked view " + feed.getFeedName(), Toast.LENGTH_SHORT).show();
             }
         });*/
-        holder.feedView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                Feed feed = feedList.get(position);
-                SharedPreferences sharedPreferences = feed.getContext().getSharedPreferences("setting", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+        holder.feedView.setOnClickListener(v -> {
+            int position = holder.getAdapterPosition();
+            Feed feed = feedList.get(position);
+            SharedPreferences sharedPreferences = feed.getContext().getSharedPreferences("setting", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            int currentPosition = sharedPreferences.getInt("feed_code",0);
+            Feed feed1 = feedList.get(currentPosition);
+            if (position!=currentPosition){
                 editor.putInt("feed_code", position);
                 editor.remove("feed_latest_refresh_time");
                 editor.remove("widget_latest_refresh_time");
                 editor.remove("onetext_code");
-                editor.apply();
                 if (feed.getFeedTypeImageID() == R.drawable.ic_cloud) {
                     FileUtil.deleteFile(feed.getContext().getFilesDir().getPath() + "/OneText/OneText-Library.json");
                 }
-                Intent intent = new Intent("com.lz233.onetext.updatefeedlist");
-                intent.setPackage(feed.getContext().getPackageName());
-                feed.getContext().sendBroadcast(intent);
-                /*Intent intent2 = new Intent("com.lz233.onetext.issettingupdated");
-                intent2.setPackage(feed.getContext().getPackageName());
-                feed.getContext().sendBroadcast(intent2);*/
+                int originalFeedTypeImageID = 0;
+                if (feed1.getFeedTypeImageID()==R.drawable.ic_cloud_two_tone){
+                    originalFeedTypeImageID = R.drawable.ic_cloud;
+                }else if (feed1.getFeedTypeImageID()==R.drawable.ic_file_two_tone){
+                    originalFeedTypeImageID = R.drawable.ic_file;
+                }else if (feed1.getFeedTypeImageID()==R.drawable.ic_world_two_tone){
+                    originalFeedTypeImageID = R.drawable.ic_world;
+                }
+                feedList.set(currentPosition,new Feed(feed1.getContext(),originalFeedTypeImageID,feed1.getFeedName(),false));
+                notifyItemChanged(currentPosition);
+                int feedTypeImageID = 0;
+                if (feed.getFeedTypeImageID()==R.drawable.ic_cloud){
+                    feedTypeImageID=R.drawable.ic_cloud_two_tone;
+                }else if (feed.getFeedTypeImageID()==R.drawable.ic_file){
+                    feedTypeImageID=R.drawable.ic_file_two_tone;
+                }else if (feed.getFeedTypeImageID()==R.drawable.ic_world){
+                    feedTypeImageID=R.drawable.ic_world_two_tone;
+                }
+                feedList.set(position,new Feed(feed.getContext(),feedTypeImageID,feed.getFeedName(),true));
+                notifyItemChanged(position);
+                editor.apply();
             }
+            /*Intent intent = new Intent("com.lz233.onetext.updatefeedlist");
+            intent.setPackage(feed.getContext().getPackageName());
+            feed.getContext().sendBroadcast(intent);*/
         });
-        holder.feed_edit_textview.setOnClickListener(new View.OnClickListener() {
+        /*holder.feed_edit_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
@@ -75,28 +92,25 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 intent.putExtra("feed_int", position);
                 parent.getContext().startActivity(intent);
             }
-        });
-        holder.feed_delete_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                Feed feed = feedList.get(position);
-                if (getItemCount() == 1) {
-                    Snackbar.make(v, feed.getContext().getText(R.string.feed_cannot_delete_text), Snackbar.LENGTH_SHORT).show();
-                } else {
-                    /*Intent intent3 = new Intent("com.lz233.onetext.issettingupdated");
-                    intent3.setPackage(feed.getContext().getPackageName());
-                    feed.getContext().sendBroadcast(intent3);*/
-                    try {
-                        CoreUtil coreUtil = new CoreUtil(feed.getContext());
-                        coreUtil.deleteFeed(position);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Intent intent = new Intent("com.lz233.onetext.updatefeedlist");
-                    intent.setPackage(feed.getContext().getPackageName());
-                    feed.getContext().sendBroadcast(intent);
+        });*/
+        holder.feed_delete_textview.setOnClickListener(v -> {
+            int position = holder.getAdapterPosition();
+            Feed feed = feedList.get(position);
+            if (getItemCount() == 1) {
+                //Snackbar.make(v, feed.getContext().getText(R.string.feed_cannot_delete_text), Snackbar.LENGTH_SHORT).show();
+            } else {
+                /*Intent intent3 = new Intent("com.lz233.onetext.issettingupdated");
+                intent3.setPackage(feed.getContext().getPackageName());
+                feed.getContext().sendBroadcast(intent3);*/
+                try {
+                    CoreUtil coreUtil = new CoreUtil(feed.getContext());
+                    coreUtil.deleteFeed(position);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                Intent intent = new Intent("com.lz233.onetext.updatefeedlist");
+                intent.setPackage(feed.getContext().getPackageName());
+                feed.getContext().sendBroadcast(intent);
             }
         });
         return holder;
@@ -106,18 +120,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final Feed feed = feedList.get(position);
         holder.feed_name_textview.setText(feed.getFeedName());
-        int feedTypeImageID = feed.getFeedTypeImageID();
-        if (feed.ifSelected()) {
-            if (feedTypeImageID == R.drawable.ic_cloud) {
-                holder.feed_type_imageview.setImageResource(R.drawable.ic_cloud_two_tone);
-            } else if (feedTypeImageID == R.drawable.ic_file) {
-                holder.feed_type_imageview.setImageResource(R.drawable.ic_file_two_tone);
-            } else if (feedTypeImageID == R.drawable.ic_world) {
-                holder.feed_type_imageview.setImageResource(R.drawable.ic_world_two_tone);
-            }
-        } else {
-            holder.feed_type_imageview.setImageResource(feedTypeImageID);
-        }
+        holder.feed_type_imageview.setImageResource(feed.getFeedTypeImageID());
     }
 
     @Override

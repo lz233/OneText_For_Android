@@ -104,7 +104,7 @@ public class DownloadUtil {
                             fos.close();
                         }
                     } catch (IOException e) {
-
+                        e.printStackTrace();
                     }
 
                 }

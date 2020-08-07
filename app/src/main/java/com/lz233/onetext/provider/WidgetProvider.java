@@ -46,8 +46,7 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         //Log.i("lz", "onUpdate");
-        for (int i = 0; i < appWidgetIds.length; i++) {
-            int appWidgetId = appWidgetIds[i];
+        for (int appWidgetId : appWidgetIds) {
             //Log.i("lz", "onUpdate appWidgetId=" + appWidgetId);
             /*Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
@@ -59,7 +58,7 @@ public class WidgetProvider extends AppWidgetProvider {
             openIntent.setPackage(context.getPackageName());
             PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, 0);
             views.setOnClickPendingIntent(R.id.onetext_widget_layout, openPendingIntent);
-            run(context, views,appWidgetManager);
+            run(context, views, appWidgetManager);
             //views.setOnClickPendingIntent(R.id.onetext_widget_layout,getPendingIntent(context,R.id.onetext_widget_layout));
             // 更新小部件
             appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -110,22 +109,19 @@ public class WidgetProvider extends AppWidgetProvider {
             final HashMap feedMap = coreUtil.getFeedInformation(sharedPreferences.getInt("feed_code", 0));
             if(feedMap.get("feed_type").equals("internet")){
                 if(sharedPreferences.getString("api_string","").equals("")|coreUtil.ifOneTextShouldUpdate(true)){
-                    new GetUtil().sendGet((String) feedMap.get("api_url"), new GetUtil.GetCallback() {
-                        @Override
-                        public void onGetDone(String result) {
-                            try {
-                                hashMap[0] = coreUtil.convertOneText(new JSONObject(result),feedMap);
-                                showOneText(context,sharedPreferences,views, hashMap[0]);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            coreUtil.refreshLatestRefreshTime();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("api_string",result);
-                            editor.apply();
-                            ComponentName thisName = new ComponentName(context, WidgetProvider.class);
-                            appWidgetManager.updateAppWidget(thisName, views);
+                    new GetUtil().sendGet((String) feedMap.get("api_url"), result -> {
+                        try {
+                            hashMap[0] = coreUtil.convertOneText(new JSONObject(result),feedMap);
+                            showOneText(context,sharedPreferences,views, hashMap[0]);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+                        coreUtil.refreshLatestRefreshTime();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("api_string",result);
+                        editor.apply();
+                        ComponentName thisName = new ComponentName(context, WidgetProvider.class);
+                        appWidgetManager.updateAppWidget(thisName, views);
                     });
                 }else {
                     hashMap[0] = coreUtil.convertOneText(new JSONObject(sharedPreferences.getString("api_string","")),feedMap);

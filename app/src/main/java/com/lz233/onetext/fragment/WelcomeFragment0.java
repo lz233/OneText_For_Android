@@ -36,12 +36,7 @@ public class WelcomeFragment0 extends Fragment {
         welcome1_icon_imageview.setAnimation(alphaAnimation);
         welcome_start_button.setAnimation(alphaAnimation);
         //懒得写
-        welcome_start_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
-            }
-        });
+        welcome_start_button.setOnClickListener(v -> viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1));
         return rootView;
     }
 

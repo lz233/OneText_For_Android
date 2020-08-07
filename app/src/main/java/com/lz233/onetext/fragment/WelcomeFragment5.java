@@ -32,15 +32,12 @@ public class WelcomeFragment5 extends Fragment {
         //懒得写
 
         //懒得写
-        welcome_notification_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //viewPager2.setCurrentItem(4);
-                SharedPreferences.Editor editor = activity.getSharedPreferences("setting", Context.MODE_PRIVATE).edit();
-                editor.putBoolean("first_run",false);
-                editor.apply();
-                activity.finish();
-            }
+        welcome_notification_button.setOnClickListener(v -> {
+            //viewPager2.setCurrentItem(4);
+            SharedPreferences.Editor editor = activity.getSharedPreferences("setting", Context.MODE_PRIVATE).edit();
+            editor.putBoolean("first_run",false);
+            editor.apply();
+            activity.finish();
         });
         return rootView;
     }

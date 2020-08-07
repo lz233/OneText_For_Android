@@ -35,18 +35,8 @@ public class WelcomeFragment3 extends Fragment {
         //懒得写
 
         //懒得写
-        welcome_oauth_cancel_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
-            }
-        });
-        welcome_oauth_continue_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/login/oauth/authorize/?client_id=a2cecb404f9d11e7abbe")));
-            }
-        });
+        welcome_oauth_cancel_button.setOnClickListener(v -> viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1));
+        welcome_oauth_continue_button.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/login/oauth/authorize/?client_id=a2cecb404f9d11e7abbe"))));
         return rootView;
     }
 

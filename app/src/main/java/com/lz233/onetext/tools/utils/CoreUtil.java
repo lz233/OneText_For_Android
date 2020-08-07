@@ -98,27 +98,22 @@ public class CoreUtil {
             if (ifHaveOneTextFiles()) {
                 onOneTextInitListener.onSuccess(new File(context.getFilesDir().getPath() + "/OneText/OneText-Library.json"));
             } else {
-                new Thread(new Runnable() {
+                new Thread(() -> DownloadUtil.get().download((String) hashMap.get("feed_url"), context.getFilesDir().getPath() + "/OneText/", "OneText-Library.json", new DownloadUtil.OnDownloadListener() {
                     @Override
-                    public void run() {
-                        DownloadUtil.get().download((String) hashMap.get("feed_url"), context.getFilesDir().getPath() + "/OneText/", "OneText-Library.json", new DownloadUtil.OnDownloadListener() {
-                            @Override
-                            public void onDownloadSuccess(File file) {
-                                onOneTextInitListener.onSuccess(file);
-                            }
-
-                            @Override
-                            public void onDownloading(int progress) {
-                                onOneTextInitListener.onDownloading(progress);
-                            }
-
-                            @Override
-                            public void onDownloadFailed(Exception e) {
-                                onOneTextInitListener.onFailed(e);
-                            }
-                        });
+                    public void onDownloadSuccess(File file) {
+                        onOneTextInitListener.onSuccess(file);
                     }
-                }).start();
+
+                    @Override
+                    public void onDownloading(int progress) {
+                        onOneTextInitListener.onDownloading(progress);
+                    }
+
+                    @Override
+                    public void onDownloadFailed(Exception e) {
+                        onOneTextInitListener.onFailed(e);
+                    }
+                })).start();
             }
         } else if (hashMap.get("feed_type").equals("local")) {
             if (FileUtil.isFile((String) hashMap.get("feed_path"))) {
@@ -314,63 +309,29 @@ public class CoreUtil {
         FileUtil.writeTextToFile(mJsonArray.toString(), context.getFilesDir().getPath() + "/Feed/", "Feed.json");
     }
 
-    public void alterFeed(int position, String feedName, String feedType, String feedURL, String feedPath) throws JSONException {
-        JSONArray jsonArray = new JSONArray(getFeedArray());
-        JSONArray mJsonArray = new JSONArray();
-        int feedInt = sharedPreferences.getInt("feed_code", 0);
-        if (feedURL == null) feedURL = "";
-        if (feedPath == null) feedPath = "";
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject mJsonObject;
-            if (position == i) {
-                mJsonObject = new JSONObject().put("feed_name", feedName).put("feed_type", feedType).put("feed_url", feedURL).put("feed_path", feedPath);
-            } else {
-                mJsonObject = jsonArray.optJSONObject(i);
-            }
-            mJsonArray.put(mJsonObject);
-        }
-        jsonArray = mJsonArray;
-        if (getFeedInformation(position).get("feed_type").equals("remote")) {
-            FileUtil.deleteFile(context.getFilesDir().getPath() + "/OneText/OneText-Library.json");
-        }
-        FileUtil.deleteFile(context.getFilesDir().getPath() + "/Feed/Feed.json");
-        FileUtil.writeTextToFile(mJsonArray.toString(), context.getFilesDir().getPath() + "/Feed/", "Feed.json");
-        if (feedInt == position) {
-            editor.remove("feed_latest_refresh_time");
-            editor.remove("widget_latest_refresh_time");
-            editor.remove("onetext_code");
-            editor.apply();
-        }
-    }
-
     public void runOneTextUpdate(final OnOneTextUpdateListener onOneTextUpdateListener) {
         final HashMap hashMap = getFeedInformation(sharedPreferences.getInt("feed_code", 0));
         if (hashMap.get("feed_type").equals("feed_type")) {
             if (sharedPreferences.getBoolean("feed_auto_update", true)) {
                 if ((currentTimeMillis - sharedPreferences.getLong("feed_latest_refresh_time", 0)) > (sharedPreferences.getLong("feed_refresh_time", 1) * 3600000)) {
-                    new Thread(new Runnable() {
+                    new Thread(() -> DownloadUtil.get().download((String) hashMap.get("feed_url"), context.getFilesDir().getPath() + "/OneText/", "OneText-Library.json", new DownloadUtil.OnDownloadListener() {
                         @Override
-                        public void run() {
-                            DownloadUtil.get().download((String) hashMap.get("feed_url"), context.getFilesDir().getPath() + "/OneText/", "OneText-Library.json", new DownloadUtil.OnDownloadListener() {
-                                @Override
-                                public void onDownloadSuccess(File file) {
-                                    editor.putLong("feed_latest_refresh_time", currentTimeMillis);
-                                    editor.apply();
-                                    onOneTextUpdateListener.onSuccess(file);
-                                }
-
-                                @Override
-                                public void onDownloading(int progress) {
-                                    onOneTextUpdateListener.onDownloading(progress);
-                                }
-
-                                @Override
-                                public void onDownloadFailed(Exception e) {
-                                    onOneTextUpdateListener.onFailed(e);
-                                }
-                            });
+                        public void onDownloadSuccess(File file) {
+                            editor.putLong("feed_latest_refresh_time", currentTimeMillis);
+                            editor.apply();
+                            onOneTextUpdateListener.onSuccess(file);
                         }
-                    }).start();
+
+                        @Override
+                        public void onDownloading(int progress) {
+                            onOneTextUpdateListener.onDownloading(progress);
+                        }
+
+                        @Override
+                        public void onDownloadFailed(Exception e) {
+                            onOneTextUpdateListener.onFailed(e);
+                        }
+                    })).start();
                 } else {
                     onOneTextUpdateListener.noUpdateRequired();
                 }

@@ -39,18 +39,8 @@ public class WelcomeFragment1 extends Fragment{
         final Markwon markwon = Markwon.create(activity);
         markwon.setMarkdown(welcome_policy_detail_text, getString(R.string.welcome_privacy_policy_detail_text));
         //懒得写
-        welcome_policy_disagree_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, getString(R.string.welcome_privacy_policy_disagree_button), Snackbar.LENGTH_SHORT).show();
-            }
-        });
-        welcome_policy_agree_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
-            }
-        });
+        welcome_policy_disagree_button.setOnClickListener(v -> Snackbar.make(v, getString(R.string.welcome_privacy_policy_disagree_button), Snackbar.LENGTH_SHORT).show());
+        welcome_policy_agree_button.setOnClickListener(v -> viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1));
         return rootView;
     }
 }

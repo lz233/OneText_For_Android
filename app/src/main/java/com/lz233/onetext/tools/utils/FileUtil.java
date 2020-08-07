@@ -28,7 +28,7 @@ public class FileUtil {
             File file = new File(FilePath);
             isFile = file.isFile();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return isFile;
     }

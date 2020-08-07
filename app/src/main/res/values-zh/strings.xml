@@ -76,11 +76,6 @@
     <string name="widget_center">居中</string>
     <string name="feed_edit_text">编辑</string>
     <string name="feed_delete_text">删除</string>
-    <string name="setfeed_name_text">名称</string>
-    <string name="setfeed_type_text">类型 [remote/local]</string>
-    <string name="setfeed_url_text">链接</string>
-    <string name="setfeed_path_text">路径 [长按选择文件]</string>
-    <string name="feed_cannot_delete_text">不允许删除最后一个源。</string>
     <string name="widget_shadow">阴影</string>
     <string name="onetext_refresh_faild_text">更新失败，请检查网络。</string>
     <string name="onetext_refresh_faild_button">重试</string>
@@ -210,4 +205,7 @@ lz差不多是条咸鱼了致力于确保本应用尽可能的有用和高效。
     <string name="disable_appcenter_analytics">禁用 Appcenter Analyties</string>
     <string name="disable_appcenter_crashes">禁用 Appcenter Crashes</string>
     <string name="disable_push">禁用推送</string>
+    <string name="title_activity_edit_feed">编辑订阅源</string>
+    <string name="edit_feed_illegal">不合法的格式</string>
+    <string name="edit_feed_empty">不允许为空</string>
 </resources>

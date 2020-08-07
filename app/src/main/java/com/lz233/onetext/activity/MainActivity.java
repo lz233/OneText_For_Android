@@ -159,24 +159,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             Crashes.setEnabled(true);
         }
         AppCenterFuture<Boolean> hasCrashedInLastSession = Crashes.hasCrashedInLastSession();
-        hasCrashedInLastSession.thenAccept(new AppCenterConsumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if (aBoolean) {
-                    AppCenterFuture<ErrorReport> getLastSessionCrashReport = Crashes.getLastSessionCrashReport();
-                    getLastSessionCrashReport.thenAccept(new AppCenterConsumer<ErrorReport>() {
-                        @Override
-                        public void accept(ErrorReport errorReport) {
-                            ViewGroup rootView = findViewById(android.R.id.content);
-                            Snackbar.make(rootView, R.string.report_text, Snackbar.LENGTH_LONG).setAction(R.string.report_button, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    startActivity(new Intent().setClass(MainActivity.this, CrashReportActivity.class));
-                                }
-                            }).show();
-                        }
-                    });
-                }
+        hasCrashedInLastSession.thenAccept(aBoolean -> {
+            if (aBoolean) {
+                AppCenterFuture<ErrorReport> getLastSessionCrashReport = Crashes.getLastSessionCrashReport();
+                getLastSessionCrashReport.thenAccept(errorReport -> {
+                    ViewGroup rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, R.string.report_text, Snackbar.LENGTH_LONG).setAction(R.string.report_button, view -> startActivity(new Intent().setClass(MainActivity.this, CrashReportActivity.class))).show();
+                });
             }
         });
         //剪贴板
@@ -222,69 +211,46 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_time_size_seekbar.setProgress(sharedPreferences.getInt("onetext_time_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         onetext_from_size_seekbar.setProgress(sharedPreferences.getInt("onetext_from_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         //监听器
-        avatar_imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class));
-            }
+        avatar_imageview.setOnClickListener(v -> startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class)));
+        onetext_swiperefreshlayout.setOnRefreshListener(() -> {
+            initRun(true);
+            onetext_swiperefreshlayout.setRefreshing(false);
         });
-        onetext_swiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                initRun(true);
-                onetext_swiperefreshlayout.setRefreshing(false);
-            }
+        onetext_text_textview.setOnClickListener(v -> {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("onetext", onetext_text_textview.getText()));
+            Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
         });
-        onetext_text_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("onetext", onetext_text_textview.getText()));
-                Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
-            }
+        onetext_by_textview.setOnClickListener(v -> {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("by", onetext_by_textview.getText()));
+            Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
         });
-        onetext_by_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("by", onetext_by_textview.getText()));
-                Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
-            }
+        onetext_time_textview.setOnClickListener(v -> {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("time", onetext_time_textview.getText()));
+            Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
         });
-        onetext_time_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("time", onetext_time_textview.getText()));
-                Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
-            }
+        onetext_from_textview.setOnClickListener(v -> {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("from", onetext_from_textview.getText()));
+            Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
         });
-        onetext_from_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("from", onetext_from_textview.getText()));
-                Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
-            }
-        });
-        save_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    shotOneTextViaMediaStore();
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    try {
-                        Uri uri = Uri.parse(sharedPreferences.getString("pic_uri_tree", "content://com.android.externalstorage.documents/tree/primary%3APictures"));
-                        final int takeFlags = getIntent().getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                        getContentResolver().takePersistableUriPermission(uri, takeFlags);
-                        DocumentFile root = DocumentFile.fromTreeUri(MainActivity.this, uri);
-                        shotOneTextViaSAF(root);
-                    } catch (Exception e) {
-                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.parse("content://com.android.externalstorage.documents/document/primary:Pictures"));
-                        startActivityForResult(intent, 233);
-                    }
-                } else if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
-                    shotOneTextViaMediaStore();
-                } else {
-                    Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
+        save_button.setOnClickListener(view -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                shotOneTextViaMediaStore();
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                try {
+                    Uri uri = Uri.parse(sharedPreferences.getString("pic_uri_tree", "content://com.android.externalstorage.documents/tree/primary%3APictures"));
+                    final int takeFlags = getIntent().getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                    DocumentFile root = DocumentFile.fromTreeUri(MainActivity.this, uri);
+                    shotOneTextViaSAF(root);
+                } catch (Exception e) {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                    intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.parse("content://com.android.externalstorage.documents/document/primary:Pictures"));
+                    startActivityForResult(intent, 233);
                 }
+            } else if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
+                shotOneTextViaMediaStore();
+            } else {
+                Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
             }
         });
         /*save_button.setOnLongClickListener(new View.OnLongClickListener() {
@@ -316,27 +282,21 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 return true;
             }
         });*/
-        refresh_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initRun(true);
-                Analytics.trackEvent("Refreshed");
-            }
+        refresh_button.setOnClickListener(view -> {
+            initRun(true);
+            Analytics.trackEvent("Refreshed");
         });
-        seal_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (sharedPreferences.getBoolean("seal_enabled", false)) {
-                    seal_imageview.setVisibility(View.GONE);
-                    editor.putBoolean("seal_enabled", false);
-                    editor.apply();
-                    seal_button.setText(R.string.seal_button_isoff);
-                } else {
-                    seal_imageview.setVisibility(View.VISIBLE);
-                    editor.putBoolean("seal_enabled", true);
-                    editor.apply();
-                    seal_button.setText(R.string.seal_button_ison);
-                }
+        seal_button.setOnClickListener(view -> {
+            if (sharedPreferences.getBoolean("seal_enabled", false)) {
+                seal_imageview.setVisibility(View.GONE);
+                editor.putBoolean("seal_enabled", false);
+                editor.apply();
+                seal_button.setText(R.string.seal_button_isoff);
+            } else {
+                seal_imageview.setVisibility(View.VISIBLE);
+                editor.putBoolean("seal_enabled", true);
+                editor.apply();
+                seal_button.setText(R.string.seal_button_ison);
             }
         });
         onetext_text_size_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
@@ -358,17 +318,14 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 editor.apply();
             }
         });
-        onetext_text_size_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.onetext_size));
-                onetext_quote1_textview.setTextSize(text_size);
-                onetext_text_textview.setTextSize(text_size);
-                onetext_quote2_textview.setTextSize(text_size);
-                onetext_text_size_seekbar.setProgress(text_size);
-                editor.putInt("onetext_text_size", text_size);
-                editor.apply();
-            }
+        onetext_text_size_button.setOnClickListener(view -> {
+            int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.onetext_size));
+            onetext_quote1_textview.setTextSize(text_size);
+            onetext_text_textview.setTextSize(text_size);
+            onetext_quote2_textview.setTextSize(text_size);
+            onetext_text_size_seekbar.setProgress(text_size);
+            editor.putInt("onetext_text_size", text_size);
+            editor.apply();
         });
         onetext_by_size_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
@@ -387,15 +344,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 editor.apply();
             }
         });
-        onetext_by_size_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.text_size));
-                onetext_by_textview.setTextSize(text_size);
-                onetext_by_size_seekbar.setProgress(text_size);
-                editor.putInt("onetext_by_size", text_size);
-                editor.apply();
-            }
+        onetext_by_size_button.setOnClickListener(view -> {
+            int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.text_size));
+            onetext_by_textview.setTextSize(text_size);
+            onetext_by_size_seekbar.setProgress(text_size);
+            editor.putInt("onetext_by_size", text_size);
+            editor.apply();
         });
         onetext_time_size_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
@@ -414,15 +368,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 editor.apply();
             }
         });
-        onetext_time_size_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.small_text_size));
-                onetext_time_textview.setTextSize(text_size);
-                onetext_time_size_seekbar.setProgress(text_size);
-                editor.putInt("onetext_time_size", text_size);
-                editor.apply();
-            }
+        onetext_time_size_button.setOnClickListener(view -> {
+            int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.small_text_size));
+            onetext_time_textview.setTextSize(text_size);
+            onetext_time_size_seekbar.setProgress(text_size);
+            editor.putInt("onetext_time_size", text_size);
+            editor.apply();
         });
         onetext_from_size_seekbar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
@@ -441,15 +392,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 editor.apply();
             }
         });
-        onetext_from_size_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.small_text_size));
-                onetext_from_textview.setTextSize(text_size);
-                onetext_from_size_seekbar.setProgress(text_size);
-                editor.putInt("onetext_from_size", text_size);
-                editor.apply();
-            }
+        onetext_from_size_button.setOnClickListener(view -> {
+            int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.small_text_size));
+            onetext_from_textview.setTextSize(text_size);
+            onetext_from_size_seekbar.setProgress(text_size);
+            editor.putInt("onetext_from_size", text_size);
+            editor.apply();
         });
     }
 
@@ -507,35 +455,26 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         final HashMap feedMap = coreUtil.getFeedInformation(sharedPreferences.getInt("feed_code", 0));
         if (feedMap.get("feed_type").equals("internet")) {
             if (sharedPreferences.getString("api_string", "").equals("") | coreUtil.ifOneTextShouldUpdate(false) | forcedRefresh) {
-                new GetUtil().sendGet((String) feedMap.get("api_url"), new GetUtil.GetCallback() {
-                    @Override
-                    public void onGetDone(final String result) {
-                        onetext_text_textview.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    showOneText(coreUtil.convertOneText(new JSONObject(result), feedMap));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                        coreUtil.refreshLatestRefreshTime();
-                        progressBar.setVisibility(View.GONE);
-                        editor.putString("api_string", result);
-                        editor.apply();
-                    }
-                });
-                coreUtil.refreshLatestRefreshTime();
-            } else {
-                onetext_text_textview.post(new Runnable() {
-                    @Override
-                    public void run() {
+                new GetUtil().sendGet((String) feedMap.get("api_url"), result -> {
+                    onetext_text_textview.post(() -> {
                         try {
-                            showOneText(coreUtil.convertOneText(new JSONObject(sharedPreferences.getString("api_string", "")), feedMap));
+                            showOneText(coreUtil.convertOneText(new JSONObject(result), feedMap));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    });
+                    coreUtil.refreshLatestRefreshTime();
+                    progressBar.setVisibility(View.GONE);
+                    editor.putString("api_string", result);
+                    editor.apply();
+                });
+                coreUtil.refreshLatestRefreshTime();
+            } else {
+                onetext_text_textview.post(() -> {
+                    try {
+                        showOneText(coreUtil.convertOneText(new JSONObject(sharedPreferences.getString("api_string", "")), feedMap));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 });
                 progressBar.setVisibility(View.GONE);
@@ -544,35 +483,22 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             coreUtil.initOneText(new CoreUtil.OnOneTextInitListener() {
                 @Override
                 public void onSuccess(File file) {
-                    onetext_text_textview.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                showOneText(coreUtil.getOneText(forcedRefresh, false));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                    onetext_text_textview.post(() -> {
+                        try {
+                            showOneText(coreUtil.getOneText(forcedRefresh, false));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     });
                     coreUtil.runOneTextUpdate(new CoreUtil.OnOneTextUpdateListener() {
                         @Override
                         public void noUpdateRequired() {
-                            progressBar.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            });
+                            progressBar.post(() -> progressBar.setVisibility(View.GONE));
                         }
 
                         @Override
                         public void onSuccess(File file) {
-                            progressBar.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            });
+                            progressBar.post(() -> progressBar.setVisibility(View.GONE));
                         }
 
                         @Override
@@ -582,18 +508,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
                         @Override
                         public void onFailed(Exception e) {
-                            progressBar.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            });
-                            Snackbar.make(rootview, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_refresh_faild_button, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    initRun(false);
-                                }
-                            }).show();
+                            progressBar.post(() -> progressBar.setVisibility(View.GONE));
+                            Snackbar.make(rootview, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_refresh_faild_button, v -> initRun(false)).show();
                         }
                     });
                 }
@@ -605,12 +521,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
                 @Override
                 public void onFailed(@Nullable Exception e) {
-                    Snackbar.make(rootview, getString(R.string.onetext_init_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_init_faild_button, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            initRun(false);
-                        }
-                    }).show();
+                    Snackbar.make(rootview, getString(R.string.onetext_init_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_init_faild_button, v -> initRun(false)).show();
                 }
             });
         }
@@ -677,15 +588,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             if (stream != null) {
                 stream.close();
             }
-            Snackbar.make(rootview, getString(R.string.save_succeed) + " " + pic_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_STREAM, pic.getUri());
-                    intent.setType("image/*");
-                    startActivity(Intent.createChooser(intent, getString(R.string.share_text)));
-                }
+            Snackbar.make(rootview, getString(R.string.save_succeed) + " " + pic_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, view -> {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM, pic.getUri());
+                intent.setType("image/*");
+                startActivity(Intent.createChooser(intent, getString(R.string.share_text)));
             }).show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -724,15 +632,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     stream.close();
                 }
             }
-            Snackbar.make(rootview, getString(R.string.save_succeed) + " " + pic_file_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_STREAM, imageUri);
-                    intent.setType("image/*");
-                    startActivity(Intent.createChooser(intent, getString(R.string.share_text)));
-                }
+            Snackbar.make(rootview, getString(R.string.save_succeed) + " " + pic_file_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, view -> {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM, imageUri);
+                intent.setType("image/*");
+                startActivity(Intent.createChooser(intent, getString(R.string.share_text)));
             }).show();
         } catch (Exception e) {
             Snackbar.make(rootview, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
@@ -743,128 +648,99 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         if (sharedPreferences.getBoolean("disable_push", false)) {
             push_layout.setVisibility(View.GONE);
         } else {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        final String deviceLanguage = Locale.getDefault().getLanguage();
-                        final String deviceCountry = Locale.getDefault().getCountry();
-                        final String deviceCode = deviceLanguage + "_" + deviceCountry;
-                        final JSONObject spJsonObject = new JSONObject(sharedPreferences.getString("push_information", "{\"id\":0}"));
-                        final String spUri = spJsonObject.optString("uri");
-                        if (AppUtil.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("push_latest_refresh_time", 0)) > 86400000)) {
-                            new GetUtil().sendGet("https://gitee.com/lz233-sakura/OneTextRes/raw/master/push.json", new GetUtil.GetCallback() {
-                                @Override
-                                public void onGetDone(String result) {
-                                    try {
-                                        final JSONObject resultJsonObject = new JSONObject(result);
-                                        final String uri = resultJsonObject.getString("uri");
-                                        if (resultJsonObject.getInt("id") > spJsonObject.getInt("id") | (!FileUtil.isFile(getCacheDir().getPath() + "/Push/" + deviceCode))) {
-                                            editor.putBoolean("hide_push_once_time", false);
-                                            editor.putString("push_information", result);
-                                            editor.apply();
-                                            String bannerUri = "";
-                                            if (resultJsonObject.optString("00_00").equals("")) {
-                                                bannerUri = resultJsonObject.getString(deviceCode);
-                                            } else {
-                                                bannerUri = resultJsonObject.getString("00_00");
-                                            }
-                                            final String finalBannerUri = bannerUri;
-                                            new Thread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    DownloadUtil.get().download(finalBannerUri, getCacheDir().getPath() + "/Push/", deviceCode, new DownloadUtil.OnDownloadListener() {
-                                                        @Override
-                                                        public void onDownloadSuccess(File file) {
-                                                            editor.putLong("push_latest_refresh_time", System.currentTimeMillis());
-                                                            push_imageview.post(new Runnable() {
-                                                                @Override
-                                                                public void run() {
-                                                                    push_imageview.setImageBitmap(BitmapFactory.decodeFile(getCacheDir().getPath() + "/Push/" + deviceCode));
-                                                                    push_imageview.setOnClickListener(new View.OnClickListener() {
-                                                                        @Override
-                                                                        public void onClick(View view) {
-                                                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
-                                                                            if (resultJsonObject.optBoolean("cancelable")) {
-                                                                                pic_layout.setVisibility(View.GONE);
-                                                                                editor.putBoolean("hide_push_once_time", true);
-                                                                                editor.apply();
-                                                                            }
-                                                                        }
-                                                                    });
-                                                                    push_layout.setVisibility(View.VISIBLE);
-                                                                }
-                                                            });
-                                                        }
-
-                                                        @Override
-                                                        public void onDownloading(int progress) {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onDownloadFailed(Exception e) {
-
-                                                        }
-                                                    });
-                                                }
-                                            }).start();
-                                        } else {
-                                            editor.putLong("push_latest_refresh_time", System.currentTimeMillis());
-                                            if (!sharedPreferences.getBoolean("hide_push_once_time", false)) {
-                                                push_imageview.post(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        push_imageview.setImageBitmap(BitmapFactory.decodeFile(getCacheDir().getPath() + "/Push/" + deviceCode));
-                                                        push_imageview.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View view) {
-                                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(spUri)));
-                                                                if (spJsonObject.optBoolean("cancelable")) {
-                                                                    push_layout.setVisibility(View.GONE);
-                                                                    editor.putBoolean("hide_push_once_time", true);
-                                                                    editor.apply();
-                                                                }
-                                                            }
-                                                        });
-                                                        push_layout.setVisibility(View.VISIBLE);
-                                                    }
-                                                });
-                                            }
-                                        }
-                                        editor.apply();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+            new Thread(() -> {
+                try {
+                    final String deviceLanguage = Locale.getDefault().getLanguage();
+                    final String deviceCountry = Locale.getDefault().getCountry();
+                    final String deviceCode = deviceLanguage + "_" + deviceCountry;
+                    final JSONObject spJsonObject = new JSONObject(sharedPreferences.getString("push_information", "{\"id\":0}"));
+                    final String spUri = spJsonObject.optString("uri");
+                    if (AppUtil.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("push_latest_refresh_time", 0)) > 86400000)) {
+                        new GetUtil().sendGet("https://gitee.com/lz233-sakura/OneTextRes/raw/master/push.json", result -> {
+                            try {
+                                final JSONObject resultJsonObject = new JSONObject(result);
+                                final String uri = resultJsonObject.getString("uri");
+                                if (resultJsonObject.getInt("id") > spJsonObject.getInt("id") | (!FileUtil.isFile(getCacheDir().getPath() + "/Push/" + deviceCode))) {
+                                    editor.putBoolean("hide_push_once_time", false);
+                                    editor.putString("push_information", result);
+                                    editor.apply();
+                                    String bannerUri = "";
+                                    if (resultJsonObject.optString("00_00").equals("")) {
+                                        bannerUri = resultJsonObject.getString(deviceCode);
+                                    } else {
+                                        bannerUri = resultJsonObject.getString("00_00");
                                     }
-                                }
-                            });
-                        } else {
-                            if (FileUtil.isFile(getCacheDir().getPath() + "/Push/" + deviceCode)) {
-                                if (!sharedPreferences.getBoolean("hide_push_once_time", false)) {
-                                    push_imageview.post(new Runnable() {
+                                    final String finalBannerUri = bannerUri;
+                                    new Thread(() -> DownloadUtil.get().download(finalBannerUri, getCacheDir().getPath() + "/Push/", deviceCode, new DownloadUtil.OnDownloadListener() {
                                         @Override
-                                        public void run() {
-                                            push_imageview.setImageBitmap(BitmapFactory.decodeFile(getCacheDir().getPath() + "/Push/" + deviceCode));
-                                            push_imageview.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(spUri)));
-                                                    if (spJsonObject.optBoolean("cancelable")) {
-                                                        push_layout.setVisibility(View.GONE);
+                                        public void onDownloadSuccess(File file) {
+                                            editor.putLong("push_latest_refresh_time", System.currentTimeMillis());
+                                            push_imageview.post(() -> {
+                                                push_imageview.setImageBitmap(BitmapFactory.decodeFile(getCacheDir().getPath() + "/Push/" + deviceCode));
+                                                push_imageview.setOnClickListener(view -> {
+                                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
+                                                    if (resultJsonObject.optBoolean("cancelable")) {
+                                                        pic_layout.setVisibility(View.GONE);
                                                         editor.putBoolean("hide_push_once_time", true);
                                                         editor.apply();
                                                     }
+                                                });
+                                                push_layout.setVisibility(View.VISIBLE);
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onDownloading(int progress) {
+
+                                        }
+
+                                        @Override
+                                        public void onDownloadFailed(Exception e) {
+
+                                        }
+                                    })).start();
+                                } else {
+                                    editor.putLong("push_latest_refresh_time", System.currentTimeMillis());
+                                    if (!sharedPreferences.getBoolean("hide_push_once_time", false)) {
+                                        push_imageview.post(() -> {
+                                            push_imageview.setImageBitmap(BitmapFactory.decodeFile(getCacheDir().getPath() + "/Push/" + deviceCode));
+                                            push_imageview.setOnClickListener(view -> {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(spUri)));
+                                                if (spJsonObject.optBoolean("cancelable")) {
+                                                    push_layout.setVisibility(View.GONE);
+                                                    editor.putBoolean("hide_push_once_time", true);
+                                                    editor.apply();
                                                 }
                                             });
                                             push_layout.setVisibility(View.VISIBLE);
+                                        });
+                                    }
+                                }
+                                editor.apply();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    } else {
+                        if (FileUtil.isFile(getCacheDir().getPath() + "/Push/" + deviceCode)) {
+                            if (!sharedPreferences.getBoolean("hide_push_once_time", false)) {
+                                push_imageview.post(() -> {
+                                    push_imageview.setImageBitmap(BitmapFactory.decodeFile(getCacheDir().getPath() + "/Push/" + deviceCode));
+                                    push_imageview.setOnClickListener(view -> {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(spUri)));
+                                        if (spJsonObject.optBoolean("cancelable")) {
+                                            push_layout.setVisibility(View.GONE);
+                                            editor.putBoolean("hide_push_once_time", true);
+                                            editor.apply();
                                         }
                                     });
-                                }
+                                    push_layout.setVisibility(View.VISIBLE);
+                                });
                             }
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }).start();
         }
@@ -882,12 +758,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             } else {
                 //没有打开相关权限、申请权限
                 request_permissions_layout.setVisibility(View.VISIBLE);
-                request_permissions_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.request_permissions_storage_detail_text).replace("%s", Environment.getExternalStorageDirectory() + "/Pictures/OneText/"), 1, permissions);
-                    }
-                });
+                request_permissions_button.setOnClickListener(v -> EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.request_permissions_storage_detail_text).replace("%s", Environment.getExternalStorageDirectory() + "/Pictures/OneText/"), 1, permissions));
             }
         }
     }

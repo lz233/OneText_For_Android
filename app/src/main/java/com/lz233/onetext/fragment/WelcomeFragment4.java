@@ -25,12 +25,7 @@ public class WelcomeFragment4 extends Fragment {
         //懒得写
 
         //懒得写
-        welcome_widget_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
-            }
-        });
+        welcome_widget_button.setOnClickListener(v -> viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1));
         return rootView;
     }
 

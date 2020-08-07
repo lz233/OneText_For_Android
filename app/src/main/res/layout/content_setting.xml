@@ -92,7 +92,7 @@
                         android:textSize="@dimen/text_size"
                         android:textStyle="bold" />
 
-                    <HorizontalScrollView
+                    <ch.deletescape.lawnchair.views.SpringHorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:overScrollMode="never"
@@ -245,7 +245,7 @@
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
-                    </HorizontalScrollView>
+                    </ch.deletescape.lawnchair.views.SpringHorizontalScrollView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -429,20 +429,21 @@
                             android:src="@drawable/ic_settings_restore" />
 
                         <ImageView
-                            android:id="@+id/feed_add_imageview"
+                            android:id="@+id/feed_edit_imageview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            android:src="@drawable/ic_library_add"
-                            android:visibility="gone" />
+                            android:src="@drawable/ic_edit" />
                     </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
+                    <ch.deletescape.lawnchair.views.SpringRecyclerView
                         android:id="@+id/feed_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="1.05dp"
+                        android:layout_marginEnd="1.05dp"
                         android:layout_marginBottom="@dimen/content_margin"
                         android:overScrollMode="never" />
 

@@ -45,48 +45,13 @@ public class AboutActivity extends BaseActivity {
             coolapk_imageview.setVisibility(View.GONE);
             msappcenter_imageview.setVisibility(View.GONE);
         }
-        green_android_imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://green-android.org")));
-            }
-        });
-        storage_isolation_imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RikkaApps/StorageRedirect-assets/blob/master/app_rule/apps/com.lz233.onetext.json")));
-            }
-        });
-        coolapk_imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://coolapk.com/apk/com.lz233.onetext")));
-            }
-        });
-        msappcenter_imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://install.appcenter.ms/users/lz233/apps/onetext/distribution_groups/onetext%20testgroup")));
-            }
-        });
-        github_imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/lz233/OneText_For_Android")));
-            }
-        });
-        telegram_imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/OneTextProject")));
-            }
-        });
-        mstodo_imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://to-do.microsoft.com/sharing?InvitationToken=WI9tpCxeg9ktR5mg-AI-qwPXapdT_kGucjpSBCP6fwLE9bN5Uz2vS61gY9X8RTaC0")));
-            }
-        });
+        green_android_imageview.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://green-android.org"))));
+        storage_isolation_imageview.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RikkaApps/StorageRedirect-assets/blob/master/app_rule/apps/com.lz233.onetext.json"))));
+        coolapk_imageview.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://coolapk.com/apk/com.lz233.onetext"))));
+        msappcenter_imageview.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://install.appcenter.ms/users/lz233/apps/onetext/distribution_groups/onetext%20testgroup"))));
+        github_imageview.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/lz233/OneText_For_Android"))));
+        telegram_imageview.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/OneTextProject"))));
+        mstodo_imageview.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://to-do.microsoft.com/sharing?InvitationToken=WI9tpCxeg9ktR5mg-AI-qwPXapdT_kGucjpSBCP6fwLE9bN5Uz2vS61gY9X8RTaC0"))));
         //ver_textview.setText(AppUtil.getAppVersionName(AboutActivity.this) + " (" + String.valueOf(AppUtil.getAppVersionCode(AboutActivity.this) + ")"));
         ver_textview.setText(BuildConfig.VERSION_NAME+" "+BuildConfig.VERSION_CODE+"\n"+BuildConfig.BUILD_TYPE);
         final Markwon markwon = Markwon.create(getApplicationContext());

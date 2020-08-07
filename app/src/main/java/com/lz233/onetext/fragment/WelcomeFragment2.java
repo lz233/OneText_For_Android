@@ -49,25 +49,19 @@ public class WelcomeFragment2 extends Fragment implements EasyPermissions.Permis
         }
         welcome_permissions_detail_text.setText(getString(R.string.request_permissions_storage_detail_text).replace("%s", Environment.getExternalStorageDirectory() + "/Pictures/OneText/"));
         //懒得写
-        welcome_permissions_disagree_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!EasyPermissions.hasPermissions(activity, permissions)) {
-                    Snackbar.make(v, getString(R.string.request_permissions_next_time_text), Snackbar.LENGTH_SHORT).show();
-                }
-                viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
+        welcome_permissions_disagree_button.setOnClickListener(v -> {
+            if (!EasyPermissions.hasPermissions(activity, permissions)) {
+                Snackbar.make(v, getString(R.string.request_permissions_next_time_text), Snackbar.LENGTH_SHORT).show();
             }
+            viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
         });
-        welcome_permissions_agree_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (EasyPermissions.hasPermissions(activity, permissions)|(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)) {
-                    viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
-                }else {
-                    Intent intent = new Intent("com.lz233.onetext.requestpermission");
-                    intent.setPackage(getContext().getPackageName());
-                    getContext().sendBroadcast(intent);
-                }
+        welcome_permissions_agree_button.setOnClickListener(v -> {
+            if (EasyPermissions.hasPermissions(activity, permissions)|(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)) {
+                viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
+            }else {
+                Intent intent = new Intent("com.lz233.onetext.requestpermission");
+                intent.setPackage(getContext().getPackageName());
+                getContext().sendBroadcast(intent);
             }
         });
         return rootView;
