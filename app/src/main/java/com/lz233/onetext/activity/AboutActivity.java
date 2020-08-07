@@ -41,6 +41,10 @@ public class AboutActivity extends BaseActivity {
         ver_textview = findViewById(R.id.ver_textview);
         about_textview = findViewById(R.id.about_textview);
         //初始化
+        if (BuildConfig.BUILD_TYPE.equals("GooglePlay")){
+            coolapk_imageview.setVisibility(View.GONE);
+            msappcenter_imageview.setVisibility(View.GONE);
+        }
         green_android_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +88,7 @@ public class AboutActivity extends BaseActivity {
             }
         });
         //ver_textview.setText(AppUtil.getAppVersionName(AboutActivity.this) + " (" + String.valueOf(AppUtil.getAppVersionCode(AboutActivity.this) + ")"));
-        ver_textview.setText(BuildConfig.VERSION_NAME+"\n"+BuildConfig.VERSION_CODE);
+        ver_textview.setText(BuildConfig.VERSION_NAME+" "+BuildConfig.VERSION_CODE+"\n"+BuildConfig.BUILD_TYPE);
         final Markwon markwon = Markwon.create(getApplicationContext());
         markwon.setMarkdown(about_textview, getString(R.string.about_page_introduction));
 
