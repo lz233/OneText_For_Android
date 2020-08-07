@@ -29,7 +29,7 @@ import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class WelcomeActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks{
+public class WelcomeActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
     private Receiver receiver;
     private static final int NUM_PAGES = 6;
     private String[] danmu = {"即使这些回忆使我感到悲伤，我也必须前进，相信未来。",
@@ -64,8 +64,8 @@ public class WelcomeActivity extends BaseActivity implements EasyPermissions.Per
         registerReceiver(receiver, new IntentFilter("com.lz233.onetext.requestpermission"));
         Intent intent = new Intent(this, Service.class);
         startService(intent);
-        for(int i=0;i<danmu.length;i++){
-            barrageview.addBarrage(new Barrage(danmu[i],R.color.colorText4));
+        for (int i = 0; i < danmu.length; i++) {
+            barrageview.addBarrage(new Barrage(danmu[i], R.color.colorText4));
         }
         //barrageview.addBarrage(new Barrage("233", R.color.colorText4));
         pagerAdapter = new ScreenSlidePagerAdapter(this);
@@ -85,21 +85,24 @@ public class WelcomeActivity extends BaseActivity implements EasyPermissions.Per
     @Override
     public void onBackPressed() {
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //把申请权限的回调交由EasyPermissions处理
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
+
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        viewpager2.setCurrentItem(viewpager2.getCurrentItem()+1);
+        viewpager2.setCurrentItem(viewpager2.getCurrentItem() + 1);
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
 
     }
+
     class Receiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -109,6 +112,7 @@ public class WelcomeActivity extends BaseActivity implements EasyPermissions.Per
             }
         }
     }
+
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
         ScreenSlidePagerAdapter(FragmentActivity fa) {
             super(fa);
@@ -117,19 +121,19 @@ public class WelcomeActivity extends BaseActivity implements EasyPermissions.Per
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            switch (position){
+            switch (position) {
                 default:
                     return new WelcomeFragment0(viewpager2);
                 case 1:
-                    return new WelcomeFragment1(WelcomeActivity.this,viewpager2);
+                    return new WelcomeFragment1(WelcomeActivity.this, viewpager2);
                 case 2:
-                    return new WelcomeFragment2(WelcomeActivity.this,viewpager2);
+                    return new WelcomeFragment2(WelcomeActivity.this, viewpager2);
                 case 3:
-                    return new WelcomeFragment3(WelcomeActivity.this,viewpager2);
+                    return new WelcomeFragment3(WelcomeActivity.this, viewpager2);
                 case 4:
                     return new WelcomeFragment4(viewpager2);
                 case 5:
-                    return new WelcomeFragment5(WelcomeActivity.this,viewpager2);
+                    return new WelcomeFragment5(WelcomeActivity.this, viewpager2);
             }
         }
 
