@@ -36,7 +36,7 @@ open class SpringHorizontalScrollView @JvmOverloads constructor(
     private val scrollBarColor by lazy {
         val colorControlNormal = context.getColorAttr(R.attr.colorControlNormal)
         val useAccentColor = colorControlNormal == context.getColorAccent()
-        //if (useAccentColor) ColorEngine.getInstance(context).accent else colorControlNormal
+        if (useAccentColor) colorControlNormal else colorControlNormal
     }
 
     open var shouldTranslateSelf = true
@@ -44,9 +44,13 @@ open class SpringHorizontalScrollView @JvmOverloads constructor(
     var isTopFadingEdgeEnabled = true
 
     init {
-        getField<HorizontalScrollView>("mEdgeGlowLeft").set(this, springManager.createEdgeEffect(DIRECTION_RIGHT, true))
-        getField<HorizontalScrollView>("mEdgeGlowRight").set(this, springManager.createEdgeEffect(DIRECTION_RIGHT))
-        overScrollMode = View.OVER_SCROLL_ALWAYS
+        try{
+            getField<HorizontalScrollView>("mEdgeGlowLeft").set(this, springManager.createEdgeEffect(DIRECTION_RIGHT, true))
+            getField<HorizontalScrollView>("mEdgeGlowRight").set(this, springManager.createEdgeEffect(DIRECTION_RIGHT))
+            overScrollMode = View.OVER_SCROLL_ALWAYS
+        }catch (e:Exception){
+            e.printStackTrace();
+        }
     }
 
     override fun draw(canvas: Canvas) {
