@@ -184,6 +184,8 @@ public class CoreUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            hashMap.put("time","");
         }
         return hashMap;
     }

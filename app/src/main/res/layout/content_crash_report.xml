@@ -7,19 +7,22 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.CrashReportActivity"
     tools:showIn="@layout/activity_crash_report">
-
-    <LinearLayout
+    <ch.deletescape.lawnchair.views.SpringNestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/layout_margin"
-        android:layout_marginEnd="@dimen/layout_margin"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/crash_report_textView"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorText2"
-            android:textSize="@dimen/text_size" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/layout_margin"
+            android:layout_marginEnd="@dimen/layout_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/crash_report_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/text_size" />
+        </LinearLayout>
+    </ch.deletescape.lawnchair.views.SpringNestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -542,19 +542,19 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             onetext_quote2_textview.setVisibility(View.VISIBLE);
             onetext_text_textview.setText((String) hashMap.get("text"));
         }
-        if (by == null) {
+        if (by.equals("")) {
             onetext_by_textview.setVisibility(View.GONE);
         } else {
             onetext_by_textview.setVisibility(View.VISIBLE);
             onetext_by_textview.setText((String) hashMap.get("by"));
         }
-        if (time == null) {
+        if (time.equals("")) {
             onetext_time_textview.setVisibility(View.GONE);
         } else {
             onetext_time_textview.setVisibility(View.VISIBLE);
             onetext_time_textview.setText((String) hashMap.get("time"));
         }
-        if (from == null) {
+        if (from.equals("")) {
             onetext_from_textview.setVisibility(View.GONE);
         } else {
             onetext_from_textview.setVisibility(View.VISIBLE);
