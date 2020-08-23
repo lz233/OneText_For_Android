@@ -209,4 +209,5 @@ If you have any questions or suggestions about my Terms and Conditions, do not h
     <string name="title_activity_edit_feed">Edit Feed</string>
     <string name="edit_feed_illegal">Illegal format</string>
     <string name="edit_feed_empty">Not allowed to be empty</string>
+    <string name="font_copyright_warn">The font is for non-commercial use only, please delete it within 24 hours after downloading.</string>
 </resources>

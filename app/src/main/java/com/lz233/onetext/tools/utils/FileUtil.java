@@ -78,31 +78,28 @@ public class FileUtil {
 
     public static void copyFile(final String From, final String To, final Boolean move, Boolean isBlocking) {
         final Boolean[] isFinish = new Boolean[1];
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String Directory = To.substring(0, To.lastIndexOf("/"));
-                    if (!isDirectory(Directory)) {
-                        File file = new File(Directory);
-                        file.mkdir();
-                    }
-                    InputStream in = new FileInputStream(From);
-                    OutputStream out = new FileOutputStream(To);
-                    byte[] buff = new byte[1024];
-                    int len;
-                    while ((len = in.read(buff)) != -1) {
-                        out.write(buff, 0, len);
-                    }
-                    in.close();
-                    out.close();
-                    if (move) {
-                        deleteFile(From);
-                    }
-                    isFinish[0] = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
+        new Thread(() -> {
+            try {
+                String Directory = To.substring(0, To.lastIndexOf("/"));
+                if (!isDirectory(Directory)) {
+                    File file = new File(Directory);
+                    file.mkdir();
                 }
+                InputStream in = new FileInputStream(From);
+                OutputStream out = new FileOutputStream(To);
+                byte[] buff = new byte[1024];
+                int len;
+                while ((len = in.read(buff)) != -1) {
+                    out.write(buff, 0, len);
+                }
+                in.close();
+                out.close();
+                if (move) {
+                    deleteFile(From);
+                }
+                isFinish[0] = true;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }).start();
         if (isBlocking) {
