@@ -173,6 +173,7 @@ public class CoreUtil {
         } else if (chinese_type == 4) {
             oneTextViaS2TWP(feedMap, jsonObject, hashMap);
         }
+        hashMap.put("time","");
         try {
             JSONArray timeJsonArray = new JSONArray(jsonObject.optString((String) feedMap.get("time_key")));
             final String timeOfRecord = timeJsonArray.optString(0);
@@ -184,8 +185,6 @@ public class CoreUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            hashMap.put("time","");
         }
         return hashMap;
     }
