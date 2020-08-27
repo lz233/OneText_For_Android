@@ -16,7 +16,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.7-そ'
+        versionName = '1.71-た'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //multiDexEnabled true
     }
