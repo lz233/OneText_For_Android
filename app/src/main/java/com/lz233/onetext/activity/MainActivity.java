@@ -550,19 +550,22 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             onetext_by_textview.setVisibility(View.GONE);
         } else {
             onetext_by_textview.setVisibility(View.VISIBLE);
-            onetext_by_textview.setText((String) hashMap.get("by"));
+            //onetext_by_textview.setText((String) hashMap.get("by"));
+            markwon.setMarkdown(onetext_by_textview, (String) hashMap.get("by"));
         }
         if (time.equals("")) {
             onetext_time_textview.setVisibility(View.GONE);
         } else {
             onetext_time_textview.setVisibility(View.VISIBLE);
-            onetext_time_textview.setText((String) hashMap.get("time"));
+            //onetext_time_textview.setText((String) hashMap.get("time"));
+            markwon.setMarkdown(onetext_time_textview, (String) hashMap.get("time"));
         }
         if (from.equals("")) {
             onetext_from_textview.setVisibility(View.GONE);
         } else {
             onetext_from_textview.setVisibility(View.VISIBLE);
-            onetext_from_textview.setText((String) hashMap.get("from"));
+            //onetext_from_textview.setText((String) hashMap.get("from"));
+            markwon.setMarkdown(onetext_from_textview, (String) hashMap.get("from"));
         }
         //更新小部件
         Intent intent = new Intent("com.lz233.onetext.widget");
