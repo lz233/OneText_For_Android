@@ -528,6 +528,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     }
 
     private void showOneText(HashMap hashMap) {
+        final Markwon markwon = Markwon.create(getApplicationContext());
         final String text = (String) hashMap.get("text");
         final String by = (String) hashMap.get("by");
         final String time = (String) hashMap.get("time");
@@ -540,7 +541,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             onetext_quote1_textview.setVisibility(View.VISIBLE);
             onetext_text_textview.setVisibility(View.VISIBLE);
             onetext_quote2_textview.setVisibility(View.VISIBLE);
-            onetext_text_textview.setText((String) hashMap.get("text"));
+            //onetext_text_textview.setText((String) hashMap.get("text"));
+            markwon.setMarkdown(onetext_text_textview, (String) hashMap.get("text"));
         }
         if (by.equals("")) {
             onetext_by_textview.setVisibility(View.GONE);
