@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +67,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import io.noties.markwon.SoftBreakAddsNewLinePlugin;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.lz233.onetext.tools.utils.AppUtil.px2sp;
@@ -407,13 +409,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onStart() {
         super.onStart();
         // The activity is about to become visible.
-        if (sharedPreferences.getBoolean("oauth_hide", false)) {
-            Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) avatar_imageview.getLayoutParams();
-            layoutParams.width = AppUtil.dp2px(this, 24);
-            layoutParams.height = AppUtil.dp2px(this, 24);
-            avatar_imageview.setLayoutParams(layoutParams);
-            avatar_imageview.setImageDrawable(getDrawable(R.drawable.ic_settings));
-        } else {
+        if (sharedPreferences.getBoolean("oauth_show", true)) {
             if (sharedPreferences.getBoolean("oauth_logined", false)) {
                 if (FileUtil.isFile(getFilesDir().getPath() + "/Oauth/Avatar.png")) {
                     Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) avatar_imageview.getLayoutParams();
@@ -423,6 +419,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     avatar_imageview.setImageURI(Uri.fromFile(new File(getFilesDir().getPath() + "/Oauth/Avatar.png")));
                 }
             }
+        } else {
+            Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) avatar_imageview.getLayoutParams();
+            layoutParams.width = AppUtil.dp2px(this, 24);
+            layoutParams.height = AppUtil.dp2px(this, 24);
+            avatar_imageview.setLayoutParams(layoutParams);
+            avatar_imageview.setImageDrawable(getDrawable(R.drawable.ic_settings));
         }
         initRun(false);
         getPush();
@@ -530,12 +532,15 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     }
 
     private void showOneText(HashMap hashMap) {
-        final Markwon markwon = Markwon.create(getApplicationContext());
+        //final Markwon markwon = Markwon.builder(this).usePlugin(SoftBreakAddsNewLinePlugin.create()).usePlugin(StrikethroughPlugin.create()).usePlugin(TaskListPlugin.create(this)).build();
+        final Markwon markwon = Markwon.builder(this).usePlugin(SoftBreakAddsNewLinePlugin.create()).build();
+        //Spanned markdown = markwon.toMarkdown("**Hello there!**");
+        //final Markwon markwon = Markwon.create(getApplicationContext());
         final String text = (String) hashMap.get("text");
         final String by = (String) hashMap.get("by");
         final String time = (String) hashMap.get("time");
         final String from = (String) hashMap.get("from");
-        if (text == null) {
+        if (text.equals("")) {
             onetext_quote1_textview.setVisibility(View.GONE);
             onetext_text_textview.setVisibility(View.GONE);
             onetext_quote2_textview.setVisibility(View.GONE);

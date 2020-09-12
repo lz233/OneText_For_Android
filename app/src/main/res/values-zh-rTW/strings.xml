@@ -83,7 +83,7 @@
     <string name="oauth_failed_text">失敗，請返回並重試。</string>
     <string name="oauth_logout_text">確認退出？</string>
     <string name="oauth_logout_button">確認</string>
-    <string name="oauth_hide_text">隱藏 Oauth 認證</string>
+    <string name="oauth_show_text">Oauth 認證</string>
     <string name="delete_succeed">刪除成功</string>
     <string name="onetext_init_faild_text">初始化失敗，請檢查網路。</string>
     <string name="onetext_init_faild_button">重試</string>

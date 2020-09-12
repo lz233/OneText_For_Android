@@ -5,6 +5,7 @@
     <dimen name="text_size">18sp</dimen>
     <dimen name="small_text_size">15sp</dimen>
     <dimen name="content_text_size">12sp</dimen>
+    <dimen name="large_margin">30dp</dimen>
     <dimen name="layout_margin">20dp</dimen>
     <dimen name="content_margin">8dp</dimen>
     <dimen name="cardview_radius">5dp</dimen>

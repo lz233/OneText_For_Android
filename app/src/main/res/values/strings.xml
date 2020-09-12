@@ -84,7 +84,7 @@ Homepage of the core library: [Click me](https://github.com/lz233/OneText-Librar
     <string name="oauth_failed_text">Failed, please go back and try again.</string>
     <string name="oauth_logout_text">Confirm logout?</string>
     <string name="oauth_logout_button">Confirm</string>
-    <string name="oauth_hide_text">Hide Oauth</string>
+    <string name="oauth_show_text">Oauth</string>
     <string name="delete_succeed">Delete Successfully</string>
     <string name="onetext_init_faild_text">Initialization failed, please check the network.</string>
     <string name="onetext_init_faild_button">Retry</string>

@@ -32,7 +32,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/layout_margin"
-                    android:layout_marginBottom="@dimen/content_margin"
+                    android:layout_marginBottom="@dimen/layout_margin"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_account"
                     app:is_circle="true" />
@@ -58,7 +58,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/layout_margin"
                     android:layout_marginEnd="@dimen/layout_margin"
-                    android:layout_marginBottom="@dimen/layout_margin"
+                    android:layout_marginBottom="@dimen/large_margin"
                     android:gravity="center"
                     android:text="@string/oauth_login_detail"
                     android:textColor="@color/colorText2"
@@ -282,7 +282,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
-                        android:layout_marginBottom="@dimen/content_margin"
+
                         android:orientation="horizontal">
 
                         <TextView
@@ -307,13 +307,13 @@
                     </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/oauth_hide_switch"
+                        android:id="@+id/oauth_show_switch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
                         android:layout_marginBottom="-10dp"
-                        android:text="@string/oauth_hide_text"
+                        android:text="@string/oauth_show_text"
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/small_text_size"
                         app:thumbTint="@color/colorText3" />
@@ -341,7 +341,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
-                        android:layout_marginBottom="@dimen/content_margin"
+                        android:layout_marginBottom="@dimen/layout_margin"
                         android:text="@string/behavior_text"
                         android:textColor="@color/colorText2"
                         android:textSize="@dimen/text_size"
@@ -544,7 +544,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
-                        android:layout_marginBottom="@dimen/content_margin"
+                        android:layout_marginBottom="@dimen/layout_margin"
                         android:text="@string/widget_text"
                         android:textColor="@color/colorText2"
                         android:textSize="@dimen/text_size"
@@ -556,7 +556,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
-                        android:text=" "
+                        android:text="@string/widget_disenable_text"
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/small_text_size" />
 
@@ -664,6 +664,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_marginBottom="@dimen/layout_margin"
                         android:text="@string/about_text"
                         android:textColor="@color/colorText2"
                         android:textSize="@dimen/text_size"
@@ -674,8 +675,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
-                        android:layout_marginTop="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_marginBottom="@dimen/layout_margin"
                         android:text="@string/about_page_text"
                         android:textColor="@color/colorText3"
                         android:textSize="@dimen/small_text_size" />
@@ -685,7 +686,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
-                        android:layout_marginTop="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
                         android:text="@string/title_activity_privacy_policy"
                         android:textColor="@color/colorText3"

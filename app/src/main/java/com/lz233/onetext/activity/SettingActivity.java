@@ -78,7 +78,7 @@ public class SettingActivity extends BaseActivity {
     private TextView font_system_textview;
     private TextView font_custom_textview;
     private AppCompatSpinner interface_daynight_spinner;
-    private SwitchMaterial oauth_hide_switch;
+    private SwitchMaterial oauth_show_switch;
     private AppCompatSpinner chinese_type_spinner;
     private SwitchMaterial disable_push_switch;
     private SwitchMaterial disable_appcenter_analytics_switch;
@@ -125,7 +125,7 @@ public class SettingActivity extends BaseActivity {
         font_system_textview = findViewById(R.id.font_system_textview);
         font_custom_textview = findViewById(R.id.font_custom_textview);
         interface_daynight_spinner = findViewById(R.id.interface_daynight_spinner);
-        oauth_hide_switch = findViewById(R.id.oauth_hide_switch);
+        oauth_show_switch = findViewById(R.id.oauth_show_switch);
         chinese_type_spinner = findViewById(R.id.chinese_type_spinner);
         disable_push_switch = findViewById(R.id.disable_push_switch);
         disable_appcenter_analytics_switch = findViewById(R.id.disable_appcenter_analytics_switch);
@@ -164,10 +164,10 @@ public class SettingActivity extends BaseActivity {
                 interface_daynight_spinner.setSelection(2);
                 break;
         }
-        if (sharedPreferences.getBoolean("oauth_hide", false)) {
+        if (!sharedPreferences.getBoolean("oauth_show", true)) {
             oauth_linearlayout.setVisibility(View.GONE);
         }
-        oauth_hide_switch.setChecked(sharedPreferences.getBoolean("oauth_hide", false));
+        oauth_show_switch.setChecked(sharedPreferences.getBoolean("oauth_show", true));
         switch (sharedPreferences.getInt("chinese_type", 0)) {
             case 0:
                 chinese_type_spinner.setSelection(0);
@@ -379,13 +379,13 @@ public class SettingActivity extends BaseActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        oauth_hide_switch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        oauth_show_switch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                oauth_linearlayout.setVisibility(View.GONE);
-                editor.putBoolean("oauth_hide", true);
-            } else {
                 oauth_linearlayout.setVisibility(View.VISIBLE);
-                editor.putBoolean("oauth_hide", false);
+                editor.putBoolean("oauth_show", true);
+            } else {
+                oauth_linearlayout.setVisibility(View.GONE);
+                editor.putBoolean("oauth_show", false);
             }
             editor.apply();
         });

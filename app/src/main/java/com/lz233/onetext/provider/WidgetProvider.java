@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -28,6 +27,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import io.noties.markwon.Markwon;
+import io.noties.markwon.SoftBreakAddsNewLinePlugin;
+
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WidgetProvider extends AppWidgetProvider {
@@ -37,7 +39,7 @@ public class WidgetProvider extends AppWidgetProvider {
         AppWidgetManager manger = AppWidgetManager.getInstance(context);
         ComponentName thisName = new ComponentName(context, WidgetProvider.class);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-        run(context, views,manger);
+        run(context, views, manger);
         manger.updateAppWidget(thisName, views);
         super.onReceive(context, intent);
     }
@@ -107,45 +109,41 @@ public class WidgetProvider extends AppWidgetProvider {
             final CoreUtil coreUtil = new CoreUtil(context);
             final HashMap[] hashMap = new HashMap[1];
             final HashMap feedMap = coreUtil.getFeedInformation(sharedPreferences.getInt("feed_code", 0));
-            if(feedMap.get("feed_type").equals("internet")){
-                if(sharedPreferences.getString("api_string","").equals("")|coreUtil.ifOneTextShouldUpdate(true)){
+            if (feedMap.get("feed_type").equals("internet")) {
+                if (sharedPreferences.getString("api_string", "").equals("") | coreUtil.ifOneTextShouldUpdate(true)) {
                     new GetUtil().sendGet((String) feedMap.get("api_url"), result -> {
                         try {
-                            hashMap[0] = coreUtil.convertOneText(new JSONObject(result),feedMap);
-                            showOneText(context,sharedPreferences,views, hashMap[0]);
+                            hashMap[0] = coreUtil.convertOneText(new JSONObject(result), feedMap);
+                            showOneText(context, sharedPreferences, views, hashMap[0]);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         coreUtil.refreshLatestRefreshTime();
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("api_string",result);
+                        editor.putString("api_string", result);
                         editor.apply();
                         ComponentName thisName = new ComponentName(context, WidgetProvider.class);
                         appWidgetManager.updateAppWidget(thisName, views);
                     });
-                }else {
-                    hashMap[0] = coreUtil.convertOneText(new JSONObject(sharedPreferences.getString("api_string","")),feedMap);
-                    showOneText(context,sharedPreferences,views,hashMap[0]);
+                } else {
+                    hashMap[0] = coreUtil.convertOneText(new JSONObject(sharedPreferences.getString("api_string", "")), feedMap);
+                    showOneText(context, sharedPreferences, views, hashMap[0]);
                 }
-            }else {
+            } else {
                 hashMap[0] = coreUtil.getOneText(false, true);
-                showOneText(context,sharedPreferences,views, hashMap[0]);
+                showOneText(context, sharedPreferences, views, hashMap[0]);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    private void showOneText(Context context,SharedPreferences sharedPreferences,RemoteViews views,HashMap hashMap){
-        String originalText = (String) hashMap.get("text");
-        if (originalText == null) {
-            originalText = "";
-        }
+
+    private void showOneText(Context context, SharedPreferences sharedPreferences, RemoteViews views, HashMap hashMap) {
+        final Markwon markwon = Markwon.builder(context).usePlugin(SoftBreakAddsNewLinePlugin.create()).build();
+        String originalText = markwon.toMarkdown((String) hashMap.get("text")).toString();
         String text = originalText.replace("\n", " ");
-        String by = (String) hashMap.get("by");
-        if (by == null) {
-            by = "";
-        }
+        String by = markwon.toMarkdown((String) hashMap.get("by")).toString();
         if (sharedPreferences.getBoolean("widget_center", true)) {
             if (sharedPreferences.getBoolean("widget_shadow", true)) {
                 views.setTextViewText(R.id.onetext_widget_center_text_textview_shadow, text);
@@ -171,28 +169,26 @@ public class WidgetProvider extends AppWidgetProvider {
                 views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
                 views.setViewVisibility(R.id.onetext_widget_text_textview, View.GONE);
                 views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
-                if (!by.equals("")) {
+                if (by.equals("")) {
+                    views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                } else {
                     views.setTextViewText(R.id.onetext_widget_by_textview_shadow, "—— " + by);
                     views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.VISIBLE);
-                    views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
-                } else {
-                    views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
-                    views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
                 }
+                views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
             } else {
                 views.setTextViewText(R.id.onetext_widget_text_textview, text);
                 views.setViewVisibility(R.id.onetext_widget_text_textview_shadow, View.GONE);
                 views.setViewVisibility(R.id.onetext_widget_center_text_textview_shadow, View.GONE);
                 views.setViewVisibility(R.id.onetext_widget_text_textview, View.VISIBLE);
                 views.setViewVisibility(R.id.onetext_widget_center_text_textview, View.GONE);
-                if (!by.equals("")) {
-                    views.setTextViewText(R.id.onetext_widget_by_textview, "—— " + by);
-                    views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
-                    views.setViewVisibility(R.id.onetext_widget_by_textview, View.VISIBLE);
-                } else {
-                    views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
+                if (by.equals("")) {
                     views.setViewVisibility(R.id.onetext_widget_by_textview, View.GONE);
+                } else {
+                    views.setTextViewText(R.id.onetext_widget_by_textview, "—— " + by);
+                    views.setViewVisibility(R.id.onetext_widget_by_textview, View.VISIBLE);
                 }
+                views.setViewVisibility(R.id.onetext_widget_by_textview_shadow, View.GONE);
             }
         }
         if (sharedPreferences.getBoolean("widget_notification_enabled", false)) {
@@ -228,6 +224,7 @@ public class WidgetProvider extends AppWidgetProvider {
             notificationManager.notify(1, notification);
         }
     }
+
     /**
      * 当 Widget 被删除时调用该方法。
      *
