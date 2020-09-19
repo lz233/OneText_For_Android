@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private LinearLayout main_linearlayout;
     private ProgressBar progressBar;
     private LinearLayout pic_layout;
+    private CardView uri_layout;
     private TextView onetext_quote1_textview;
     private TextView onetext_text_textview;
     private TextView onetext_quote2_textview;
@@ -124,6 +125,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_swiperefreshlayout = findViewById(R.id.onetext_swiperefreshlayout);
         main_linearlayout = findViewById(R.id.main_linearlayout);
         pic_layout = findViewById(R.id.pic_layout);
+        uri_layout = findViewById(R.id.uri_layout);
         progressBar = findViewById(R.id.progressBar);
         onetext_quote1_textview = findViewById(R.id.onetext_quote1_textview);
         onetext_text_textview = findViewById(R.id.onetext_text_textview);
@@ -235,6 +237,17 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_from_textview.setOnClickListener(v -> {
             clipboardManager.setPrimaryClip(ClipData.newPlainText("from", onetext_from_textview.getText()));
             Snackbar.make(v, getString(R.string.copied), Snackbar.LENGTH_SHORT).show();
+        });
+        push_imageview.setOnLongClickListener(view -> {
+            push_layout.setVisibility(View.GONE);
+            editor.putBoolean("hide_push_once_time",true);
+            editor.apply();
+            Snackbar.make(view, R.string.push_hided_once, Snackbar.LENGTH_LONG).setAction(R.string.undo, view1 -> {
+                push_layout.setVisibility(View.VISIBLE);
+                editor.putBoolean("hide_push_once_time",false);
+                editor.apply();
+            }).show();
+            return true;
         });
         save_button.setOnClickListener(view -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -540,6 +553,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         final String by = (String) hashMap.get("by");
         final String time = (String) hashMap.get("time");
         final String from = (String) hashMap.get("from");
+        final String uri = (String) hashMap.get("uri");
         if (text.equals("")) {
             onetext_quote1_textview.setVisibility(View.GONE);
             onetext_text_textview.setVisibility(View.GONE);
@@ -571,6 +585,11 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             onetext_from_textview.setVisibility(View.VISIBLE);
             //onetext_from_textview.setText((String) hashMap.get("from"));
             markwon.setMarkdown(onetext_from_textview, (String) hashMap.get("from"));
+        }
+        if (uri.equals("")){
+            uri_layout.setOnClickListener(null);
+        }else {
+            uri_layout.setOnClickListener(view -> Snackbar.make(view, R.string.onetext_uri_open, Snackbar.LENGTH_LONG).setAction(R.string.onetext_uri_open_button, view1 -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)))).show());
         }
         //更新小部件
         Intent intent = new Intent("com.lz233.onetext.widget");
@@ -692,7 +711,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                                 push_imageview.setOnClickListener(view -> {
                                                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
                                                     if (resultJsonObject.optBoolean("cancelable")) {
-                                                        pic_layout.setVisibility(View.GONE);
+                                                        push_layout.setVisibility(View.GONE);
                                                         editor.putBoolean("hide_push_once_time", true);
                                                         editor.apply();
                                                     }

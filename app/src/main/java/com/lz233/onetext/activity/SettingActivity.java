@@ -405,6 +405,7 @@ public class SettingActivity extends BaseActivity {
                 editor.putBoolean("disable_push", true);
             } else {
                 editor.putBoolean("disable_push", false);
+                editor.putBoolean("hide_push_once_time",false);
             }
             editor.apply();
         });

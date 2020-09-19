@@ -173,6 +173,7 @@ public class CoreUtil {
         } else if (chinese_type == 4) {
             oneTextViaS2TWP(feedMap, jsonObject, hashMap);
         }
+        hashMap.put("uri",jsonObject.optString((String) feedMap.get("uri_key")));
         hashMap.put("time","");
         try {
             JSONArray timeJsonArray = new JSONArray(jsonObject.optString((String) feedMap.get("time_key")));
@@ -223,11 +224,14 @@ public class CoreUtil {
             File file = new File(context.getFilesDir().getPath() + "/Feed/");
             ifsucceed = file.mkdirs();
         }
-        if ((!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json")) | ((sharedPreferences.getInt("version_code", 0) - 20200407) < 0)) {
+        if ((!FileUtil.isFile(context.getFilesDir().getPath() + "/Feed/Feed.json")) | ((sharedPreferences.getInt("version_code", 20200407) - 20200919) < 0)) {
             ifsucceed = FileUtil.copyAssets(context, "Feed", context.getFilesDir().getPath() + "/Feed");
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("version_code", BuildConfig.VERSION_CODE);
             editor.remove("feed_code");
+            editor.remove("feed_latest_refresh_time");
+            editor.remove("widget_latest_refresh_time");
+            editor.remove("onetext_code");
             editor.apply();
         }
         return ifsucceed;
@@ -256,6 +260,7 @@ public class CoreUtil {
             hashMap.put("feed_path", jsonObject.optString("feed_path"));
             hashMap.put("text_key", jsonObject.optString("text_key"));
             hashMap.put("by_key", jsonObject.optString("by_key"));
+            hashMap.put("uri_key",jsonObject.optString("uri_key"));
             hashMap.put("time_key", jsonObject.optString("time_key"));
             hashMap.put("from_key", jsonObject.optString("from_key"));
             hashMap.put("api_method", jsonObject.optString("api_method"));

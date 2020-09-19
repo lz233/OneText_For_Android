@@ -209,4 +209,8 @@ lz差不多是條鹹魚了致力於確保本應用儘可能的有用和高效。
     <string name="edit_feed_illegal">不合法的格式</string>
     <string name="edit_feed_empty">不允許爲空</string>
     <string name="font_copyright_warn">字體僅供非商業使用，請在下載後24小時內刪除。</string>
+    <string name="push_hided_once">已隱藏這個推送</string>
+    <string name="undo">撤銷</string>
+    <string name="onetext_uri_open">此句子指向一個鏈接，是否打開？</string>
+    <string name="onetext_uri_open_button">打開</string>
 </resources>
