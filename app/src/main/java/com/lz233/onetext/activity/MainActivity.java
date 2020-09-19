@@ -589,7 +589,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         if (uri.equals("")){
             uri_layout.setOnClickListener(null);
         }else {
-            uri_layout.setOnClickListener(view -> Snackbar.make(view, R.string.onetext_uri_open, Snackbar.LENGTH_LONG).setAction(R.string.onetext_uri_open_button, view1 -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)))).show());
+            uri_layout.setOnClickListener(view -> Snackbar.make(view, R.string.onetext_uri_open, Snackbar.LENGTH_SHORT).setAction(R.string.onetext_uri_open_button, view1 -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)))).show());
         }
         //更新小部件
         Intent intent = new Intent("com.lz233.onetext.widget");
