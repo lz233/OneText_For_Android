@@ -570,7 +570,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         } else {
             onetext_by_textview.setVisibility(View.VISIBLE);
             //onetext_by_textview.setText((String) hashMap.get("by"));
-            markwon.setMarkdown(onetext_by_textview, (String) hashMap.get("by"));
+            markwon.setMarkdown(onetext_by_textview, "—— "+hashMap.get("by"));
         }
         if (time.equals("")) {
             onetext_time_textview.setVisibility(View.GONE);
@@ -598,7 +598,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     }
 
     private void shotOneTextViaSAF(DocumentFile root) {
-        HashMap hashMap = new HashMap();
+        //HashMap hashMap = new HashMap();
         DocumentFile oneTextDir;
         try {
             if (root.findFile("OneText").isDirectory()) {
