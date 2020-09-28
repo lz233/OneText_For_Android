@@ -15,6 +15,7 @@
     "feed_url": "https://cdn.jsdelivr.net/gh/XiaoMengXinX/OneText-Library/all.json",
     "text_key": "text",
     "by_key": "by",
+    "uri_key": "uri",
     "time_key": "time",
     "from_key": "from"
   },
@@ -24,6 +25,7 @@
     "feed_url": "https://cdn.jsdelivr.net/gh/XiaoMengXinX/OneText-Library/a.json",
     "text_key": "text",
     "by_key": "by",
+    "uri_key": "uri",
     "time_key": "time",
     "from_key": "from"
   },
