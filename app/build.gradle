@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin:'kotlin-android'
-apply plugin:'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileOptions {
@@ -16,7 +16,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.8-つ'
+        versionName = '1.81-て'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //multiDexEnabled true
     }
@@ -31,6 +31,12 @@ android {
     }
     buildTypes {
         release {
+            minifyEnabled true
+            zipAlignEnabled true
+            signingConfig signingConfigs.releaseSigningConfig
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        coolapk {
             minifyEnabled true
             zipAlignEnabled true
             signingConfig signingConfigs.releaseSigningConfig

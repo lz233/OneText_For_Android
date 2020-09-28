@@ -84,7 +84,7 @@
                                         android:id="@+id/onetext_quote1_textview"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="@string/onetext_quotes1"
+                                        android:text="@string/onetext_quote1"
                                         android:textColor="@color/colorText1"
                                         android:textSize="@dimen/onetext_size" />
 
@@ -105,7 +105,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
                                         android:layout_marginTop="@dimen/content_margin"
-                                        android:text="@string/onetext_quotes2"
+                                        android:text="@string/onetext_quote2"
                                         android:textColor="@color/colorText1"
                                         android:textSize="@dimen/onetext_size" />
 

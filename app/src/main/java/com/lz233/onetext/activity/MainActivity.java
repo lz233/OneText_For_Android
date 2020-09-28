@@ -563,6 +563,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             onetext_text_textview.setVisibility(View.VISIBLE);
             onetext_quote2_textview.setVisibility(View.VISIBLE);
             //onetext_text_textview.setText((String) hashMap.get("text"));
+            onetext_quote1_textview.setText((String) hashMap.get("quote1"));
+            onetext_quote2_textview.setText((String) hashMap.get("quote2"));
             markwon.setMarkdown(onetext_text_textview, (String) hashMap.get("text"));
         }
         if (by.equals("")) {
@@ -696,10 +698,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                     editor.putString("push_information", result);
                                     editor.apply();
                                     String bannerUri = "";
-                                    if (resultJsonObject.optString("00_00").equals("")) {
-                                        bannerUri = resultJsonObject.getString(deviceCode);
-                                    } else {
+                                    if (resultJsonObject.optString(deviceCode).equals("")) {
                                         bannerUri = resultJsonObject.getString("00_00");
+                                    } else {
+                                        bannerUri = resultJsonObject.getString(deviceCode);
                                     }
                                     final String finalBannerUri = bannerUri;
                                     new Thread(() -> DownloadUtil.get().download(finalBannerUri, getCacheDir().getPath() + "/Push/", deviceCode, new DownloadUtil.OnDownloadListener() {

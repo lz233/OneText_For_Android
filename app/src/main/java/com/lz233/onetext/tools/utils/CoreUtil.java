@@ -191,6 +191,8 @@ public class CoreUtil {
     }
 
     private HashMap oneTextViaS2HK(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
+        hashMap.put("quote1","「");
+        hashMap.put("quote2","」");
         hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2HK, context));
         hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2HK, context));
         hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2HK, context));
@@ -198,6 +200,8 @@ public class CoreUtil {
     }
 
     private HashMap oneTextViaS2T(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
+        hashMap.put("quote1","「");
+        hashMap.put("quote2","」");
         hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2T, context));
         hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2T, context));
         hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2T, context));
@@ -205,6 +209,8 @@ public class CoreUtil {
     }
 
     private HashMap oneTextViaS2TWP(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
+        hashMap.put("quote1","「");
+        hashMap.put("quote2","」");
         hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2TWP, context));
         hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2TWP, context));
         hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2TWP, context));
@@ -212,6 +218,8 @@ public class CoreUtil {
     }
 
     private HashMap oneTextViaOriginal(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
+        hashMap.put("quote1",context.getString(R.string.onetext_quote1));
+        hashMap.put("quote2",context.getString(R.string.onetext_quote2));
         hashMap.put("text", jsonObject.optString((String) feedMap.get("text_key")));
         hashMap.put("by", jsonObject.optString((String) feedMap.get("by_key")));
         hashMap.put("from", jsonObject.optString((String) feedMap.get("from_key")));
