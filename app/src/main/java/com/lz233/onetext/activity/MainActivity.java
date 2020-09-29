@@ -36,6 +36,7 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.lz233.onetext.BuildConfig;
 import com.lz233.onetext.R;
 import com.lz233.onetext.tools.utils.AppUtil;
 import com.lz233.onetext.tools.utils.CoreUtil;
@@ -680,7 +681,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         } else {
             new Thread(() -> {
                 try {
-                    final boolean isTest = true;
+                    final boolean isTest = BuildConfig.BUILD_TYPE.equals("debug");
                     final String deviceLanguage = Locale.getDefault().getLanguage();
                     final String deviceCountry = Locale.getDefault().getCountry();
                     final String deviceCode = deviceLanguage + "_" + deviceCountry;
