@@ -698,7 +698,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                                     editor.apply();
                                     String bannerUri = "";
                                     if (resultJsonObject.optString(deviceCode).equals("")) {
-                                        bannerUri = resultJsonObject.optString("00_00","http://127.0.0.1");
+                                        bannerUri = resultJsonObject.optString("00_00", "http://127.0.0.1");
                                     } else {
                                         bannerUri = resultJsonObject.optString(deviceCode);
                                     }
