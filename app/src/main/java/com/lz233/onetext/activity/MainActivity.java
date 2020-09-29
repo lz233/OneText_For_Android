@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,13 +49,10 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 import com.microsoft.appcenter.crashes.model.ErrorReport;
-import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 import com.microsoft.appcenter.utils.async.AppCenterFuture;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
-
-import io.noties.markwon.Markwon;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import io.noties.markwon.Markwon;
 import io.noties.markwon.SoftBreakAddsNewLinePlugin;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -240,11 +237,11 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         });
         push_imageview.setOnLongClickListener(view -> {
             push_layout.setVisibility(View.GONE);
-            editor.putBoolean("hide_push_once_time",true);
+            editor.putBoolean("hide_push_once_time", true);
             editor.apply();
             Snackbar.make(view, R.string.push_hided_once, Snackbar.LENGTH_LONG).setAction(R.string.undo, view1 -> {
                 push_layout.setVisibility(View.VISIBLE);
-                editor.putBoolean("hide_push_once_time",false);
+                editor.putBoolean("hide_push_once_time", false);
                 editor.apply();
             }).show();
             return true;
@@ -572,7 +569,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         } else {
             onetext_by_textview.setVisibility(View.VISIBLE);
             //onetext_by_textview.setText((String) hashMap.get("by"));
-            markwon.setMarkdown(onetext_by_textview, "—— "+hashMap.get("by"));
+            markwon.setMarkdown(onetext_by_textview, "—— " + hashMap.get("by"));
         }
         if (time.equals("")) {
             onetext_time_textview.setVisibility(View.GONE);
@@ -588,9 +585,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             //onetext_from_textview.setText((String) hashMap.get("from"));
             markwon.setMarkdown(onetext_from_textview, (String) hashMap.get("from"));
         }
-        if (uri.equals("")){
+        if (uri.equals("")) {
             uri_layout.setOnClickListener(null);
-        }else {
+        } else {
             uri_layout.setOnClickListener(view -> Snackbar.make(view, R.string.onetext_uri_open, Snackbar.LENGTH_SHORT).setAction(R.string.onetext_uri_open_button, view1 -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)))).show());
         }
         //更新小部件
@@ -683,25 +680,26 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         } else {
             new Thread(() -> {
                 try {
+                    final boolean isTest = true;
                     final String deviceLanguage = Locale.getDefault().getLanguage();
                     final String deviceCountry = Locale.getDefault().getCountry();
                     final String deviceCode = deviceLanguage + "_" + deviceCountry;
                     final JSONObject spJsonObject = new JSONObject(sharedPreferences.getString("push_information", "{\"id\":0}"));
                     final String spUri = spJsonObject.optString("uri");
-                    if (AppUtil.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("push_latest_refresh_time", 0)) > 86400000)) {
-                        new GetUtil().sendGet("https://gitee.com/lz233-sakura/OneTextRes/raw/master/push.json", result -> {
+                    if (AppUtil.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("push_latest_refresh_time", 0)) > (isTest ? 0 : 86400000))) {
+                        new GetUtil().sendGet(isTest ? "https://gitee.com/lz233-sakura/OneTextRes/raw/master/push-test.json" : "https://gitee.com/lz233-sakura/OneTextRes/raw/master/push.json", result -> {
                             try {
                                 final JSONObject resultJsonObject = new JSONObject(result);
                                 final String uri = resultJsonObject.getString("uri");
-                                if (resultJsonObject.getInt("id") > spJsonObject.getInt("id") | (!FileUtil.isFile(getCacheDir().getPath() + "/Push/" + deviceCode))) {
+                                if (isTest | resultJsonObject.getInt("id") > spJsonObject.getInt("id") | (!FileUtil.isFile(getCacheDir().getPath() + "/Push/" + deviceCode))) {
                                     editor.putBoolean("hide_push_once_time", false);
-                                    editor.putString("push_information", result);
+                                    if (!isTest) editor.putString("push_information", result);
                                     editor.apply();
                                     String bannerUri = "";
                                     if (resultJsonObject.optString(deviceCode).equals("")) {
-                                        bannerUri = resultJsonObject.getString("00_00");
+                                        bannerUri = resultJsonObject.optString("00_00");
                                     } else {
-                                        bannerUri = resultJsonObject.getString(deviceCode);
+                                        bannerUri = resultJsonObject.optString(deviceCode);
                                     }
                                     final String finalBannerUri = bannerUri;
                                     new Thread(() -> DownloadUtil.get().download(finalBannerUri, getCacheDir().getPath() + "/Push/", deviceCode, new DownloadUtil.OnDownloadListener() {
