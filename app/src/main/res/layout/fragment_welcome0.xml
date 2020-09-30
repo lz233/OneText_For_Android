@@ -27,7 +27,7 @@
                 android:layout_marginBottom="300dp"
                 android:layout_weight="0"
                 android:src="@drawable/ic_icon"
-                android:tint="@color/colorText2" />
+                app:tint="@color/colorText2" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"

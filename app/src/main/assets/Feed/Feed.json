@@ -45,6 +45,7 @@
     "api_url": "https://v1.hitokoto.cn",
     "text_key": "hitokoto",
     "by_key": "from_who",
-    "from_key": "from"
+    "from_key": "from",
+    "sponsor_url": "https://hitokoto.cn/donate"
   }
 ]

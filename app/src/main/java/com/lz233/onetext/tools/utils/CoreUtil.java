@@ -274,6 +274,7 @@ public class CoreUtil {
             hashMap.put("api_method", jsonObject.optString("api_method"));
             hashMap.put("api_url", jsonObject.optString("api_url"));
             hashMap.put("object_key", jsonObject.optString("object_key"));
+            hashMap.put("sponsor_url",jsonObject.optString("sponsor_url"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

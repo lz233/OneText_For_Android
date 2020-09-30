@@ -36,7 +36,6 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.lz233.onetext.BuildConfig;
 import com.lz233.onetext.R;
 import com.lz233.onetext.tools.utils.AppUtil;
 import com.lz233.onetext.tools.utils.CoreUtil;
@@ -72,6 +71,8 @@ import static com.lz233.onetext.tools.utils.AppUtil.px2sp;
 
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
     private CoreUtil coreUtil;
+
+    private ImageView sponsor_imageview;
     private NiceImageView avatar_imageview;
     private SwipeRefreshLayout onetext_swiperefreshlayout;
     private LinearLayout main_linearlayout;
@@ -119,6 +120,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         fuckNav(findViewById(R.id.last_layout));
         //fb
         coreUtil = new CoreUtil(MainActivity.this);
+        sponsor_imageview = findViewById(R.id.sponsor_imageview);
         avatar_imageview = findViewById(R.id.avatar_imageview);
         onetext_swiperefreshlayout = findViewById(R.id.onetext_swiperefreshlayout);
         main_linearlayout = findViewById(R.id.main_linearlayout);
@@ -468,6 +470,15 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private void initRun(final Boolean forcedRefresh) {
         progressBar.setVisibility(View.VISIBLE);
         final HashMap feedMap = coreUtil.getFeedInformation(sharedPreferences.getInt("feed_code", 0));
+        //载入赞助信息
+        String sponsorUrl = (String) feedMap.get("sponsor_url");
+        if (sponsorUrl.equals("")){
+            sponsor_imageview.setOnClickListener(null);
+            sponsor_imageview.setVisibility(View.GONE);
+        }else {
+            sponsor_imageview.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(sponsorUrl))));
+            sponsor_imageview.setVisibility(View.VISIBLE);
+        }
         if (feedMap.get("feed_type").equals("internet")) {
             if (sharedPreferences.getString("api_string", "").equals("") | coreUtil.ifOneTextShouldUpdate(false) | forcedRefresh) {
                 new GetUtil().sendGet((String) feedMap.get("api_url"), result -> {
@@ -681,7 +692,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         } else {
             new Thread(() -> {
                 try {
-                    final boolean isTest = BuildConfig.BUILD_TYPE.equals("debug");
+                    final boolean isTest = false;
                     final String deviceLanguage = Locale.getDefault().getLanguage();
                     final String deviceCountry = Locale.getDefault().getCountry();
                     final String deviceCode = deviceLanguage + "_" + deviceCountry;
