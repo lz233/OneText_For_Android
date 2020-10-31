@@ -211,6 +211,8 @@ lz差不多是条咸鱼了致力于确保本应用尽可能的有用和高效。
     <string name="font_copyright_warn">字体仅供非商业使用，请在下载后24小时内删除。</string>
     <string name="push_hided_once">已隐藏这个推送</string>
     <string name="undo">撤销</string>
-    <string name="onetext_uri_open">此句子指向一个链接，是否打开？</string>
+    <string name="onetext_uri_open_text">此句子指向一个链接，是否打开？</string>
     <string name="onetext_uri_open_button">打开</string>
+    <string name="check_new_version_text">有新版本可用。</string>
+    <string name="check_new_version_button">查看</string>
 </resources>

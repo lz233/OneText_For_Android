@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.service.controls.Control;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
@@ -36,8 +38,11 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.lz233.onetext.BuildConfig;
 import com.lz233.onetext.R;
+import com.lz233.onetext.service.ExternalControlService;
 import com.lz233.onetext.tools.utils.AppUtil;
+import com.lz233.onetext.tools.utils.CoolapkAuthUtil;
 import com.lz233.onetext.tools.utils.CoreUtil;
 import com.lz233.onetext.tools.utils.DownloadUtil;
 import com.lz233.onetext.tools.utils.FileUtil;
@@ -54,17 +59,28 @@ import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Flow;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.SoftBreakAddsNewLinePlugin;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.lz233.onetext.tools.utils.AppUtil.px2sp;
@@ -194,6 +210,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
         }
+        //externalControl
+        //initExternalControlService();
+        //检查更新
+        checkUpdate();
         main_linearlayout.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         onetext_quote1_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
         onetext_text_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
@@ -467,15 +487,52 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         }
     }
 
+    private void initExternalControlService() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            ExternalControlService service = new ExternalControlService();
+            Flow.Publisher<Control> publisher = service.createPublisherForAllAvailable();
+            List<Control> loadedControls = new ArrayList<>();
+            subscribe(publisher, 10, loadedControls);
+
+            List<Control> expectedControls = new ArrayList<>();
+            expectedControls.add(new Control.StatelessBuilder(
+                    service.buildLight(false, 0.0f)).build());
+            expectedControls.add(new Control.StatelessBuilder(
+                    service.buildSwitch(false)).build());
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void subscribe(Flow.Publisher<Control> publisher, final int request,
+                           final List<Control> addToList) {
+        publisher.subscribe(new Flow.Subscriber<Control>() {
+            public void onSubscribe(Flow.Subscription s) {
+                s.request(request);
+            }
+
+            public void onNext(Control c) {
+                addToList.add(c);
+            }
+
+            public void onError(Throwable t) {
+                throw new IllegalStateException("onError should not be called here");
+            }
+
+            public void onComplete() {
+
+            }
+        });
+    }
+
     private void initRun(final Boolean forcedRefresh) {
         progressBar.setVisibility(View.VISIBLE);
         final HashMap feedMap = coreUtil.getFeedInformation(sharedPreferences.getInt("feed_code", 0));
         //载入赞助信息
         String sponsorUrl = (String) feedMap.get("sponsor_url");
-        if (sponsorUrl.equals("")){
+        if (sponsorUrl.equals("")) {
             sponsor_imageview.setOnClickListener(null);
             sponsor_imageview.setVisibility(View.GONE);
-        }else {
+        } else {
             sponsor_imageview.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(sponsorUrl))));
             sponsor_imageview.setVisibility(View.VISIBLE);
         }
@@ -600,7 +657,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         if (uri.equals("")) {
             uri_layout.setOnClickListener(null);
         } else {
-            uri_layout.setOnClickListener(view -> Snackbar.make(view, R.string.onetext_uri_open, Snackbar.LENGTH_SHORT).setAction(R.string.onetext_uri_open_button, view1 -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)))).show());
+            uri_layout.setOnClickListener(view -> Snackbar.make(view, R.string.onetext_uri_open_text, Snackbar.LENGTH_SHORT).setAction(R.string.onetext_uri_open_button, view1 -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)))).show());
         }
         //更新小部件
         Intent intent = new Intent("com.lz233.onetext.widget");
@@ -786,6 +843,47 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     e.printStackTrace();
                 }
             }).start();
+        }
+    }
+
+    private void checkUpdate() {
+        boolean isTest = false;
+        if (AppUtil.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("update_latest_refresh_time", 0)) > (isTest ? 0 : 86400000))) {
+            if (isTest?true:BuildConfig.BUILD_TYPE.equals("coolapk")) {
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder()
+                        .url("https://api.coolapk.com/v6/apk/detail?id=com.lz233.onetext&installed=1")
+                        .post(new FormBody.Builder().build())
+                        .addHeader("X-App-Id", "com.coolapk.market")
+                        .addHeader("X-App-Version", "9.0.2")
+                        .addHeader("X-App-Code", "1902151")
+                        .addHeader("X-Sdk-Int", "25")
+                        .addHeader("X-App-Token", CoolapkAuthUtil.getAS())
+                        .addHeader("X-Sdk-Locale", "zh-CN")
+                        .addHeader("X-Requested-With","XMLHttpRequest")
+                        .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36")
+                        .build();
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        try {
+                            int appVersion = new JSONObject(response.body().string()).optJSONObject("data").optInt("apkversioncode");
+                            if (appVersion > BuildConfig.VERSION_CODE) {
+                                Snackbar.make(rootview, R.string.check_new_version_text, Snackbar.LENGTH_SHORT).setAction(R.string.check_new_version_button, view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://coolapk.com/apk/com.lz233.onetext")))).show();
+                            }
+                            editor.putLong("update_latest_refresh_time",System.currentTimeMillis());
+                            editor.apply();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
         }
     }
 
