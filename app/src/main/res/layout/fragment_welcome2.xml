@@ -59,6 +59,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/layout_margin"
                     android:layout_weight="0"
+                    app:cardBackgroundColor="@android:color/transparent"
                     app:cardCornerRadius="@dimen/cardview_radius"
                     app:cardElevation="0dp"
                     app:cardMaxElevation="0dp">
@@ -81,6 +82,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/layout_margin"
                     android:layout_weight="0"
+                    app:cardBackgroundColor="@android:color/transparent"
                     app:cardCornerRadius="@dimen/cardview_radius"
                     app:cardElevation="0dp"
                     app:cardMaxElevation="0dp">

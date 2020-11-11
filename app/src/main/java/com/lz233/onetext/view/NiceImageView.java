@@ -19,7 +19,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.lz233.onetext.R;
 
-import static com.lz233.onetext.tools.utils.AppUtil.dp2px;
+import static com.lz233.onetext.tools.utils.AppUtilKt.dp2px;
 
 public class NiceImageView extends AppCompatImageView {
     private Context context;

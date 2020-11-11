@@ -47,7 +47,7 @@ public class EditFeedActivity extends BaseActivity {
                         String jsonString = edit_feed_edittext.getText().toString();
                         JSONArray jsonArray = new JSONArray(jsonString);
                         if (jsonArray.length()==0){
-                            Snackbar.make(rootview, getString(R.string.edit_feed_empty), Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(rootView, getString(R.string.edit_feed_empty), Snackbar.LENGTH_SHORT).show();
                         }else {
                             String currentFeedName = finalOriginalJsonArray.getJSONObject(sharedPreferences.getInt("feed_code",0)).getString("feed_name");
                             boolean nameChanged = false;
@@ -74,7 +74,7 @@ public class EditFeedActivity extends BaseActivity {
                         }
                     }catch (Exception e){
                         e.printStackTrace();
-                        Snackbar.make(rootview, getString(R.string.edit_feed_illegal), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(rootView, getString(R.string.edit_feed_illegal), Snackbar.LENGTH_SHORT).show();
                     }
                     break;
             }

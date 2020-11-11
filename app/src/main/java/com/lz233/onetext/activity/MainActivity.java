@@ -41,8 +41,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.lz233.onetext.BuildConfig;
 import com.lz233.onetext.R;
 import com.lz233.onetext.service.ExternalControlService;
-import com.lz233.onetext.tools.utils.AppUtil;
-import com.lz233.onetext.tools.utils.CoolapkAuthUtil;
+import com.lz233.onetext.tools.utils.AppUtilKt;
+import com.lz233.onetext.tools.utils.CoolapkAuthUtilKt;
 import com.lz233.onetext.tools.utils.CoreUtil;
 import com.lz233.onetext.tools.utils.DownloadUtil;
 import com.lz233.onetext.tools.utils.FileUtil;
@@ -82,8 +82,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import pub.devrel.easypermissions.EasyPermissions;
-
-import static com.lz233.onetext.tools.utils.AppUtil.px2sp;
 
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
     private CoreUtil coreUtil;
@@ -215,12 +213,12 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //检查更新
         checkUpdate();
         main_linearlayout.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-        onetext_quote1_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
-        onetext_text_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
-        onetext_quote2_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
-        onetext_by_textview.setTextSize(sharedPreferences.getInt("onetext_by_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.text_size))));
-        onetext_time_textview.setTextSize(sharedPreferences.getInt("onetext_time_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
-        onetext_from_textview.setTextSize(sharedPreferences.getInt("onetext_from_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
+        onetext_quote1_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
+        onetext_text_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
+        onetext_quote2_textview.setTextSize(sharedPreferences.getInt("onetext_text_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
+        onetext_by_textview.setTextSize(sharedPreferences.getInt("onetext_by_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.text_size))));
+        onetext_time_textview.setTextSize(sharedPreferences.getInt("onetext_time_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
+        onetext_from_textview.setTextSize(sharedPreferences.getInt("onetext_from_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         if (sharedPreferences.getBoolean("seal_enabled", false)) {
             seal_button.setText(R.string.seal_button_ison);
             seal_imageview.setVisibility(View.VISIBLE);
@@ -232,10 +230,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_by_size_seekbar.setIndicatorTextFormat(getString(R.string.onetext_by_size_text) + " ${PROGRESS} SP");
         onetext_time_size_seekbar.setIndicatorTextFormat(getString(R.string.onetext_time_size_text) + " ${PROGRESS} SP");
         onetext_from_size_seekbar.setIndicatorTextFormat(getString(R.string.onetext_from_size_text) + " ${PROGRESS} SP");
-        onetext_text_size_seekbar.setProgress(sharedPreferences.getInt("onetext_text_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
-        onetext_by_size_seekbar.setProgress(sharedPreferences.getInt("onetext_by_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.text_size))));
-        onetext_time_size_seekbar.setProgress(sharedPreferences.getInt("onetext_time_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
-        onetext_from_size_seekbar.setProgress(sharedPreferences.getInt("onetext_from_size", px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
+        onetext_text_size_seekbar.setProgress(sharedPreferences.getInt("onetext_text_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.onetext_size))));
+        onetext_by_size_seekbar.setProgress(sharedPreferences.getInt("onetext_by_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.text_size))));
+        onetext_time_size_seekbar.setProgress(sharedPreferences.getInt("onetext_time_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
+        onetext_from_size_seekbar.setProgress(sharedPreferences.getInt("onetext_from_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         //监听器
         avatar_imageview.setOnClickListener(v -> startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class)));
         onetext_swiperefreshlayout.setOnRefreshListener(() -> {
@@ -356,7 +354,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             }
         });
         onetext_text_size_button.setOnClickListener(view -> {
-            int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.onetext_size));
+            int text_size = AppUtilKt.px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.onetext_size));
             onetext_quote1_textview.setTextSize(text_size);
             onetext_text_textview.setTextSize(text_size);
             onetext_quote2_textview.setTextSize(text_size);
@@ -382,7 +380,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             }
         });
         onetext_by_size_button.setOnClickListener(view -> {
-            int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.text_size));
+            int text_size = AppUtilKt.px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.text_size));
             onetext_by_textview.setTextSize(text_size);
             onetext_by_size_seekbar.setProgress(text_size);
             editor.putInt("onetext_by_size", text_size);
@@ -406,7 +404,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             }
         });
         onetext_time_size_button.setOnClickListener(view -> {
-            int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.small_text_size));
+            int text_size = AppUtilKt.px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.small_text_size));
             onetext_time_textview.setTextSize(text_size);
             onetext_time_size_seekbar.setProgress(text_size);
             editor.putInt("onetext_time_size", text_size);
@@ -430,7 +428,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             }
         });
         onetext_from_size_button.setOnClickListener(view -> {
-            int text_size = px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.small_text_size));
+            int text_size = AppUtilKt.px2sp(MainActivity.this, getResources().getDimensionPixelSize(R.dimen.small_text_size));
             onetext_from_textview.setTextSize(text_size);
             onetext_from_size_seekbar.setProgress(text_size);
             editor.putInt("onetext_from_size", text_size);
@@ -446,16 +444,16 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             if (sharedPreferences.getBoolean("oauth_logined", false)) {
                 if (FileUtil.isFile(getFilesDir().getPath() + "/Oauth/Avatar.png")) {
                     Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) avatar_imageview.getLayoutParams();
-                    layoutParams.width = AppUtil.dp2px(this, 30);
-                    layoutParams.height = AppUtil.dp2px(this, 30);
+                    layoutParams.width = AppUtilKt.dp2px(this, 30);
+                    layoutParams.height = AppUtilKt.dp2px(this, 30);
                     avatar_imageview.setLayoutParams(layoutParams);
                     avatar_imageview.setImageURI(Uri.fromFile(new File(getFilesDir().getPath() + "/Oauth/Avatar.png")));
                 }
             }
         } else {
             Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) avatar_imageview.getLayoutParams();
-            layoutParams.width = AppUtil.dp2px(this, 24);
-            layoutParams.height = AppUtil.dp2px(this, 24);
+            layoutParams.width = AppUtilKt.dp2px(this, 24);
+            layoutParams.height = AppUtilKt.dp2px(this, 24);
             avatar_imageview.setLayoutParams(layoutParams);
             avatar_imageview.setImageDrawable(getDrawable(R.drawable.ic_settings));
         }
@@ -592,7 +590,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         @Override
                         public void onFailed(Exception e) {
                             progressBar.post(() -> progressBar.setVisibility(View.GONE));
-                            Snackbar.make(rootview, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_refresh_faild_button, v -> initRun(false)).show();
+                            Snackbar.make(rootView, getString(R.string.onetext_refresh_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_refresh_faild_button, v -> initRun(false)).show();
                         }
                     });
                 }
@@ -604,7 +602,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
                 @Override
                 public void onFailed(@Nullable Exception e) {
-                    Snackbar.make(rootview, getString(R.string.onetext_init_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_init_faild_button, v -> initRun(false)).show();
+                    Snackbar.make(rootView, getString(R.string.onetext_init_faild_text), Snackbar.LENGTH_LONG).setAction(R.string.onetext_init_faild_button, v -> initRun(false)).show();
                 }
             });
         }
@@ -687,7 +685,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             if (stream != null) {
                 stream.close();
             }
-            Snackbar.make(rootview, getString(R.string.save_succeed) + " " + pic_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, view -> {
+            Snackbar.make(rootView, getString(R.string.save_succeed) + " " + pic_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, view -> {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_STREAM, pic.getUri());
@@ -696,7 +694,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             }).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Snackbar.make(rootview, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(rootView, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -731,7 +729,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     stream.close();
                 }
             }
-            Snackbar.make(rootview, getString(R.string.save_succeed) + " " + pic_file_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, view -> {
+            Snackbar.make(rootView, getString(R.string.save_succeed) + " " + pic_file_name, Snackbar.LENGTH_SHORT).setAction(R.string.share_text, view -> {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_STREAM, imageUri);
@@ -739,7 +737,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 startActivity(Intent.createChooser(intent, getString(R.string.share_text)));
             }).show();
         } catch (Exception e) {
-            Snackbar.make(rootview, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(rootView, getString(R.string.save_fail), Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -755,7 +753,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                     final String deviceCode = deviceLanguage + "_" + deviceCountry;
                     final JSONObject spJsonObject = new JSONObject(sharedPreferences.getString("push_information", "{\"id\":0}"));
                     final String spUri = spJsonObject.optString("uri");
-                    if (AppUtil.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("push_latest_refresh_time", 0)) > (isTest ? 0 : 86400000))) {
+                    if (AppUtilKt.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("push_latest_refresh_time", 0)) > (isTest ? 0 : 86400000))) {
                         new GetUtil().sendGet(isTest ? "https://gitee.com/lz233-sakura/OneTextRes/raw/master/push-test.json" : "https://gitee.com/lz233-sakura/OneTextRes/raw/master/push.json", result -> {
                             try {
                                 final JSONObject resultJsonObject = new JSONObject(result);
@@ -847,8 +845,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     }
 
     private void checkUpdate() {
-        boolean isTest = false;
-        if (AppUtil.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("update_latest_refresh_time", 0)) > (isTest ? 0 : 86400000))) {
+        boolean isTest = true;
+        if (AppUtilKt.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("update_latest_refresh_time", 0)) > (isTest ? 0 : 86400000))) {
             if (isTest?true:BuildConfig.BUILD_TYPE.equals("coolapk")) {
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
@@ -858,7 +856,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         .addHeader("X-App-Version", "9.0.2")
                         .addHeader("X-App-Code", "1902151")
                         .addHeader("X-Sdk-Int", "25")
-                        .addHeader("X-App-Token", CoolapkAuthUtil.getAS())
+                        .addHeader("X-App-Token", CoolapkAuthUtilKt.getAS())
                         .addHeader("X-Sdk-Locale", "zh-CN")
                         .addHeader("X-Requested-With","XMLHttpRequest")
                         .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36")
@@ -874,7 +872,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         try {
                             int appVersion = new JSONObject(response.body().string()).optJSONObject("data").optInt("apkversioncode");
                             if (appVersion > BuildConfig.VERSION_CODE) {
-                                Snackbar.make(rootview, R.string.check_new_version_text, Snackbar.LENGTH_SHORT).setAction(R.string.check_new_version_button, view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://coolapk.com/apk/com.lz233.onetext")))).show();
+                                Snackbar.make(rootView, R.string.check_new_version_text, Snackbar.LENGTH_SHORT).setAction(R.string.check_new_version_button, view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://coolapk.com/apk/com.lz233.onetext")))).show();
                             }
                             editor.putLong("update_latest_refresh_time",System.currentTimeMillis());
                             editor.apply();

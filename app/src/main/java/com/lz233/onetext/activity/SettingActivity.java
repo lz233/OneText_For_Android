@@ -516,7 +516,7 @@ public class SettingActivity extends BaseActivity {
                     final NotificationChannel channel = notificationManager.getNotificationChannel("widget_onetext");
                     if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
                         widget_notification_switch.setChecked(false);
-                        Snackbar.make(rootview, getString(R.string.widget_notification_permissions_text), Snackbar.LENGTH_SHORT).setAction(getString(R.string.request_permissions_agree_button), view -> {
+                        Snackbar.make(rootView, getString(R.string.widget_notification_permissions_text), Snackbar.LENGTH_SHORT).setAction(getString(R.string.request_permissions_agree_button), view -> {
                             Intent intent15 = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
                             intent15.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
                             intent15.putExtra(Settings.EXTRA_CHANNEL_ID, channel.getId());
@@ -526,7 +526,7 @@ public class SettingActivity extends BaseActivity {
                 }
                 editor.putBoolean("widget_notification_enabled", true);
                 editor.commit();
-                Snackbar.make(rootview, getString(R.string.widget_notification_next_effective_text), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(rootView, getString(R.string.widget_notification_next_effective_text), Snackbar.LENGTH_SHORT).show();
             } else {
                 editor.putBoolean("widget_notification_enabled", false);
                 editor.commit();
@@ -690,7 +690,7 @@ public class SettingActivity extends BaseActivity {
                         editor.putString("font_path", getFilesDir().getPath() + "/Fonts/customFont.ttf");
                         editor.apply();
                         updateFontStatus();
-                        Snackbar.make(rootview, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(rootView, getString(R.string.setting_succeed_text), Snackbar.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

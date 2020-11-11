@@ -99,6 +99,6 @@ public class OauthActivity extends BaseActivity {
         thread.start();
     }
     private void onFailed(){
-        Snackbar.make(rootview, getString(R.string.oauth_failed_text), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(rootView, getString(R.string.oauth_failed_text), Snackbar.LENGTH_SHORT).show();
     }
 }
