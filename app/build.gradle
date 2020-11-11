@@ -17,8 +17,8 @@ android {
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
         versionName = '1.83-な'
-        writeStringToFile("VERSION_NAME",versionName)
-        writeStringToFile("VERSION_CODE",String.valueOf(versionCode))
+        //writeStringToFile("VERSION_NAME",versionName)
+        //writeStringToFile("VERSION_CODE",String.valueOf(versionCode))
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //multiDexEnabled true
     }
