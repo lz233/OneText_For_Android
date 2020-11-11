@@ -17,8 +17,8 @@ android {
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
         versionName = '1.83-な'
-        //writeStringToFile("VERSION_NAME",versionName)
-        //writeStringToFile("VERSION_CODE",String.valueOf(versionCode))
+        //writeStringToFile("app","VERSION_NAME",versionName)
+        //writeStringToFile("app","VERSION_CODE",String.valueOf(versionCode))
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //multiDexEnabled true
     }
@@ -88,8 +88,8 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.0.1'
 }
 
-private void writeStringToFile(String fileName, String string) {
-    FileWriter fileWriter = new FileWriter(fileName)
+private void writeStringToFile(String dir,String fileName, String string) {
+    FileWriter fileWriter = new FileWriter(new File(dir,fileName))
     fileWriter.write(string)
     fileWriter.close()
 }
