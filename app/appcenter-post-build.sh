@@ -1,5 +1,6 @@
 PRE_BUILD_MESSAGE_ID=$(cat PRE_BUILD_MESSAGE_ID)
-VERSION_NAME=$(cat VERSION_NAME | sed 's:\.:\\\\.:')
+VERSION_NAME=$(cat VERSION_NAME)
+VERSION_NAME=$(sed "s/${VERSION_NAME}/./g")
 VERSION_CODE=$(cat VERSION_CODE)
 curl -X POST https://api.telegram.org/bot${BOT_TOKEN}/deleteMessage -d "chat_id=$ONETEXT_CHANNEL_ID&message_id=$PRE_BUILD_MESSAGE_ID"
 if [ "$AGENT_JOBSTATUS" == "Succeeded" ]; then
