@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.lz233.onetext.R;
 import com.lz233.onetext.tools.utils.CoreUtil;
 import com.lz233.onetext.tools.utils.FileUtil;
@@ -48,9 +47,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             Feed feed = feedList.get(position);
             SharedPreferences sharedPreferences = feed.getContext().getSharedPreferences("setting", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            int currentPosition = sharedPreferences.getInt("feed_code",0);
+            int currentPosition = sharedPreferences.getInt("feed_code", 0);
             Feed feed1 = feedList.get(currentPosition);
-            if (position!=currentPosition){
+            if (position != currentPosition) {
                 editor.putInt("feed_code", position);
                 editor.remove("feed_latest_refresh_time");
                 editor.remove("widget_latest_refresh_time");
@@ -59,24 +58,24 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     FileUtil.deleteFile(feed.getContext().getFilesDir().getPath() + "/OneText/OneText-Library.json");
                 }
                 int originalFeedTypeImageID = 0;
-                if (feed1.getFeedTypeImageID()==R.drawable.ic_cloud_two_tone){
+                if (feed1.getFeedTypeImageID() == R.drawable.ic_cloud_two_tone) {
                     originalFeedTypeImageID = R.drawable.ic_cloud;
-                }else if (feed1.getFeedTypeImageID()==R.drawable.ic_file_two_tone){
+                } else if (feed1.getFeedTypeImageID() == R.drawable.ic_file_two_tone) {
                     originalFeedTypeImageID = R.drawable.ic_file;
-                }else if (feed1.getFeedTypeImageID()==R.drawable.ic_world_two_tone){
+                } else if (feed1.getFeedTypeImageID() == R.drawable.ic_world_two_tone) {
                     originalFeedTypeImageID = R.drawable.ic_world;
                 }
-                feedList.set(currentPosition,new Feed(feed1.getContext(),originalFeedTypeImageID,feed1.getFeedName(),false));
+                feedList.set(currentPosition, new Feed(feed1.getContext(), originalFeedTypeImageID, feed1.getFeedName(), false));
                 notifyItemChanged(currentPosition);
                 int feedTypeImageID = 0;
-                if (feed.getFeedTypeImageID()==R.drawable.ic_cloud){
-                    feedTypeImageID=R.drawable.ic_cloud_two_tone;
-                }else if (feed.getFeedTypeImageID()==R.drawable.ic_file){
-                    feedTypeImageID=R.drawable.ic_file_two_tone;
-                }else if (feed.getFeedTypeImageID()==R.drawable.ic_world){
-                    feedTypeImageID=R.drawable.ic_world_two_tone;
+                if (feed.getFeedTypeImageID() == R.drawable.ic_cloud) {
+                    feedTypeImageID = R.drawable.ic_cloud_two_tone;
+                } else if (feed.getFeedTypeImageID() == R.drawable.ic_file) {
+                    feedTypeImageID = R.drawable.ic_file_two_tone;
+                } else if (feed.getFeedTypeImageID() == R.drawable.ic_world) {
+                    feedTypeImageID = R.drawable.ic_world_two_tone;
                 }
-                feedList.set(position,new Feed(feed.getContext(),feedTypeImageID,feed.getFeedName(),true));
+                feedList.set(position, new Feed(feed.getContext(), feedTypeImageID, feed.getFeedName(), true));
                 notifyItemChanged(position);
                 editor.apply();
             }

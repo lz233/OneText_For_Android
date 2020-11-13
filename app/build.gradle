@@ -16,7 +16,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.83-な'
+        versionName = '1.83-に'
         writeStringToFile("app","VERSION_NAME",versionName)
         writeStringToFile("app","VERSION_CODE",String.valueOf(versionCode))
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -62,9 +62,9 @@ dependencies {
     //implementation 'com.takisoft.fix:preference-v7-simplemenu:28.0.0.0'
     //implementation 'com.liulishuo.okdownload:okdownload:1.0.7'
     //implementation 'com.liulishuo.okdownload:okhttp:1.0.7'
-    implementation 'com.squareup.okhttp3:okhttp:4.8.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.kd.easybarrage:library:0.0.1'
-    implementation 'io.noties.markwon:core:4.5.1'
+    implementation 'io.noties.markwon:core:4.6.0'
     //implementation 'io.noties.markwon:ext-tasklist:4.5.1'
     //implementation 'io.noties.markwon:ext-strikethrough:4.5.1'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
@@ -82,7 +82,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0-alpha03'
     //implementation 'androidx.navigation:navigation-fragment:2.2.1'
     //implementation 'androidx.navigation:navigation-ui:2.2.1'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'androidx.documentfile:documentfile:1.0.1'
