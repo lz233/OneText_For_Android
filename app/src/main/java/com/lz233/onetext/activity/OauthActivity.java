@@ -54,7 +54,7 @@ public class OauthActivity extends BaseActivity {
                         String accessToken = body.substring(body.indexOf("=") + 1, body.indexOf("&"));
                         editor.putString("oauth_access_token", accessToken);
                         editor.apply();
-                        Request requestGet = new Request.Builder().get().url("https://api.github.com/user?access_token=" + accessToken).build();
+                        Request requestGet = new Request.Builder().get().url("https://api.github.com/user").addHeader("Authorization", "token " + accessToken).build();
                         client.newCall(requestGet).enqueue(new Callback() {
                             @Override
                             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -69,8 +69,8 @@ public class OauthActivity extends BaseActivity {
                                     DownloadUtil.get().download(jsonObject.optString("avatar_url"), getFilesDir().getPath() + "/Oauth/", "Avatar.png", new DownloadUtil.OnDownloadListener() {
                                         @Override
                                         public void onDownloadSuccess(File file) {
-                                            editor.putString("oauth_account_information",accountInformation);
-                                            editor.putBoolean("oauth_logined",true);
+                                            editor.putString("oauth_account_information", accountInformation);
+                                            editor.putBoolean("oauth_logined", true);
                                             editor.apply();
                                             finish();
                                         }
@@ -98,7 +98,8 @@ public class OauthActivity extends BaseActivity {
         });
         thread.start();
     }
-    private void onFailed(){
+
+    private void onFailed() {
         Snackbar.make(rootView, getString(R.string.oauth_failed_text), Snackbar.LENGTH_SHORT).show();
     }
 }

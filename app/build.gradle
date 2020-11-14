@@ -88,7 +88,7 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.0.1'
 }
 
-private void writeStringToFile(String dir,String fileName, String string) {
+private static void writeStringToFile(String dir, String fileName, String string) {
     FileWriter fileWriter = new FileWriter(new File(dir,fileName))
     fileWriter.write(string)
     fileWriter.close()

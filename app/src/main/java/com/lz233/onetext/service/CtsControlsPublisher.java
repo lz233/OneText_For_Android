@@ -30,6 +30,7 @@ import java.util.concurrent.Flow.Subscription;
  * Simplified Publisher for use with CTS testing only. Assumes all Controls are added
  * to the Publisher ahead of a subscribe request. Assumes only one request() call.
  */
+@RequiresApi(api = Build.VERSION_CODES.R)
 public class CtsControlsPublisher implements Publisher<Control> {
 
     private final List<Control> mControls = new ArrayList<>();
