@@ -51,6 +51,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/**'
+        exclude 'kotlin/**'
+        exclude 'okhttp3/**'
+        exclude 'org/**'
+        exclude '**.properties'
+        exclude '**.bin'
+    }
 }
 
 dependencies {
