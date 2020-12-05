@@ -3,10 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     compileOptions.encoding = 'UTF-8'
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
@@ -16,9 +12,11 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.83-に'
-        writeStringToFile("app","VERSION_NAME",versionName)
-        writeStringToFile("app","VERSION_CODE",String.valueOf(versionCode))
+        versionName = '1.83-ぬ'
+        if (System.getenv("APPCENTER_ANDROID_VARIANT") != null) {
+            writeStringToFile("app", "VERSION_NAME", versionName)
+            writeStringToFile("app", "VERSION_CODE", String.valueOf(versionCode))
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //multiDexEnabled true
     }
@@ -50,6 +48,10 @@ android {
             signingConfig signingConfigs.releaseSigningConfig
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     packagingOptions {
         exclude 'META-INF/**'
@@ -97,7 +99,7 @@ dependencies {
 }
 
 private static void writeStringToFile(String dir, String fileName, String string) {
-    FileWriter fileWriter = new FileWriter(new File(dir,fileName))
+    FileWriter fileWriter = new FileWriter(new File(dir, fileName))
     fileWriter.write(string)
     fileWriter.close()
 }
