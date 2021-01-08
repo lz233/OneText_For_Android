@@ -202,17 +202,17 @@ lz差不多是條鹹魚了致力於確保本應用儘可能的有用和高效。
     <string name="welcome_privacy_policy_title">需要同意隱私政策</string>
     <string name="welcome_privacy_policy_disagree_button">如不同意，則將無法使用此應用。</string>
     <string name="welcome_privacy_policy_detail_text">[閱讀隱私政策與條款](onetext://privacy_policy)</string>
-    <string name="disable_appcenter_analytics">禁用 Appcenter Analyties</string>
+    <string name="disable_appcenter_analytics">禁用 Appcenter Analytics</string>
     <string name="disable_appcenter_crashes">禁用 Appcenter Crashes</string>
     <string name="disable_push">禁用推送</string>
     <string name="title_activity_edit_feed">編輯訂閱源</string>
     <string name="edit_feed_illegal">不合法的格式</string>
     <string name="edit_feed_empty">不允許為空</string>
-    <string name="font_copyright_warn">字型僅供非商業使用，請在下載後24小時內刪除。</string>
-    <string name="push_hided_once">已隱藏這個推送</string>
+    <string name="font_copyright_warn">字型僅供非商業使用，請在下載後 24 小時內刪除。</string>
+    <string name="push_hided_once">已隱藏此推送</string>
     <string name="undo">撤銷</string>
     <string name="onetext_uri_open_text">此句子指向一個連結，是否開啟？</string>
     <string name="onetext_uri_open_button">開啟</string>
     <string name="check_new_version_text">有新版本可用。</string>
-    <string name="check_new_version_button">檢視</string>
+    <string name="check_new_version_button">查閱</string>
 </resources>
