@@ -613,7 +613,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         final Markwon markwon = Markwon.builder(this).usePlugin(SoftBreakAddsNewLinePlugin.create()).build();
         //Spanned markdown = markwon.toMarkdown("**Hello there!**");
         //final Markwon markwon = Markwon.create(getApplicationContext());
-        final String text = (String) hashMap.get("text");
+        String text = ((String) hashMap.get("text"));
         final String by = (String) hashMap.get("by");
         final String time = (String) hashMap.get("time");
         final String from = (String) hashMap.get("from");
@@ -629,7 +629,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             //onetext_text_textview.setText((String) hashMap.get("text"));
             onetext_quote1_textview.setText((String) hashMap.get("quote1"));
             onetext_quote2_textview.setText((String) hashMap.get("quote2"));
-            markwon.setMarkdown(onetext_text_textview, (String) hashMap.get("text"));
+            text = text.replace(CoreUtil.textReplaceHolderString, CoreUtil.textReplaceString);
+            markwon.setMarkdown(onetext_text_textview, text);
         }
         if (by.equals("")) {
             onetext_by_textview.setVisibility(View.GONE);

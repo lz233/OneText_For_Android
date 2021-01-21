@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 import static com.zqc.opencc.android.lib.ConversionType.S2HK;
@@ -23,6 +24,9 @@ import static com.zqc.opencc.android.lib.ConversionType.S2T;
 import static com.zqc.opencc.android.lib.ConversionType.S2TWP;
 
 public class CoreUtil {
+    public static final String textReplaceHolderString = "@@";
+    public static final String textReplaceString = "\n";
+
     private Context context;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -149,6 +153,26 @@ public class CoreUtil {
         return convertOneText(jsonObject, feedMap);
     }
 
+    public String getComposeText(JSONObject jsonObject, HashMap feedMap) {
+        StringBuilder text = new StringBuilder();
+        if (((String) Objects.requireNonNull(feedMap.get("text_key"))).contains("&&")) {
+            try {
+                String[] keys = ((String) Objects.requireNonNull(feedMap.get("text_key"))).split("&&");
+                for (int i = 0; i < keys.length; i++) {
+                    text.append(jsonObject.optString(keys[i]));
+                    if (i < keys.length - 1) {
+                         text.append(textReplaceHolderString);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            text = new StringBuilder(jsonObject.optString((String) feedMap.get("text_key")));
+        }
+        return text.toString();
+    }
+
     public HashMap convertOneText(JSONObject jsonObject, HashMap feedMap) {
         HashMap hashMap = new HashMap();
         int chinese_type = sharedPreferences.getInt("chinese_type", 0);
@@ -193,7 +217,7 @@ public class CoreUtil {
     private HashMap oneTextViaS2HK(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
         hashMap.put("quote1","「");
         hashMap.put("quote2","」");
-        hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2HK, context));
+        hashMap.put("text", ChineseConverter.convert(getComposeText(jsonObject, feedMap), S2HK, context));
         hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2HK, context));
         hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2HK, context));
         return hashMap;
@@ -202,7 +226,7 @@ public class CoreUtil {
     private HashMap oneTextViaS2T(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
         hashMap.put("quote1","「");
         hashMap.put("quote2","」");
-        hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2T, context));
+        hashMap.put("text", ChineseConverter.convert(getComposeText(jsonObject, feedMap), S2T, context));
         hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2T, context));
         hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2T, context));
         return hashMap;
@@ -211,7 +235,7 @@ public class CoreUtil {
     private HashMap oneTextViaS2TWP(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
         hashMap.put("quote1","「");
         hashMap.put("quote2","」");
-        hashMap.put("text", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("text_key")), S2TWP, context));
+        hashMap.put("text", ChineseConverter.convert(getComposeText(jsonObject, feedMap), S2TWP, context));
         hashMap.put("by", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("by_key")), S2TWP, context));
         hashMap.put("from", ChineseConverter.convert(jsonObject.optString((String) feedMap.get("from_key")), S2TWP, context));
         return hashMap;
@@ -220,7 +244,7 @@ public class CoreUtil {
     private HashMap oneTextViaOriginal(HashMap feedMap, JSONObject jsonObject, HashMap hashMap) {
         hashMap.put("quote1",context.getString(R.string.onetext_quote1));
         hashMap.put("quote2",context.getString(R.string.onetext_quote2));
-        hashMap.put("text", jsonObject.optString((String) feedMap.get("text_key")));
+        hashMap.put("text", getComposeText(jsonObject, feedMap));
         hashMap.put("by", jsonObject.optString((String) feedMap.get("by_key")));
         hashMap.put("from", jsonObject.optString((String) feedMap.get("from_key")));
         return hashMap;

@@ -142,7 +142,8 @@ public class WidgetProvider extends AppWidgetProvider {
     private void showOneText(Context context, SharedPreferences sharedPreferences, RemoteViews views, HashMap hashMap) {
         final Markwon markwon = Markwon.builder(context).usePlugin(SoftBreakAddsNewLinePlugin.create()).build();
         String originalText = markwon.toMarkdown((String) hashMap.get("text")).toString();
-        String text = originalText.replace("\n", " ");
+        String text = originalText.replace("\n", " ")
+                .replace("@@", "\n");
         String by = markwon.toMarkdown((String) hashMap.get("by")).toString();
         if (sharedPreferences.getBoolean("widget_center", true)) {
             if (sharedPreferences.getBoolean("widget_shadow", true)) {

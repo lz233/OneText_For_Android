@@ -47,5 +47,14 @@
     "by_key": "from_who",
     "from_key": "from",
     "sponsor_url": "https://hitokoto.cn/donate"
+  },
+  {
+    "feed_name": "金山词霸源",
+    "feed_type": "internet",
+    "api_method": "GET",
+    "api_url": "http://open.iciba.com/dsapi/",
+    "text_key": "content&&note",
+    "from_key": "dateline",
+    "by_key": "caption"
   }
 ]
