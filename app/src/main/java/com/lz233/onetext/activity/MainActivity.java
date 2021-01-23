@@ -875,9 +875,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                             if (appVersion > BuildConfig.VERSION_CODE) {
                                 Snackbar.make(rootView, R.string.check_new_version_text, Snackbar.LENGTH_SHORT).setAction(R.string.check_new_version_button, view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://coolapk.com/apk/com.lz233.onetext")))).show();
                             }
-                            editor.putLong("update_latest_refresh_time",System.currentTimeMillis());
+                            editor.putLong("update_latest_refresh_time", System.currentTimeMillis());
                             editor.apply();
-                        } catch (JSONException e) {
+                        } catch (JSONException | NullPointerException e) {
+                            // 修复酷安 API 返回数据不符合预期时取不存在的字段值引发的空指针异常
                             e.printStackTrace();
                         }
                     }
