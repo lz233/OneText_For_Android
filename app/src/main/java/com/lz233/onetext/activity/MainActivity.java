@@ -34,6 +34,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -79,7 +80,6 @@ import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -235,7 +235,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_time_size_seekbar.setProgress(sharedPreferences.getInt("onetext_time_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         onetext_from_size_seekbar.setProgress(sharedPreferences.getInt("onetext_from_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         //监听器
-        avatar_imageview.setOnClickListener(v -> startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class)));
+        avatar_imageview.setOnClickListener(v -> {
+            startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class), ActivityOptionsCompat.makeSceneTransitionAnimation(this, avatar_imageview, getString(R.string.oauth_login_text)).toBundle());
+        });
         onetext_swiperefreshlayout.setOnRefreshListener(() -> {
             initRun(true);
             onetext_swiperefreshlayout.setRefreshing(false);
@@ -848,7 +850,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private void checkUpdate() {
         boolean isTest = true;
         if (AppUtilKt.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("update_latest_refresh_time", 0)) > (isTest ? 0 : 86400000))) {
-            if (isTest?true:BuildConfig.BUILD_TYPE.equals("coolapk")) {
+            if (isTest ? true : BuildConfig.BUILD_TYPE.equals("coolapk")) {
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
                         .url("https://api.coolapk.com/v6/apk/detail?id=com.lz233.onetext&installed=1")
@@ -859,7 +861,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                         .addHeader("X-Sdk-Int", "25")
                         .addHeader("X-App-Token", CoolapkAuthUtilKt.getAS())
                         .addHeader("X-Sdk-Locale", "zh-CN")
-                        .addHeader("X-Requested-With","XMLHttpRequest")
+                        .addHeader("X-Requested-With", "XMLHttpRequest")
                         .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36")
                         .build();
                 client.newCall(request).enqueue(new Callback() {
