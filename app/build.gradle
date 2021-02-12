@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileOptions.encoding = 'UTF-8'
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion '30.0.3'
     defaultConfig {
         Date date = new Date()
         applicationId "com.lz233.onetext"
@@ -74,7 +74,7 @@ dependencies {
     //implementation 'com.liulishuo.okdownload:okhttp:1.0.7'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.kd.easybarrage:library:0.0.1'
-    implementation 'io.noties.markwon:core:4.6.1'
+    implementation 'io.noties.markwon:core:4.6.2'
     //implementation 'io.noties.markwon:ext-tasklist:4.5.1'
     //implementation 'io.noties.markwon:ext-strikethrough:4.5.1'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
