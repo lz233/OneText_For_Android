@@ -34,7 +34,6 @@
                     android:layout_marginBottom="@dimen/layout_margin"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_account"
-                    android:transitionName="@string/oauth_login_text"
                     app:is_circle="true" />
 
                 <TextView

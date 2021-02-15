@@ -29,6 +29,8 @@ import java.util.HashMap;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.SoftBreakAddsNewLinePlugin;
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
+import io.noties.markwon.ext.tasklist.TaskListPlugin;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -140,7 +142,7 @@ public class WidgetProvider extends AppWidgetProvider {
     }
 
     private void showOneText(Context context, SharedPreferences sharedPreferences, RemoteViews views, HashMap hashMap) {
-        final Markwon markwon = Markwon.builder(context).usePlugin(SoftBreakAddsNewLinePlugin.create()).build();
+        final Markwon markwon = Markwon.builder(context).usePlugin(SoftBreakAddsNewLinePlugin.create()).usePlugin(TaskListPlugin.create(context)).usePlugin(StrikethroughPlugin.create()).build();
         String originalText = markwon.toMarkdown((String) hashMap.get("text")).toString();
         String text = originalText.replace("\n", " ")
                 .replace("@@", "\n");

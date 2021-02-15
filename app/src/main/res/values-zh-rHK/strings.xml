@@ -215,4 +215,5 @@ lz差不多是條鹹魚了致力於確保本應用儘可能的有用和高效。
     <string name="onetext_uri_open_button">打開</string>
     <string name="check_new_version_text">有新版本可用。</string>
     <string name="check_new_version_button">查閲</string>
+    <string name="edit_feed_successfully">保存成功</string>
 </resources>

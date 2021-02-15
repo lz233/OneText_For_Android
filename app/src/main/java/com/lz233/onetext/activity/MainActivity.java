@@ -74,7 +74,10 @@ import java.util.Locale;
 import java.util.concurrent.Flow;
 
 import io.noties.markwon.Markwon;
+import io.noties.markwon.MarkwonPlugin;
 import io.noties.markwon.SoftBreakAddsNewLinePlugin;
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
+import io.noties.markwon.ext.tasklist.TaskListPlugin;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -236,7 +239,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_from_size_seekbar.setProgress(sharedPreferences.getInt("onetext_from_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         //监听器
         avatar_imageview.setOnClickListener(v -> {
-            startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class), ActivityOptionsCompat.makeSceneTransitionAnimation(this, avatar_imageview, getString(R.string.oauth_login_text)).toBundle());
+            startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class));
         });
         onetext_swiperefreshlayout.setOnRefreshListener(() -> {
             initRun(true);
@@ -612,7 +615,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
 
     private void showOneText(HashMap hashMap) {
         //final Markwon markwon = Markwon.builder(this).usePlugin(SoftBreakAddsNewLinePlugin.create()).usePlugin(StrikethroughPlugin.create()).usePlugin(TaskListPlugin.create(this)).build();
-        final Markwon markwon = Markwon.builder(this).usePlugin(SoftBreakAddsNewLinePlugin.create()).build();
+        final Markwon markwon = Markwon.builder(this).usePlugin(SoftBreakAddsNewLinePlugin.create()).usePlugin(TaskListPlugin.create(this)).usePlugin(StrikethroughPlugin.create()).build();
         //Spanned markdown = markwon.toMarkdown("**Hello there!**");
         //final Markwon markwon = Markwon.create(getApplicationContext());
         String text = ((String) hashMap.get("text"));

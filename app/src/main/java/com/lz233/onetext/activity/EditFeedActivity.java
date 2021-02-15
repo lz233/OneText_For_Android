@@ -71,6 +71,7 @@ public class EditFeedActivity extends BaseActivity {
                             Intent intent = new Intent("com.lz233.onetext.updatefeedlist");
                             intent.setPackage(getPackageName());
                             sendBroadcast(intent);
+                            Snackbar.make(rootView, getString(R.string.edit_feed_successfully), Snackbar.LENGTH_SHORT).show();
                         }
                     }catch (Exception e){
                         e.printStackTrace();

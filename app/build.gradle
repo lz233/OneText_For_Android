@@ -12,7 +12,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.84-は'
+        versionName = '1.84-ひ'
         if (System.getenv("APPCENTER_ANDROID_VARIANT") != null) {
             writeStringToFile("app", "VERSION_NAME", versionName)
             writeStringToFile("app", "VERSION_CODE", String.valueOf(versionCode))
@@ -75,8 +75,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.kd.easybarrage:library:0.0.1'
     implementation 'io.noties.markwon:core:4.6.2'
-    //implementation 'io.noties.markwon:ext-tasklist:4.5.1'
-    //implementation 'io.noties.markwon:ext-strikethrough:4.5.1'
+    implementation 'io.noties.markwon:ext-tasklist:4.6.2'
+    implementation 'io.noties.markwon:ext-strikethrough:4.6.2'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
     implementation "io.reactivex.rxjava3:rxjava:3.0.7"
     //implementation 'com.yanzhenjie:permission:2.0.3'
