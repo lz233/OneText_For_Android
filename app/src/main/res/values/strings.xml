@@ -217,4 +217,5 @@ If you have any questions or suggestions about my Terms and Conditions, do not h
     <string name="check_new_version_text">A New version was available.</string>
     <string name="check_new_version_button">View</string>
     <string name="edit_feed_successfully">Saved successfully</string>
+    <string name="control_long_press">Long press to open OneText</string>
 </resources>

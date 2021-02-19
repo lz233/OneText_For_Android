@@ -10,9 +10,9 @@ android {
         Date date = new Date()
         applicationId "com.lz233.onetext"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 30
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.84-ふ'
+        versionName = '1.9-へ'
         if (System.getenv("APPCENTER_ANDROID_VARIANT") != null) {
             writeStringToFile("app", "VERSION_NAME", versionName)
             writeStringToFile("app", "VERSION_CODE", String.valueOf(versionCode))
@@ -78,7 +78,8 @@ dependencies {
     implementation 'io.noties.markwon:ext-tasklist:4.6.2'
     implementation 'io.noties.markwon:ext-strikethrough:4.6.2'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
-    implementation "io.reactivex.rxjava3:rxjava:3.0.7"
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.7'
+    implementation 'org.reactivestreams:reactive-streams:1.0.3'
     //implementation 'com.yanzhenjie:permission:2.0.3'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
@@ -92,7 +93,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
     //implementation 'androidx.navigation:navigation-fragment:2.2.1'
     //implementation 'androidx.navigation:navigation-ui:2.2.1'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'androidx.documentfile:documentfile:1.0.1'

@@ -18,6 +18,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.service.controls.Control;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,14 +35,12 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.lz233.onetext.BuildConfig;
 import com.lz233.onetext.R;
-import com.lz233.onetext.service.ExternalControlService;
 import com.lz233.onetext.tools.utils.AppUtilKt;
 import com.lz233.onetext.tools.utils.CoolapkAuthUtilKt;
 import com.lz233.onetext.tools.utils.CoreUtil;
@@ -74,7 +73,6 @@ import java.util.Locale;
 import java.util.concurrent.Flow;
 
 import io.noties.markwon.Markwon;
-import io.noties.markwon.MarkwonPlugin;
 import io.noties.markwon.SoftBreakAddsNewLinePlugin;
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 import io.noties.markwon.ext.tasklist.TaskListPlugin;
@@ -211,8 +209,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
         }
-        //externalControl
-        //initExternalControlService();
         //检查更新
         checkUpdate();
         main_linearlayout.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
@@ -440,11 +436,9 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             editor.apply();
         });
     }
-
     @Override
     protected void onStart() {
         super.onStart();
-        // The activity is about to become visible.
         if (sharedPreferences.getBoolean("oauth_show", true)) {
             if (sharedPreferences.getBoolean("oauth_logined", false)) {
                 if (FileUtil.isFile(getFilesDir().getPath() + "/Oauth/Avatar.png")) {
@@ -474,57 +468,23 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
-        if (requestCode == 233 && resultCode == Activity.RESULT_OK) {
-            Uri uriTree = resultData.getData();
-            if (uriTree != null) {
-                final int takeFlags = getIntent().getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                getContentResolver().takePersistableUriPermission(uriTree, takeFlags);
-                editor.putString("pic_uri_tree", uriTree.toString());
-                editor.apply();
-                // 创建所选目录的DocumentFile，可以使用它进行文件操作
-                DocumentFile root = DocumentFile.fromTreeUri(this, uriTree);
-                // 比如使用它创建文件夹
-                //DocumentFile[] rootList = root.listFiles();
-                shotOneTextViaSAF(root);
+        if (resultCode==Activity.RESULT_OK){
+            if (requestCode == 233) {
+                Uri uriTree = resultData.getData();
+                if (uriTree != null) {
+                    final int takeFlags = getIntent().getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    getContentResolver().takePersistableUriPermission(uriTree, takeFlags);
+                    editor.putString("pic_uri_tree", uriTree.toString());
+                    editor.apply();
+                    // 创建所选目录的DocumentFile，可以使用它进行文件操作
+                    DocumentFile root = DocumentFile.fromTreeUri(this, uriTree);
+                    // 比如使用它创建文件夹
+                    //DocumentFile[] rootList = root.listFiles();
+                    shotOneTextViaSAF(root);
+                }
             }
         }
-    }
 
-    private void initExternalControlService() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            ExternalControlService service = new ExternalControlService();
-            Flow.Publisher<Control> publisher = service.createPublisherForAllAvailable();
-            List<Control> loadedControls = new ArrayList<>();
-            subscribe(publisher, 10, loadedControls);
-
-            List<Control> expectedControls = new ArrayList<>();
-            expectedControls.add(new Control.StatelessBuilder(
-                    service.buildLight(false, 0.0f)).build());
-            expectedControls.add(new Control.StatelessBuilder(
-                    service.buildSwitch(false)).build());
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    private void subscribe(Flow.Publisher<Control> publisher, final int request,
-                           final List<Control> addToList) {
-        publisher.subscribe(new Flow.Subscriber<Control>() {
-            public void onSubscribe(Flow.Subscription s) {
-                s.request(request);
-            }
-
-            public void onNext(Control c) {
-                addToList.add(c);
-            }
-
-            public void onError(Throwable t) {
-                throw new IllegalStateException("onError should not be called here");
-            }
-
-            public void onComplete() {
-
-            }
-        });
     }
 
     private void initRun(final Boolean forcedRefresh) {
