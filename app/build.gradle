@@ -10,9 +10,9 @@ android {
         Date date = new Date()
         applicationId "com.lz233.onetext"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.84-ひ'
+        versionName = '1.84-ふ'
         if (System.getenv("APPCENTER_ANDROID_VARIANT") != null) {
             writeStringToFile("app", "VERSION_NAME", versionName)
             writeStringToFile("app", "VERSION_CODE", String.valueOf(versionCode))

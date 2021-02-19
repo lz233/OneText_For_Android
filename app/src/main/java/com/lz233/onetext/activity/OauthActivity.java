@@ -3,6 +3,8 @@ package com.lz233.onetext.activity;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.lz233.onetext.R;
 import com.lz233.onetext.tools.utils.DownloadUtil;

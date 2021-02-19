@@ -1,19 +1,17 @@
 {
-  "version": 1,
+  "version": 2,
   "artifactType": {
     "type": "APK",
     "kind": "Directory"
   },
   "applicationId": "com.lz233.onetext",
-  "variantName": "release",
+  "variantName": "processReleaseResources",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "properties": [],
-      "versionCode": 20200728,
-      "versionName": "1.62-け",
-      "enabled": true,
+      "versionCode": 20210219,
+      "versionName": "1.84-ひ",
       "outputFile": "app-release.apk"
     }
   ]
