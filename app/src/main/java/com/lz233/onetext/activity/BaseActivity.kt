@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -74,7 +75,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun fuckNav(last_layout: View, left: Int, top: Int, right: Int, bottom: Int) {
-        val lp = last_layout.layoutParams as LinearLayout.LayoutParams
+        val lp = last_layout.layoutParams as RelativeLayout.LayoutParams
         lp.setMargins(left, top, right, bottom)
         last_layout.layoutParams = lp
     }
