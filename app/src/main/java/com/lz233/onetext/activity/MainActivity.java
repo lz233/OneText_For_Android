@@ -85,6 +85,7 @@ import okhttp3.Response;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
+    private boolean showLyric = true;
     private CoreUtil coreUtil;
 
     private ImageView sponsor_imageview;
@@ -169,16 +170,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         requestPermissions(permissions);
         //初始化
         AppCenter.start(getApplication(), "2bd0575c-79d2-45d9-97f3-95e6a81e34e0", Analytics.class, Crashes.class);
-        if (sharedPreferences.getBoolean("disable_appcenter_analytics", false)) {
-            Analytics.setEnabled(false);
-        } else {
-            Analytics.setEnabled(true);
-        }
-        if (sharedPreferences.getBoolean("disable_appcenter_crashes", false)) {
-            Crashes.setEnabled(false);
-        } else {
-            Crashes.setEnabled(true);
-        }
+        Analytics.setEnabled(!sharedPreferences.getBoolean("disable_appcenter_analytics", false));
+        Crashes.setEnabled(!sharedPreferences.getBoolean("disable_appcenter_crashes", false));
         AppCenterFuture<Boolean> hasCrashedInLastSession = Crashes.hasCrashedInLastSession();
         hasCrashedInLastSession.thenAccept(aBoolean -> {
             if (aBoolean) {
@@ -436,6 +429,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             editor.apply();
         });
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -468,7 +462,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
-        if (resultCode==Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 233) {
                 Uri uriTree = resultData.getData();
                 if (uriTree != null) {
@@ -499,7 +493,17 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             sponsor_imageview.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(sponsorUrl))));
             sponsor_imageview.setVisibility(View.VISIBLE);
         }
-        if (feedMap.get("feed_type").equals("internet")) {
+        if ((getIntent().getStringExtra("lyric") != null) & showLyric) {
+            HashMap hashMap = new HashMap();
+            hashMap.put("text", getIntent().getStringExtra("lyric"));
+            hashMap.put("by", getIntent().getStringExtra("artist"));
+            hashMap.put("from", getIntent().getStringExtra("musicName"));
+            hashMap.put("time", "");
+            hashMap.put("uri", "");
+            showOneText(hashMap);
+            showLyric = false;
+            progressBar.post(() -> progressBar.setVisibility(View.GONE));
+        } else if (feedMap.get("feed_type").equals("internet")) {
             if (sharedPreferences.getString("api_string", "").equals("") | coreUtil.ifOneTextShouldUpdate(false) | forcedRefresh) {
                 new GetUtil().sendGet((String) feedMap.get("api_url"), result -> {
                     onetext_text_textview.post(() -> {

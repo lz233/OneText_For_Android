@@ -52,7 +52,7 @@ In the development process, we are especially grateful:
 \n\n
 The development of this project is inseparable from the following projects:
 \n
-[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView) [EasyBarrage](https://github.com/shiweibsw/EasyBarrage) [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair)
+[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView) [EasyBarrage](https://github.com/shiweibsw/EasyBarrage) [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair) [BiliRoaming](https://github.com/yujincheng08/BiliRoaming)
 \n\n
 The home page of this app: [Click me](https://github.com/lz233/OneText_For_Android)
 \n\n
@@ -218,4 +218,5 @@ If you have any questions or suggestions about my Terms and Conditions, do not h
     <string name="check_new_version_button">View</string>
     <string name="edit_feed_successfully">Saved successfully</string>
     <string name="control_long_press">Long press to open OneText</string>
+    <string name="xposed_description">Share lyric to onetext via hook.\nOn the NetEase Cloud Music lyric interface, long press the lyrics, and then long press the lyrics picture.</string>
 </resources>

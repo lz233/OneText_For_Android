@@ -38,7 +38,7 @@
 \n\n
 本项目的开发离不开以下项目：
 \n
-[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView) [EasyBarrage](https://github.com/shiweibsw/EasyBarrage) [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair)
+[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView) [EasyBarrage](https://github.com/shiweibsw/EasyBarrage) [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair) [BiliRoaming](https://github.com/yujincheng08/BiliRoaming)
 \n\n
 本应用的主页：[点我](https://github.com/lz233/OneText_For_Android)
 \n\n
@@ -217,4 +217,5 @@ lz差不多是条咸鱼了致力于确保本应用尽可能的有用和高效。
     <string name="check_new_version_button">查阅</string>
     <string name="edit_feed_successfully">保存成功</string>
     <string name="control_long_press">长按打开一言</string>
+    <string name="xposed_description">通过 Xposed 分享歌词到一言。\n在网易云歌词界面长按歌词，然后长按歌词图片。</string>
 </resources>
