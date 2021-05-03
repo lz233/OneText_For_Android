@@ -66,8 +66,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //implementation project(':lawnchair')
-    implementation 'com.microsoft.appcenter:appcenter-analytics:4.1.0'
-    implementation 'com.microsoft.appcenter:appcenter-crashes:4.1.0'
+    implementation 'com.microsoft.appcenter:appcenter-analytics:4.1.1'
+    implementation 'com.microsoft.appcenter:appcenter-crashes:4.1.1'
     implementation 'com.zqc.opencc.android.lib:lib-opencc-android:1.1.0'
     //implementation 'com.takisoft.fix:preference-v7-simplemenu:28.0.0.0'
     //implementation 'com.liulishuo.okdownload:okdownload:1.0.7'
