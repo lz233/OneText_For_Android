@@ -17,8 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.service.controls.Control;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +28,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
@@ -47,6 +44,7 @@ import com.lz233.onetext.tools.utils.CoreUtil;
 import com.lz233.onetext.tools.utils.DownloadUtil;
 import com.lz233.onetext.tools.utils.FileUtil;
 import com.lz233.onetext.tools.utils.GetUtil;
+import com.lz233.onetext.tools.utils.QRCodeUtil;
 import com.lz233.onetext.tools.utils.SaveBitmapUtil;
 import com.lz233.onetext.view.AdjustImageView;
 import com.lz233.onetext.view.NiceImageView;
@@ -66,11 +64,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Flow;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.SoftBreakAddsNewLinePlugin;
@@ -99,9 +95,11 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private TextView onetext_text_textview;
     private TextView onetext_quote2_textview;
     private TextView onetext_by_textview;
-    private TextView onetext_from_textview;
     private TextView onetext_time_textview;
+    private TextView onetext_from_textview;
     private ImageView seal_imageview;
+    private LinearLayout qr_linearLayout;
+    private ImageView qr_imageview;
     private CardView push_layout;
     private AdjustImageView push_imageview;
     private LinearLayout request_permissions_layout;
@@ -125,11 +123,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*if(sharedPreferences.getString("interface_style","md2").equals("default")){
-            setContentView(R.layout.activity_main);
-        }else if(sharedPreferences.getString("interface_style","md2").equals("md2")){
-            setContentView(R.layout.activity_main_2);
-        }*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //曲 线 救 国
@@ -147,9 +140,11 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_text_textview = findViewById(R.id.onetext_text_textview);
         onetext_quote2_textview = findViewById(R.id.onetext_quote2_textview);
         onetext_by_textview = findViewById(R.id.onetext_by_textview);
-        onetext_from_textview = findViewById(R.id.onetext_from_textview);
         onetext_time_textview = findViewById(R.id.onetext_time_textview);
+        onetext_from_textview = findViewById(R.id.onetext_from_textview);
         seal_imageview = findViewById(R.id.seal_imageview);
+        qr_linearLayout = findViewById(R.id.qr_linearLayout);
+        qr_imageview = findViewById(R.id.qr_imageview);
         push_layout = findViewById(R.id.push_layout);
         push_imageview = findViewById(R.id.push_imageview);
         request_permissions_layout = findViewById(R.id.request_permissions_layout);
@@ -493,13 +488,13 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
             sponsor_imageview.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(sponsorUrl))));
             sponsor_imageview.setVisibility(View.VISIBLE);
         }
-        if ((getIntent().getStringExtra("lyric") != null) & showLyric) {
+        if ((getIntent().getStringExtra("text") != null) & showLyric) {
             HashMap hashMap = new HashMap();
-            hashMap.put("text", getIntent().getStringExtra("lyric"));
-            hashMap.put("by", getIntent().getStringExtra("artist"));
-            hashMap.put("from", getIntent().getStringExtra("musicName"));
+            hashMap.put("text", getIntent().getStringExtra("text"));
+            hashMap.put("by", getIntent().getStringExtra("by"));
+            hashMap.put("from", getIntent().getStringExtra("from"));
             hashMap.put("time", "");
-            hashMap.put("uri", "");
+            hashMap.put("uri", getIntent().getStringExtra("uri"));
             showOneText(hashMap);
             showLyric = false;
             progressBar.post(() -> progressBar.setVisibility(View.GONE));
@@ -624,8 +619,15 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         }
         if (uri.equals("")) {
             uri_layout.setOnClickListener(null);
+            qr_linearLayout.setVisibility(View.GONE);
         } else {
             uri_layout.setOnClickListener(view -> Snackbar.make(view, R.string.onetext_uri_open_text, Snackbar.LENGTH_SHORT).setAction(R.string.onetext_uri_open_button, view1 -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)))).show());
+            if (getString(R.string.interface_mode).equals("day")) {
+                qr_linearLayout.setVisibility(View.VISIBLE);
+                qr_imageview.setImageBitmap(QRCodeUtil.createQRCodeBitmap(uri, 85, 85));
+            } else {
+                qr_linearLayout.setVisibility(View.GONE);
+            }
         }
         //更新小部件
         Intent intent = new Intent("com.lz233.onetext.widget");
@@ -815,7 +817,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     }
 
     private void checkUpdate() {
-        boolean isTest = true;
+        boolean isTest = false;
         if (AppUtilKt.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("update_latest_refresh_time", 0)) > (isTest ? 0 : 86400000))) {
             if (isTest ? true : BuildConfig.BUILD_TYPE.equals("coolapk")) {
                 OkHttpClient client = new OkHttpClient();

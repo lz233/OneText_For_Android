@@ -218,4 +218,5 @@ lz差不多是條鹹魚了致力於確保本應用盡可能的有用和高效。
     <string name="edit_feed_successfully">儲存成功</string>
     <string name="control_long_press">長按開啟一言</string>
     <string name="xposed_description">通過 Xposed 分享歌詞到一言。\n在網易雲歌詞界面長按歌詞，然後長按歌詞圖片。</string>
+    <string name="qr_text">掃碼查看來源</string>
 </resources>

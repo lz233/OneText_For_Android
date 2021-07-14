@@ -3,7 +3,6 @@ package com.lz233.onetext.hook
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.widget.TextView
 import com.lz233.onetext.BuildConfig
 import com.lz233.onetext.hook.utils.HookContext
@@ -14,9 +13,9 @@ import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
-class InitHook : IXposedHookLoadPackage{
+class InitHook : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
-        if (lpparam.packageName=="com.netease.cloudmusic"){
+        if (lpparam.packageName == "com.netease.cloudmusic") {
             XposedHelpers.findAndHookMethod(Application::class.java, "attach", Context::class.java, object : XC_MethodHook() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     super.afterHookedMethod(param)
@@ -29,7 +28,7 @@ class InitHook : IXposedHookLoadPackage{
         }
     }
 
-    private fun init(){
+    private fun init() {
         LogUtil.d(HookContext.context.packageName)
         //获取 activity
         XposedHelpers.findClass("android.app.Instrumentation", HookContext.classLoader)
@@ -38,25 +37,26 @@ class InitHook : IXposedHookLoadPackage{
                     LogUtil.d("Current activity: ${HookContext.activity.javaClass}")
                 }
         "com.netease.cloudmusic.activity.LyricShareActivity"
-                .hookBeforeMethod("a","com.netease.cloudmusic.meta.CommonLyricLine"){
+                .hookBeforeMethod("U3", "com.netease.cloudmusic.meta.CommonLyricLine") {
                     val thisObject = it.thisObject as Activity
-                    (thisObject.getObjectField("s") as TextView).setOnLongClickListener {
+                    (thisObject.getObjectField("W") as TextView).setOnLongClickListener {
                         val lyricShareActivity = "com.netease.cloudmusic.activity.LyricShareActivity".findClass()
-                        val musicInfo = lyricShareActivity.callStaticMethod("f",thisObject)!!
-                        val list = lyricShareActivity.callStaticMethod("e",thisObject)
+                        val musicInfo = lyricShareActivity.callStaticMethod("I3", thisObject)!!
+                        val list = lyricShareActivity.callStaticMethod("H3", thisObject)
                                 ?.callMethod("getRealAdapter")
                                 ?.callMethod("getList")!! as List<Any>
                         thisObject.startActivity(thisObject.packageManager.getLaunchIntentForPackage(BuildConfig.APPLICATION_ID)?.apply {
-                            putExtra("lyric",StringBuilder().apply {
-                                for (commonLyricLine in list.listIterator()){
-                                    if (commonLyricLine.callMethod("isShare") as Boolean){
+                            putExtra("text", StringBuilder().apply {
+                                for (commonLyricLine in list.listIterator()) {
+                                    if (commonLyricLine.callMethod("isShare") as Boolean) {
                                         append("${commonLyricLine.callMethod("getContent")}\n")
                                     }
                                 }
-                                deleteAt(length-1)
+                                deleteAt(length - 1)
                             }.toString())
-                            putExtra("musicName",musicInfo.callMethod("getMusicName") as String)
-                            putExtra("artist",musicInfo.callMethod("getSingerName",true) as String)
+                            putExtra("by", musicInfo.callMethod("getSingerName", true) as String)
+                            putExtra("from", musicInfo.callMethod("getMusicName") as String)
+                            putExtra("uri", "https://y.music.163.com/m/song?id=${musicInfo.callMethod("getId") as Long}")
                         })
                         true
                     }

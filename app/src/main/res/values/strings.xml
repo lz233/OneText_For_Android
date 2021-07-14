@@ -219,4 +219,6 @@ If you have any questions or suggestions about my Terms and Conditions, do not h
     <string name="edit_feed_successfully">Saved successfully</string>
     <string name="control_long_press">Long press to open OneText</string>
     <string name="xposed_description">Share lyric to onetext via hook.\nOn the NetEase Cloud Music lyric interface, long press the lyrics, and then long press the lyrics picture.</string>
+    <string name="qr_text">Scan to view source</string>
+    <string name="interface_mode" translatable="false">day</string>
 </resources>

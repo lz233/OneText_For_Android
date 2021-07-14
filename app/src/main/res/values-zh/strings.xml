@@ -218,4 +218,5 @@ lz差不多是条咸鱼了致力于确保本应用尽可能的有用和高效。
     <string name="edit_feed_successfully">保存成功</string>
     <string name="control_long_press">长按打开一言</string>
     <string name="xposed_description">通过 Xposed 分享歌词到一言。\n在网易云歌词界面长按歌词，然后长按歌词图片。</string>
+    <string name="qr_text">扫码查看来源</string>
 </resources>
