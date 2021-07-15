@@ -6,13 +6,13 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileOptions.encoding = 'UTF-8'
-    compileSdkVersion 30
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
     defaultConfig {
         Date date = new Date()
         applicationId "com.lz233.onetext"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode = date.format("yyyyMMdd").toInteger()
         versionName = '1.93-む'
         if (System.getenv("APPCENTER_ANDROID_VARIANT") != null) {
