@@ -11,17 +11,18 @@
         android:maxSdkVersion="25" />
 
     <application
+        android:name=".OneTextApp"
         android:allowBackup="false"
         android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".OneTextApp"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.EditFeedActivity"
+            android:exported="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/title_activity_edit_feed"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -30,6 +31,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.PrivacyPolicyActivity"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/title_activity_privacy_policy"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -48,6 +50,7 @@
         </activity>
         <activity
             android:name=".activity.WelcomeActivity"
+            android:exported="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/title_activity_welcome"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -55,6 +58,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.OauthActivity"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -69,6 +73,7 @@
         </activity>
         <activity
             android:name=".activity.CrashReportActivity"
+            android:exported="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/title_activity_crash_report"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -76,12 +81,14 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.AboutActivity"
+            android:exported="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/about_page_text"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingActivity"
+            android:exported="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/title_activity_setting"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -89,6 +96,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.MainActivity"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -101,7 +109,9 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".provider.WidgetProvider">
+        <receiver
+            android:name=".provider.WidgetProvider"
+            android:exported="true">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_provider_info" />
@@ -123,7 +133,10 @@
         </provider>
 
         <!-- New signature permission to ensure only systemui can bind to these services -->
-        <service android:name=".service.ExternalControlService" android:label="@string/app_name"
+        <service
+            android:name=".service.ExternalControlService"
+            android:label="@string/app_name"
+            android:exported="true"
             android:permission="android.permission.BIND_CONTROLS">
             <intent-filter>
                 <action android:name="android.service.controls.ControlsProviderService" />
