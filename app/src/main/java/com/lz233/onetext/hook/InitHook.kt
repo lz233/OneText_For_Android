@@ -37,7 +37,7 @@ class InitHook : IXposedHookLoadPackage {
                     LogUtil.d("Current activity: ${HookContext.activity.javaClass}")
                 }
         "com.netease.cloudmusic.activity.LyricShareActivity"
-                .hookBeforeMethod("U3", "com.netease.cloudmusic.meta.CommonLyricLine") {
+                .hookBeforeMethod("S3", "com.netease.cloudmusic.meta.CommonLyricLine") {
                     val thisObject = it.thisObject as Activity
                     (thisObject.getObjectField("W") as TextView).setOnLongClickListener {
                         val lyricShareActivity = "com.netease.cloudmusic.activity.LyricShareActivity".findClass()
