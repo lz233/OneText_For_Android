@@ -14,7 +14,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 31
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.93-む'
+        versionName = '1.93-め'
         if (System.getenv("APPCENTER_ANDROID_VARIANT") != null) {
             writeStringToFile("app", "VERSION_NAME", versionName)
             writeStringToFile("app", "VERSION_CODE", String.valueOf(versionCode))
@@ -103,7 +103,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'androidx.documentfile:documentfile:1.0.1'
-    implementation 'com.github.kyuubiran:EzXHelper:0.3.3'
+    implementation 'com.github.kyuubiran:EzXHelper:0.3.7'
     compileOnly 'de.robv.android.xposed:api:82'
 }
 

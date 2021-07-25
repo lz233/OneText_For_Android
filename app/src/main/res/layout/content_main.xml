@@ -44,7 +44,7 @@
                             android:layout_marginStart="@dimen/layout_margin"
                             android:layout_marginTop="@dimen/layout_margin"
                             android:layout_marginEnd="@dimen/layout_margin"
-                            android:layout_marginBottom="@dimen/content_margin"
+                            android:layout_marginBottom="@dimen/layout_margin"
                             android:background="@drawable/bgstyle_md2"
                             android:orientation="vertical">
 
@@ -158,6 +158,7 @@
                             android:layout_gravity="end"
                             android:layout_marginStart="@dimen/layout_margin"
                             android:layout_marginEnd="@dimen/layout_margin"
+                            android:layout_marginTop="-12dp"
                             android:layout_marginBottom="@dimen/layout_margin">
 
                             <TextView
