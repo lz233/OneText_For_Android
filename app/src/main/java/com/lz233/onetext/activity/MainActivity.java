@@ -183,7 +183,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         coreUtil.initFeedFile();
         //welcome
         if (sharedPreferences.getBoolean("first_run", true)) {
-            startActivity(new Intent().setClass(MainActivity.this, WelcomeActivity.class));
+            //startActivity(new Intent().setClass(MainActivity.this, WelcomeActivity.class));
         }
         //daynight
         switch (sharedPreferences.getInt("interface_daynight", 0)) {
