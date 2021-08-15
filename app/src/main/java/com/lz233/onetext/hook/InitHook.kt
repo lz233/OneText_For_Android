@@ -23,43 +23,13 @@ class InitHook : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName == "com.netease.cloudmusic") {
             EzXHelperInit.initHandleLoadPackage(lpparam)
-            findMethodByCondition("com.netease.cloudmusic.activity.LyricShareActivity") {
-                (it.parameterTypes.size == 1) && (it.parameterTypes[0].name == "com.netease.cloudmusic.meta.CommonLyricLine")
-            }.hookBefore {
-                val thisObject = it.thisObject as Activity
-                val textView = thisObject.findObjectByCondition {
-                    (it is TextView) && (it.text == "歌词图片")
-                } as TextView
-                textView.setOnLongClickListener {
-                    val lyricShareActivity = "com.netease.cloudmusic.activity.LyricShareActivity".findClass()
-                    val musicInfo = findMethodByCondition(lyricShareActivity) {
-                        (it.parameterTypes.size == 1) && (it.returnType.name == "com.netease.cloudmusic.meta.MusicInfo")
-                    }.invoke(null, thisObject)
-                    val list = findMethodByCondition(lyricShareActivity) {
-                        (it.parameterTypes.size == 1) && (it.returnType.name == "com.netease.cloudmusic.ui.PagerListView")
-                    }.invoke(null, thisObject)?.callMethod("getRealAdapter")?.callMethod("getList")!! as List<Any>
-                    thisObject.startActivity(thisObject.packageManager.getLaunchIntentForPackage(BuildConfig.APPLICATION_ID)?.apply {
-                        putExtra("text", StringBuilder().apply {
-                            for (commonLyricLine in list.listIterator()) {
-                                if (commonLyricLine.callMethod("isShare") as Boolean) {
-                                    append("${commonLyricLine.callMethod("getContent")}\n")
-                                }
-                            }
-                            deleteAt(lastIndex)
-                        }.toString())
-                        putExtra("by", musicInfo.callMethod("getSingerName", true) as String)
-                        putExtra("from", musicInfo.callMethod("getMusicName") as String)
-                        putExtra("uri", "https://y.music.163.com/m/song?id=${musicInfo.callMethod("getId") as Long}")
-                    })
-                    true
-                }
-            }
             XposedHelpers.findAndHookMethod(Application::class.java, "attach", Context::class.java, object : XC_MethodHook() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     super.afterHookedMethod(param)
                     HookContext.context = param.args[0] as Context
                     //获取 classloader
                     HookContext.classLoader = HookContext.context.classLoader
+                    EzXHelperInit.setEzClassLoader(HookContext.classLoader)
                     init()
                 }
             })
@@ -74,6 +44,37 @@ class InitHook : IXposedHookLoadPackage {
                     HookContext.activity = activityParam.result as Activity
                     LogUtil.d("Current activity: ${HookContext.activity.javaClass}")
                 }
+        findMethodByCondition("com.netease.cloudmusic.activity.LyricShareActivity") {
+            (it.parameterTypes.size == 1) && (it.parameterTypes[0].name == "com.netease.cloudmusic.meta.CommonLyricLine")
+        }.hookBefore {
+            val thisObject = it.thisObject as Activity
+            val textView = thisObject.findObjectByCondition {
+                (it is TextView) && (it.text == "歌词图片")
+            } as TextView
+            textView.setOnLongClickListener {
+                val lyricShareActivity = "com.netease.cloudmusic.activity.LyricShareActivity".findClass()
+                val musicInfo = findMethodByCondition(lyricShareActivity) {
+                    (it.parameterTypes.size == 1) && (it.returnType.name == "com.netease.cloudmusic.meta.MusicInfo")
+                }.invoke(null, thisObject)
+                val list = findMethodByCondition(lyricShareActivity) {
+                    (it.parameterTypes.size == 1) && (it.returnType.name == "com.netease.cloudmusic.ui.PagerListView")
+                }.invoke(null, thisObject)?.callMethod("getRealAdapter")?.callMethod("getList")!! as List<Any>
+                thisObject.startActivity(thisObject.packageManager.getLaunchIntentForPackage(BuildConfig.APPLICATION_ID)?.apply {
+                    putExtra("text", StringBuilder().apply {
+                        for (commonLyricLine in list.listIterator()) {
+                            if (commonLyricLine.callMethod("isShare") as Boolean) {
+                                append("${commonLyricLine.callMethod("getContent")}\n")
+                            }
+                        }
+                        deleteAt(lastIndex)
+                    }.toString())
+                    putExtra("by", musicInfo.callMethod("getSingerName", true) as String)
+                    putExtra("from", musicInfo.callMethod("getMusicName") as String)
+                    putExtra("uri", "https://y.music.163.com/m/song?id=${musicInfo.callMethod("getId") as Long}")
+                })
+                true
+            }
+        }
         /*"com.netease.cloudmusic.activity.LyricShareActivity"
                 .hookBeforeMethod("S3", "com.netease.cloudmusic.meta.CommonLyricLine") {
                     val thisObject = it.thisObject as Activity
