@@ -1,5 +1,7 @@
 package com.lz233.onetext.provider;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -32,8 +34,6 @@ import io.noties.markwon.SoftBreakAddsNewLinePlugin;
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 import io.noties.markwon.ext.tasklist.TaskListPlugin;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
-
 public class WidgetProvider extends AppWidgetProvider {
 
     @Override
@@ -60,7 +60,7 @@ public class WidgetProvider extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             Intent openIntent = new Intent(context, MainActivity.class);
             openIntent.setPackage(context.getPackageName());
-            PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, 0);
+            PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_IMMUTABLE);
             views.setOnClickPendingIntent(R.id.onetext_widget_layout, openPendingIntent);
             run(context, views, appWidgetManager);
             //views.setOnClickPendingIntent(R.id.onetext_widget_layout,getPendingIntent(context,R.id.onetext_widget_layout));
@@ -205,7 +205,7 @@ public class WidgetProvider extends AppWidgetProvider {
             }
             Intent openIntent = new Intent(context, MainActivity.class);
             openIntent.setPackage(context.getPackageName());
-            PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, 0);
+            PendingIntent openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_IMMUTABLE);
             notificationViewsLarge.setOnClickPendingIntent(R.id.onetext_notification_large_layout, openPendingIntent);
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)

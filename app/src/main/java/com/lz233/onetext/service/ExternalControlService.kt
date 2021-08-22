@@ -17,10 +17,8 @@ import com.lz233.onetext.tools.utils.CoreUtil
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.processors.ReplayProcessor
 import org.reactivestreams.FlowAdapters
-import java.util.*
 import java.util.concurrent.Flow
 import java.util.function.Consumer
-import kotlin.collections.HashMap
 
 @RequiresApi(Build.VERSION_CODES.R)
 class ExternalControlService : ControlsProviderService() {
@@ -32,7 +30,7 @@ class ExternalControlService : ControlsProviderService() {
     val pi: PendingIntent =
             PendingIntent.getActivity(
                     context, 2333, i,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    PendingIntent.FLAG_IMMUTABLE
             )
     val updatePublisher = ReplayProcessor.create<Control>()
     override fun createPublisherForAllAvailable(): Flow.Publisher<Control> {
@@ -81,9 +79,9 @@ class ExternalControlService : ControlsProviderService() {
 
     private fun buildOnetext(forceFresh: Boolean = false): Control {
         val coreUtil = CoreUtil(context)
-        var hashMap: HashMap<Any, Any> = try {
+        val hashMap: HashMap<Any, Any> = try {
             coreUtil.getOneText(forceFresh, true)
-        }catch (e: Throwable){
+        } catch (e: Throwable) {
             e.printStackTrace()
             HashMap<Any, Any>().apply {
                 put("text", getString(R.string.control_long_press))
