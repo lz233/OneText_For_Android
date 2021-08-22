@@ -14,7 +14,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 31
         versionCode = date.format("yyyyMMdd").toInteger()
-        versionName = '1.94-も'
+        versionName = '1.94-や'
         if (System.getenv("APPCENTER_ANDROID_VARIANT") != null) {
             writeStringToFile("app", "VERSION_NAME", versionName)
             writeStringToFile("app", "VERSION_CODE", String.valueOf(versionCode))
