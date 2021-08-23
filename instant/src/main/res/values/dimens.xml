@@ -1,0 +1,12 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="onetext_size">23sp</dimen>
+    <dimen name="title_size">23sp</dimen>
+    <dimen name="text_size">18sp</dimen>
+    <dimen name="small_text_size">15sp</dimen>
+    <dimen name="content_text_size">13sp</dimen>
+    <dimen name="large_margin">30dp</dimen>
+    <dimen name="layout_margin">20dp</dimen>
+    <dimen name="content_margin">8dp</dimen>
+    <dimen name="cardview_radius">5dp</dimen>
+</resources>

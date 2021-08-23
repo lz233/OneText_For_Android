@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">一言（免安装体验）</string>
+    <string name="about_page_text">关于页面</string>
+    <string name="about_text">关于</string>
+    <string name="created_time">创作于</string>
+    <string name="current_font_text">当前字体：</string>
+    <string name="feed_text">订阅源</string>
+    <string name="default_text">默认</string>
+    <string name="feed_refresh_text">源刷新时间：</string>
+    <string name="font_custom_text">选择一个自定义字体</string>
+    <string name="font_system_text">恢复默认字体</string>
+    <string name="minute">分</string>
+    <string name="onetext_by_size_text">作者文字大小：</string>
+    <string name="onetext_from_size_text">来源文字大小：</string>
+    <string name="onetext_text_size_text">一言大小：</string>
+    <string name="onetext_time_size_text">时间文字大小：</string>
+    <string name="record_time">记录于</string>
+    <string name="request_permissions_agree_button">同意</string>
+    <string name="request_permissions_text">需要储存权限</string>
+    <string name="save_button">保存</string>
+    <string name="save_fail">失败</string>
+    <string name="save_succeed">成功，保存为</string>
+    <string name="save_text">保存图片</string>
+    <string name="setting_succeed_text">成功，下次启动生效</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="widget_dark">暗色</string>
+    <string name="widget_disenable_text">小部件没有启用</string>
+    <string name="widget_enable_text">小部件已启用</string>
+    <string name="widget_text">小部件</string>
+    <string name="about_page_introduction">一言是一个简洁的小应用，能在启动器上通过小部件显示一些自定义的句子。你还可以在应用中生成句子截图，并保存或分享。
+\n\n
+一言遵循LGPL许可证，在这个基础上你可以修改它。
+\n\n
+在开发过程中，我们特别感谢：
+\n
+[lz差不多是条咸鱼了](https://github.com/lz233) [小萌新x](https://github.com/XiaoMengXinX) [亢龙有悔](https://github.com/kanglyh) [猫耳逆变器](https://github.com/NekoInverter) [RebornQ](https://github.com/RebornQ)
+\n\n
+本项目的开发离不开以下项目：
+\n
+[AndroidOpenSourceProject](https://source.android.com/) [MaterialDesignIcons](https://github.com/google/material-design-icons) [MicrosoftAppCenter](https://appcenter.ms) [Markwon](https://github.com/noties/Markwon) [IndicatorSeekBar](https://github.com/warkiz/IndicatorSeekBar) [Calligraphy](https://github.com/InflationX/Calligraphy) [ViewPump](https://github.com/InflationX/ViewPump) [EasyPermissions](https://github.com/googlesamples/easypermissions) [ProguardElderDictionary](https://github.com/heruoxin/proguard-elder-dictionary) [AndroidOpenCC](https://github.com/qichuan/android-opencc) [OpenCCPython](https://github.com/yichen0831/opencc-python) [NiceImageView](https://github.com/SheHuan/NiceImageView) [EasyBarrage](https://github.com/shiweibsw/EasyBarrage) [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair) [BiliRoaming](https://github.com/yujincheng08/BiliRoaming) [EzXHelper](https://github.com/KyuubiRan/EzXHelper)
+\n\n
+本应用的主页：[点我](https://github.com/lz233/OneText_For_Android)
+\n\n
+核心库的主页：[点我](https://github.com/lz233/OneText-Library)
+    \n\n
+    关于如何提交句子到核心库：[点我](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E4%BA%A4%E5%8F%A5%E5%AD%90%EF%BC%9F)
+    \n\n
+        关于如何在Github上创建自己的订阅源：[点我](https://github.com/lz233/OneText-Library/wiki/Q%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9C%A8Github%E4%B8%8A%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E8%AE%A2%E9%98%85%E6%BA%90%EF%BC%9F)
+    </string>
+    <string name="succeed">成功</string>
+    <string name="widget_can_download">允许小部件更新源</string>
+    <string name="hour">时</string>
+    <string name="widget_refresh_text">小部件刷新时间：</string>
+    <string name="interface_text">界面</string>
+    <string name="refresh_onetext_button">刷新</string>
+    <string name="refresh_onetext_text">来个新句子</string>
+    <string name="seal_button_isoff">显示</string>
+    <string name="seal_button_ison">隐藏</string>
+    <string name="seal_text">显示一只可爱的初音</string>
+    <string name="widget_notification_next_effective_text">下次小部件更新时生效</string>
+    <string name="widget_notification_permissions_text">请打开通知渠道</string>
+    <string name="widget_notification_text">推送一言</string>
+    <string name="interface_daynight_text">显示模式</string>
+    <string name="widget_notification_tip_text">长按展开或收回。</string>
+    <string name="title_activity_crash_report">错误反馈</string>
+    <string name="report_page_tip">抱歉，本应用在上次崩溃了。如果你愿意，请复制日志并发送邮件到 lz23333333@gmail.com。</string>
+    <string name="report_text">抱歉，本应用在上次崩溃了。</string>
+    <string name="report_button">详情</string>
+    <string name="font_notification_text">下载文件</string>
+    <string name="font_notification_title">下载中：</string>
+    <string name="font_notification_failed">下载失败</string>
+    <string name="share_text">分享</string>
+    <string name="behavior_text">行为</string>
+    <string name="chinese_type">中文类型</string>
+    <string name="widget_center">居中</string>
+    <string name="feed_edit_text">编辑</string>
+    <string name="feed_delete_text">删除</string>
+    <string name="widget_shadow">阴影</string>
+    <string name="onetext_refresh_faild_text">更新失败，请检查网络。</string>
+    <string name="onetext_refresh_faild_button">重试</string>
+    <string name="oauth_login_text">通过 GitHub 登录</string>
+    <string name="oauth_failed_text">失败，请返回并重试。</string>
+    <string name="oauth_logout_text">确认退出？</string>
+    <string name="oauth_logout_button">确认</string>
+    <string name="oauth_show_text">Oauth 认证</string>
+    <string name="delete_succeed">删除成功</string>
+    <string name="onetext_init_faild_text">初始化失败，请检查网络。</string>
+    <string name="onetext_init_faild_button">重试</string>
+    <string name="feed_auto_update_text">自动更新</string>
+    <string name="title_activity_welcome">欢迎！</string>
+    <string name="welcome_start">开始</string>
+    <string name="request_permissions_storage_detail_text">储存权限用来保存一言图片，以便于分享。\n这些图片保存在 %s。</string>
+    <string name="request_permissions_disagree_button">不同意</string>
+    <string name="request_permissions_next_time_text">您也可以稍后同意这些权限。</string>
+    <string name="welcome_widget_text">小部件</string>
+    <string name="welcome_widget_button">下一个</string>
+    <string name="welcome_notification_text">通知</string>
+    <string name="welcome_notification_button">完成</string>
+    <string name="delete_failed">删除失败</string>
+    <string name="welcome_demo_text">死并非生的对立面，而作为生的一部分永存。</string>
+    <string name="welcome_demo_by">—— 村上春树</string>
+    <string name="font_start_download">正在下载，请查阅通知栏。</string>
+    <string name="oauth_login_detail">账户认证当前没有实际作用，仅仅为了界面美观</string>
+    <string name="oauth_cancel_button">取消</string>
+    <string name="oauth_continue_button">继续</string>
+    <string name="copied">已复制</string>
+    <string name="title_activity_privacy_policy">隐私政策与条款</string>
+    <string name="privacy_policy">## 隐私政策
+\n\n
+lz差不多是条咸鱼了将《一言》应用程序作为一个开源的应用程序。本服务是由lz差不多是条咸鱼了免费提供的，并打算按原样使用。
+\n\n
+本页面用于告知访问者关于我的个人信息的收集、使用和披露的政策，如果有人决定使用我的服务，我将在此页面上公布。
+\n\n
+如果您选择使用我的服务，则表示您同意收集和使用与本政策相关的信息。我所收集的个人信息将用于提供和改进服务。除非在本隐私政策中说明，否则我不会使用或与任何人分享您的信息。
+\n\n
+在本隐私政策中使用的术语与我们的条款和条件中的含义相同，除非在本隐私政策中另有定义，否则可以在《一言》网站上查阅。
+\n\n
+**信息收集和使用**
+\n\n
+为了获得更好的体验，在使用我们的服务时，我可能要求您提供某些个人身份信息，包括但不限于设备信息。我要求提供的信息将被保留在您的设备上，不会被我以任何方式收集。
+\n\n
+该应用程序确实使用第三方服务，可能会收集用于识别您的信息。
+\n\n
+应用程序使用的第三方服务供应商的隐私政策链接
+\n\n
+- [Microsoft Privacy Statement](https://privacy.microsoft.com/en-us/privacystatement)\n
+- [Microsoft Azure Legal Information](https://azure.microsoft.com/en-us/support/legal/)
+\n\n
+**日志数据**
+\n\n
+我想告知您，每当您使用我的服务时，在您使用我的服务时，如果应用程序出现错误，我就会在您的手机上收集数据和信息（通过第三方产品），这些数据和信息称为日志数据。该日志数据可能包括您的设备互联网协议（"IP"）地址、设备名称、操作系统版本、使用我的服务时的应用程序的配置、您使用服务的时间和日期，以及其他统计信息。
+\n\n
+**Cookies**
+\n\n
+Cookies 是带有少量数据的文件，通常作为匿名的唯一标识符使用。这些数据会从您访问的网站发送到您的浏览器，并存储在您的设备内部存储器中。
+\n\n
+本服务不明确使用这些“cookies”。但是，本应用可能会使用第三方代码和库，使用“cookies”来收集信息和改进服务。您可以选择接受或拒绝这些 "cookies"，并知道何时会有 cookie 被发送到您的设备上。如果您选择拒绝我们的 cookie，您可能无法使用本服务的某些部分。
+\n\n
+**服务提供商**
+\n\n
+由于以下原因，我可能雇用第三方公司和个人：
+\n\n
+*   为了方便我们的服务;\n
+*   代表我们提供服务;\n
+*   执行与服务相关的服务;\n
+*   为了帮助我们分析我们的服务的使用情况.
+\n\n
+我想告知本服务的用户，这些第三方可以访问您的个人信息。原因是为了代表我们完成分配给他们的任务。但是，他们有义务不为任何其他目的披露或使用这些信息。
+\n\n
+**安全性**
+\n\n
+我非常重视您对我们提供的个人信息的信任，因此我们将努力使用商业上可以接受的方式来保护您的个人信息。但请记住，没有一种通过互联网传输的方法或电子存储的方法是100%安全和可靠的，我不能保证其绝对安全。
+\n\n
+**链接到其他网站**
+\n\n
+本服务可能包含与其他网站的链接。如果您点击第三方链接，您将被引导到该网站。请注意，这些外部网站并非由我运营。因此，我强烈建议您查看这些网站的隐私政策。我对任何第三方网站或服务的内容、隐私政策或做法没有控制权，也不承担任何责任。
+\n\n
+**儿童隐私**
+\n\n
+这些服务不针对13岁以下的人，我不会故意收集13岁以下儿童的个人身份信息。如果我发现13岁以下的儿童向我提供了个人信息，我将立即从我们的服务器上删除这些信息。如果您是父母或监护人，如果您知道您的孩子向我们提供了个人信息，请与我联系，以便我能够采取必要的行动。
+\n\n
+**本隐私政策的变更**
+\n\n
+我可能会不定期更新我们的隐私政策。因此，建议您定期查看本页面，以了解任何变化。我将通过在本页面上公布新的隐私政策来通知您任何变更。这些更改在本页面上公布后立即生效。
+\n\n
+**联系我**
+\n\n
+如果您对我的隐私政策有任何疑问或建议，请随时与我联系：lz23333333@gmail.com。</string>
+    <string name="terms_and_conditions">## 条款和条件
+\n\n
+通过下载或使用本应用，这些条款将自动适用于您，因此，您在使用本应用前应仔细阅读这些条款。您不得以任何方式复制或修改本应用、本应用的任何部分或我们的商标。您不允许试图提取应用程序的源代码，您也不应该试图将应用程序翻译成其他语言，或制作衍生版本。该应用本身以及所有与之相关的商标、版权、数据库权和其他知识产权仍归lz差不多是条咸鱼了所有。
+\n\n
+lz差不多是条咸鱼了致力于确保本应用尽可能的有用和高效。为此，我们保留随时以任何理由对应用进行修改或收取服务费的权利。我们永远不会向你收取应用程序或其服务的费用，除非你非常清楚地知道你要支付的费用。
+\n\n
+《一言》应用程序存储并处理您提供给我们的个人数据，以提供我的服务。您有责任保护您的手机和访问应用程序的安全。因此，我们建议您不要越狱或 root 您的手机，这是由您的设备的官方操作系统所施加的软件限制和限制的过程。这可能会使您的手机容易受到恶意软件/病毒/恶意程序的攻击，损害您手机的安全功能，也可能意味着《一言》应用程序无法正常工作或根本无法工作。
+\n\n
+该应用程序确实使用了第三方服务，这些服务声明了他们自己的条款和细则。
+\n\n
+链接到该应用程序使用的第三方服务供应商的条款和细则
+\n\n
+- [Microsoft Privacy Statement](https://privacy.microsoft.com/en-us/privacystatement)\n
+- [Microsoft Azure Legal Information](https://azure.microsoft.com/en-us/support/legal/)
+\n\n
+您应该知道，有些事情lz差不多是条咸鱼了不承担任何责任。应用程序的某些功能需要应用程序有活跃的网络连接。该连接可以是 Wi-Fi，也可以是由您的移动网络供应商提供的，但如果您没有Wi-Fi，而且您的数据额度不够，lz差不多是条咸鱼了不承担任何责任。
+\n\n
+如果您在有 Wi-Fi 的地区之外使用该应用，您应该记住，您与移动网络供应商的协议条款仍然适用。因此，您可能会被您的移动供应商收取访问应用程序时连接期间的数据费用或其他第三方费用。在使用该应用时，如果您在没有关闭数据漫游功能的情况下，在您所在地区（即地区或国家）以外的地方使用该应用，您将承担任何此类费用，包括漫游数据费用。如果您不是您使用该应用的设备的付款人，请注意，我们假定您使用该应用时已经获得了付款人的许可。
+\n\n
+同样的，lz差不多是条咸鱼了也不能对您使用应用程序的方式负责，即您需要确保您的设备一直处于充电状态——如果您的设备没电了，而您又不能使用服务，lz差不多是条咸鱼了不承担任何责任。
+\n\n
+关于lz差不多是条咸鱼了对您使用本应用的责任，当您在使用本应用时，需要注意的是，虽然我们会尽力确保本应用的更新和正确性，但我们确实依赖第三方提供信息给我们，以便我们向您提供信息。
+\n\n
+在某些时候，我们可能希望更新应用程序。lz差不多是条咸鱼了并不承诺会一直更新应用程序，以使其与您的设备上安装的 Android 版本相关。但是，您承诺，当我们提供给您时，您将始终接受应用程序的更新，我们也可能希望停止提供该应用程序，并可以在不通知您的情况下随时终止使用该应用程序。除非我们另行告知您，否则在任何终止时，(a)本条款中授予您的权利和许可将终止；(b)您必须停止使用本应用，并（如有必要）从您的设备中删除该应用。
+\n\n
+**本条款和细则的变更**
+\n\n
+我可能会不定期更新我们的条款和条件。因此，建议您定期查看本页面，以了解任何变化。我将通过在本页面上发布新的条款和条件通知您任何更改。这些变更在本页面上发布后立即生效。
+\n\n
+**联系我们**
+\n\n
+如果您对我的条款和条件有任何疑问或建议，请随时联系我，邮箱：lz23333333@gmail.com。</string>
+    <string name="welcome_privacy_policy_title">需要同意隐私政策</string>
+    <string name="welcome_privacy_policy_disagree_button">如不同意，则将无法使用此应用。</string>
+    <string name="welcome_privacy_policy_detail_text">[阅读隐私政策与条款](onetext://privacy_policy)</string>
+    <string name="disable_appcenter_analytics">禁用 Appcenter Analytics</string>
+    <string name="disable_appcenter_crashes">禁用 Appcenter Crashes</string>
+    <string name="disable_push">禁用推送</string>
+    <string name="title_activity_edit_feed">编辑订阅源</string>
+    <string name="edit_feed_illegal">不合法的格式</string>
+    <string name="edit_feed_empty">不允许为空</string>
+    <string name="font_copyright_warn">字体仅供非商业使用，请在下载后 24 小时内删除。</string>
+    <string name="push_hided_once">已隐藏此推送</string>
+    <string name="undo">撤销</string>
+    <string name="onetext_uri_open_text">此句子指向一个链接，是否打开？</string>
+    <string name="onetext_uri_open_button">打开</string>
+    <string name="check_new_version_text">有新版本可用。</string>
+    <string name="check_new_version_button">查阅</string>
+    <string name="edit_feed_successfully">保存成功</string>
+    <string name="control_long_press">长按打开一言</string>
+    <string name="xposed_description">通过 Xposed 分享歌词到一言。\n在网易云歌词界面长按歌词，然后长按歌词图片。</string>
+    <string name="qr_text">扫码查看来源</string>
+</resources>

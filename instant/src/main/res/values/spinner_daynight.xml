@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="daynight">
+        <item>Follow System</item>
+        <item>Day</item>
+        <item>Night</item>
+    </string-array>
+</resources>

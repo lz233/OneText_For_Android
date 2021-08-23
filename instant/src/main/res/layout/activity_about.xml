@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AboutActivity">
+
+    <ch.deletescape.lawnchair.views.SpringNestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/layout_margin"
+            android:layout_marginRight="@dimen/layout_margin"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="60dp"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/ic_icon" />
+
+            <ImageView
+                android:layout_width="300dp"
+                android:id="@+id/green_android_imageview"
+                android:layout_gravity="center"
+                android:layout_marginBottom="-10dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/green_android" />
+
+            <ImageView
+                android:layout_width="300dp"
+                android:id="@+id/storage_isolation_imageview"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/storage_isolation" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/content_margin"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/googleplay_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_margin="@dimen/content_margin"
+                    app:srcCompat="@drawable/ic_google" />
+
+                <ImageView
+                    android:id="@+id/github_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_margin="@dimen/content_margin"
+                    app:srcCompat="@drawable/ic_github" />
+
+                <ImageView
+                    android:id="@+id/telegram_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="@dimen/content_margin"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_telegram" />
+
+                <ImageView
+                    android:id="@+id/mstodo_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="@dimen/content_margin"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_mstodo" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ver_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="60dp"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/small_text_size" />
+
+            <TextView
+                android:id="@+id/about_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin"
+                android:layout_weight="0"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/text_size" />
+        </LinearLayout>
+    </ch.deletescape.lawnchair.views.SpringNestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

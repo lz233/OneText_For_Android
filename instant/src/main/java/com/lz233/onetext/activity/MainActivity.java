@@ -20,7 +20,6 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -48,11 +47,6 @@ import com.lz233.onetext.tools.utils.QRCodeUtil;
 import com.lz233.onetext.tools.utils.SaveBitmapUtil;
 import com.lz233.onetext.view.AdjustImageView;
 import com.lz233.onetext.view.NiceImageView;
-import com.microsoft.appcenter.AppCenter;
-import com.microsoft.appcenter.analytics.Analytics;
-import com.microsoft.appcenter.crashes.Crashes;
-import com.microsoft.appcenter.crashes.model.ErrorReport;
-import com.microsoft.appcenter.utils.async.AppCenterFuture;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -163,28 +157,10 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         //申请权限
         final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         requestPermissions(permissions);
-        //初始化
-        AppCenter.start(getApplication(), "2bd0575c-79d2-45d9-97f3-95e6a81e34e0", Analytics.class, Crashes.class);
-        Analytics.setEnabled(!sharedPreferences.getBoolean("disable_appcenter_analytics", false));
-        Crashes.setEnabled(!sharedPreferences.getBoolean("disable_appcenter_crashes", false));
-        AppCenterFuture<Boolean> hasCrashedInLastSession = Crashes.hasCrashedInLastSession();
-        hasCrashedInLastSession.thenAccept(aBoolean -> {
-            if (aBoolean) {
-                AppCenterFuture<ErrorReport> getLastSessionCrashReport = Crashes.getLastSessionCrashReport();
-                getLastSessionCrashReport.thenAccept(errorReport -> {
-                    ViewGroup rootView = findViewById(android.R.id.content);
-                    Snackbar.make(rootView, R.string.report_text, Snackbar.LENGTH_LONG).setAction(R.string.report_button, view -> startActivity(new Intent().setClass(MainActivity.this, CrashReportActivity.class))).show();
-                });
-            }
-        });
         //剪贴板
         final ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         //装载feed
         coreUtil.initFeedFile();
-        //welcome
-        if (sharedPreferences.getBoolean("first_run", true)) {
-            //startActivity(new Intent().setClass(MainActivity.this, WelcomeActivity.class));
-        }
         //daynight
         switch (sharedPreferences.getInt("interface_daynight", 0)) {
             case 0:
@@ -223,7 +199,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         onetext_from_size_seekbar.setProgress(sharedPreferences.getInt("onetext_from_size", AppUtilKt.px2sp(this, getResources().getDimensionPixelSize(R.dimen.small_text_size))));
         //监听器
         avatar_imageview.setOnClickListener(v -> {
-            startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class));
+            startActivity(new Intent().setClass(MainActivity.this, AboutActivity.class));
         });
         onetext_swiperefreshlayout.setOnRefreshListener(() -> {
             initRun(true);
@@ -278,38 +254,8 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 Snackbar.make(view, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
             }
         });
-        /*save_button.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    Uri uri = Uri.parse(sharedPreferences.getString("pic_uri_tree", "content://com.android.externalstorage.documents/tree/primary%3APictures"));
-                    final int takeFlags = getIntent().getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    getContentResolver().takePersistableUriPermission(uri, takeFlags);
-                    DocumentFile root = DocumentFile.fromTreeUri(MainActivity.this, uri);
-                    try {
-                        if (root.findFile("OneText").isDirectory()) {
-                            root.findFile("OneText").delete();
-                            Snackbar.make(v, getString(R.string.delete_succeed), Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(v, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show();
-                    }
-                } else if (EasyPermissions.hasPermissions(MainActivity.this, permissions)) {
-                    if (FileUtil.deleteDir(new File(Environment.getExternalStorageDirectory() + "/Pictures/OneText/"))) {
-                        Snackbar.make(v, getString(R.string.delete_succeed), Snackbar.LENGTH_SHORT).show();
-                    } else {
-                        Snackbar.make(v, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show();
-                    }
-
-                } else {
-                    Snackbar.make(v, getString(R.string.request_permissions_text), Snackbar.LENGTH_SHORT).show();
-                }
-                return true;
-            }
-        });*/
         refresh_button.setOnClickListener(view -> {
             initRun(true);
-            Analytics.trackEvent("Refreshed");
         });
         seal_button.setOnClickListener(view -> {
             if (sharedPreferences.getBoolean("seal_enabled", false)) {
@@ -452,7 +398,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         if (EasyPermissions.hasPermissions(this, permissions)) {
             request_permissions_layout.setVisibility(View.GONE);
         }
-        //Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -821,7 +766,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     private void checkUpdate() {
         boolean isTest = false;
         if (AppUtilKt.isUseWifi(MainActivity.this) & ((System.currentTimeMillis() - sharedPreferences.getLong("update_latest_refresh_time", 0)) > (isTest ? 0 : 86400000))) {
-            if (isTest || BuildConfig.BUILD_TYPE.equals("coolapk")) {
+            if (isTest ? true : BuildConfig.BUILD_TYPE.equals("coolapk")) {
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
                         .url("https://api.coolapk.com/v6/apk/detail?id=com.lz233.onetext&installed=1")
@@ -893,7 +838,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent().setClass(MainActivity.this, SettingActivity.class));
+            startActivity(new Intent().setClass(MainActivity.this, AboutActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

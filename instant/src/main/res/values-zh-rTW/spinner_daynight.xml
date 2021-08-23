@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="daynight">
+        <item>跟隨系統</item>
+        <item>白天</item>
+        <item>夜晚</item>
+    </string-array>
+</resources>
