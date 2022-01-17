@@ -44,8 +44,14 @@ open class SpringNestedScrollView @JvmOverloads constructor(
     var isTopFadingEdgeEnabled = true
 
     init {
-        getField<NestedScrollView>("mEdgeGlowTop").set(this, springManager.createEdgeEffect(DIRECTION_BOTTOM, true))
-        getField<NestedScrollView>("mEdgeGlowBottom").set(this, springManager.createEdgeEffect(DIRECTION_BOTTOM))
+        getField<NestedScrollView>("mEdgeGlowTop").set(
+            this,
+            springManager.createEdgeEffect(DIRECTION_BOTTOM, true)
+        )
+        getField<NestedScrollView>("mEdgeGlowBottom").set(
+            this,
+            springManager.createEdgeEffect(DIRECTION_BOTTOM)
+        )
         overScrollMode = View.OVER_SCROLL_ALWAYS
     }
 
