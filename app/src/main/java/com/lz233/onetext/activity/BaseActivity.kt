@@ -1,14 +1,10 @@
 package com.lz233.onetext.activity
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -37,7 +33,8 @@ abstract class BaseActivity : AppCompatActivity() {
         if (mode == Configuration.UI_MODE_NIGHT_NO) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
-        rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+        rootView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { v: View?, insets: WindowInsetsCompat ->
             rootView.setPadding(insets.systemWindowInsetLeft, 0, insets.systemWindowInsetRight, 0)
             insets
